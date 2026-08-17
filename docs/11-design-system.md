@@ -1,0 +1,496 @@
+# 11-design-system.md
+
+# Design System
+
+## Purpose
+
+This document defines the visual language, interaction patterns, motion system, and design tokens for the portfolio platform.
+
+The goal is to create a portfolio that communicates:
+
+- Professional engineering capability
+- Backend expertise
+- System thinking
+- Product maturity
+
+while remaining approachable to recruiters.
+
+The design system must support perspective transformation without creating two separate applications.
+
+---
+
+# 1. Design Philosophy
+
+## Core Idea
+
+The portfolio is not a collection of pages.
+
+The portfolio is an adaptive interface.
+
+Users can explore the same information through different perspectives.
+
+---
+
+## Design Principles
+
+### Principle 1
+
+Clarity before decoration.
+
+---
+
+### Principle 2
+
+Information before animation.
+
+---
+
+### Principle 3
+
+Consistency before creativity.
+
+---
+
+### Principle 4
+
+Transformation instead of replacement.
+
+Information should evolve as perspective changes.
+
+---
+
+# 2. Visual Identity
+
+## Selected Strategy
+
+Hybrid Identity
+
+---
+
+## Overview Perspective
+
+Inspired by:
+
+- Linear
+- Vercel
+- Stripe
+
+Characteristics:
+
+- Clean
+- Minimal
+- Recruiter Friendly
+
+---
+
+## Architecture Perspective
+
+Inspired by:
+
+- Datadog
+- Grafana
+- Engineering Dashboards
+
+Characteristics:
+
+- Technical
+- Dense
+- System Focused
+
+---
+
+## Rule
+
+Both perspectives must feel like the same product.
+
+---
+
+# 3. Color System
+
+## Color Architecture
+
+The entire color system is generated from:
+
+```text
+PRIMARY_COLOR
+```
+
+---
+
+## Current Primary
+
+```text
+#10b981
+```
+
+(Emerald)
+
+---
+
+## Important Rule
+
+Components must never depend on:
+
+```text
+emerald
+blue
+purple
+```
+
+named colors.
+
+---
+
+## Components Use Tokens
+
+```text
+primary
+background
+surface
+border
+text
+muted
+success
+warning
+danger
+```
+
+---
+
+## Generated Scale
+
+```text
+primary-50
+primary-100
+primary-200
+primary-300
+primary-400
+primary-500
+primary-600
+primary-700
+primary-800
+primary-900
+primary-950
+```
+
+---
+
+## Theme Migration Rule
+
+Changing:
+
+PRIMARY_COLOR
+
+must automatically regenerate the entire palette.
+
+No component changes allowed.
+
+---
+
+# 4. Base Theme
+
+## Background
+
+```text
+#09090b
+```
+
+---
+
+## Surface
+
+```text
+#18181b
+```
+
+---
+
+## Border
+
+```text
+#27272a
+```
+
+---
+
+## Foreground
+
+```text
+#fafafa
+```
+
+---
+
+## Muted
+
+```text
+#a1a1aa
+```
+
+---
+
+# 5. Typography
+
+## Primary Font
+
+Geist
+
+---
+
+## Technical Font
+
+JetBrains Mono
+
+---
+
+## Usage
+
+Geist:
+
+- Headings
+- Paragraphs
+- Navigation
+
+---
+
+JetBrains Mono:
+
+- Metrics
+- System Information
+- Architecture Elements
+- Telemetry
+- Technical Labels
+
+---
+
+# 6. Perspective Transformation System
+
+## Selected Strategy
+
+Interactive Perspective Slider
+
+---
+
+## States
+
+Overview
+
+↓
+
+Architecture
+
+---
+
+## Purpose
+
+Reveal increasing technical depth.
+
+---
+
+## Rule
+
+Perspective changes:
+
+- Density
+- Information
+- Navigation emphasis
+
+---
+
+Never:
+
+- Change theme
+- Change branding
+- Change layout completely
+
+---
+
+# 7. Motion Philosophy
+
+## Selected Strategy
+
+Morph Transition
+
+---
+
+## Goal
+
+Information is revealed.
+
+Not replaced.
+
+---
+
+## Examples
+
+Project Card
+
+↓
+
+Expanded Metadata
+
+↓
+
+Architecture Information
+
+---
+
+## Rule
+
+Motion communicates state changes.
+
+Motion should never exist for decoration only.
+
+---
+
+# 8. Project Card System
+
+## Overview State
+
+Displays:
+
+- Title
+- Summary
+- Stack
+- Status
+
+---
+
+## Architecture State
+
+Displays:
+
+- Title
+- Summary
+- Stack
+- Status
+- Architecture Type
+- Complexity Indicator
+- Architecture Entry Point
+
+---
+
+## Rule
+
+Same card.
+
+More information.
+
+---
+
+# 9. Engineering Workspace
+
+## Purpose
+
+Dedicated architecture exploration environment.
+
+---
+
+## Modules
+
+Architecture Lab
+
+Telemetry
+
+Learning Timeline
+
+System Thinking
+
+---
+
+## Rule
+
+Feels like a developer workspace.
+
+Not a portfolio section.
+
+---
+
+# 10. Layout System
+
+## Content Width
+
+Readable by default.
+
+---
+
+## Density
+
+Overview:
+
+Low Density
+
+---
+
+Architecture:
+
+Medium Density
+
+---
+
+## Rule
+
+Do not create entirely different layouts.
+
+Only increase information density.
+
+---
+
+# 11. Accessibility
+
+All interactions must support:
+
+- Keyboard Navigation
+- Visible Focus States
+- Screen Readers
+- Reduced Motion Preferences
+
+---
+
+# 12. Future Theme Support
+
+Future themes should be possible by changing:
+
+PRIMARY_COLOR
+
+only.
+
+---
+
+## Examples
+
+Emerald
+
+↓
+
+Blue
+
+↓
+
+Purple
+
+↓
+
+Orange
+
+---
+
+## Rule
+
+No component refactoring required.
+
+---
+
+# Design System Summary
+
+The portfolio uses a perspective-driven design system where:
+
+Overview
+
+↓
+
+Architecture
+
+reveals increasing technical depth while preserving a single visual identity.
+
+The entire design system is powered by tokenized colors and generated palettes, allowing future rebranding through a single primary color change.
