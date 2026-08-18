@@ -16,7 +16,7 @@ Project Phase:
 
 - [x] Foundation & Planning
 - [x] Design System
-- [ ] Content Architecture
+- [x] Content Architecture
 - [ ] Core UI Development
 - [ ] Perspective Transformation System
 - [ ] Project Pages
@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Content System
+Current Phase: Core UI Development
 
-Current Task: Phase 2 complete
+Current Task: Phase 3 complete
 
 Blocked By: Nothing
 
-Next Task: Phase 3 — Content System
+Next Task: Phase 4 — Core UI Development
 
 ---
 
@@ -94,6 +94,7 @@ Only list completed functionality. Update as work progresses.
 - Created Zod validation schemas and inferred types for all five core content domains (Project, Profile, Experience, Navigation, Perspective) to guarantee runtime type safety.
 - Built the MDX loader (`src/lib/mdx/projects.ts`) which parses frontmatter, explicitly validates against the Zod schema, throws specific build-time errors for invalid fields, and returns typed domain objects.
 - Created initial sample content files (`profile.ts` and two project `.mdx` files) successfully verified against the Zod schemas and loader pipeline.
+- Wired the MDX loader into Next.js App Router using `generateStaticParams` at `src/app/projects/[slug]/page.tsx`, compiling MDX components at build time and enforcing strict 404s for unknown routes.
 
 ## Perspective System
 
