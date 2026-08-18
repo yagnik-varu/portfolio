@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import type { Perspective } from "@/domains/perspective/types";
 
 export interface PerspectiveToggleProps {
@@ -7,7 +10,7 @@ export interface PerspectiveToggleProps {
 }
 
 /**
- * Desktop-specific perspective slider.
+ * Desktop-specific perspective slider with spring physics.
  * Visible on md (768px) and up.
  */
 export function PerspectiveToggleDesktop({
@@ -24,8 +27,8 @@ export function PerspectiveToggleDesktop({
       <button
         onClick={() => onChange("overview")}
         aria-pressed={perspective === "overview"}
-        className={`relative z-10 flex items-center justify-center rounded-full px-4 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-          perspective === "overview" ? "text-text" : "text-muted hover:text-text"
+        className={`relative z-10 flex items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+          perspective === "overview" ? "text-text font-semibold" : "text-muted hover:text-text"
         }`}
       >
         Overview
@@ -34,18 +37,23 @@ export function PerspectiveToggleDesktop({
       <button
         onClick={() => onChange("architecture")}
         aria-pressed={perspective === "architecture"}
-        className={`relative z-10 flex items-center justify-center rounded-full px-4 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-          perspective === "architecture" ? "text-text" : "text-muted hover:text-text"
+        className={`relative z-10 flex items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+          perspective === "architecture" ? "text-text font-semibold" : "text-muted hover:text-text"
         }`}
       >
         Architecture
       </button>
 
-      {/* Highlight Background */}
-      <div
-        className={`absolute top-1 bottom-1 w-[calc(50%-0.25rem)] rounded-full bg-primary shadow transition-transform duration-300 ease-in-out ${
-          perspective === "overview" ? "translate-x-0" : "translate-x-full ml-1"
-        }`}
+      {/* Spring Physics Active Pill */}
+      <motion.div
+        layout
+        layoutId="perspective-thumb"
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        className="absolute top-1 bottom-1 rounded-full bg-primary shadow-md"
+        style={{
+          left: perspective === "overview" ? "0.25rem" : "calc(50% + 0.125rem)",
+          width: "calc(50% - 0.375rem)",
+        }}
       />
     </div>
   );

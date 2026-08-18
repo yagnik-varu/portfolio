@@ -481,6 +481,53 @@ No component refactoring required.
 
 ---
 
+# 13. Motion System
+
+## Entrance Animations (Page Load)
+
+Word-level stagger entrance is used for primary headings (Hero H1) on initial page load only.
+It does NOT replay on perspective switch — the heading is the stable identity anchor.
+
+Stagger delay between words: 80ms
+Word animation: opacity 0→1, y 20→0, duration 500ms, ease [0, 0, 0.2, 1]
+
+## Perspective Transition Animation
+
+Exit: opacity 1→0, y 0→-16px, filter blur 0→6px — duration 180ms, ease [0.4, 0, 1, 1] (fast ease-in)
+Enter: opacity 0→1, y 24→0px, filter blur 8px→0 — duration 350ms, delay 100ms, ease [0, 0, 0.2, 1] (ease-out)
+Total round-trip: ~630ms (within 600-900ms spec from §02-05)
+
+## Perspective Toggle (Desktop)
+
+Pill movement: Framer Motion layout spring — stiffness 400, damping 30
+This creates a physically weighted, elastic feel that communicates "shift" not "jump".
+
+## Badge / List Stagger (Architecture Mode)
+
+Stagger delay between items: 40ms
+Item animation: opacity 0→1, y 12→0, duration 300ms, ease [0, 0, 0.2, 1]
+Used for: tech focus badges, engineering module cards, architecture tags.
+
+## Scroll-Linked Depth (Header)
+
+At Y=0: no shadow, border-bottom always visible
+At Y=80px: box-shadow 0 4px 24px -4px rgba(0,0,0,0.5)
+Interpolated linearly via Framer Motion useTransform.
+
+## Navigation Underline (CSS Only)
+
+Underline slides in from left on hover/active — transform: scaleX(0→1), transform-origin: left
+Duration: 250ms, ease: ease
+This is pure CSS — no JS runtime cost.
+
+## Accessibility Rule
+
+All motion must respect prefers-reduced-motion.
+All Framer Motion components must check useReducedMotion() and short-circuit to instant state.
+CSS animations in globals.css already handle this via the @media (prefers-reduced-motion: reduce) block.
+
+---
+
 # Design System Summary
 
 The portfolio uses a perspective-driven design system where:

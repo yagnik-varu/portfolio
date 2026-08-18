@@ -271,6 +271,20 @@ Actions:
 
 ---
 
+## Implementation Reference
+
+The 4-stage model maps to the following Framer Motion parameters in
+`src/features/perspective/components/perspective-transition.tsx`:
+
+* **Stage 1 (100ms)**: Zustand store update triggers React re-render. `AnimatePresence` detects key change and begins exit animation.
+* **Stage 2 (180ms)**: Content exits — `opacity 1→0`, `y 0→-16px`, `filter blur 0→6px`. Ease: `cubic-bezier(0.4, 0, 1, 1)` — fast ease-in communicates "pulled away".
+* **Stage 3 (350ms, delay 100ms)**: New content enters — `opacity 0→1`, `y 24px→0`, `filter blur 8px→0`. Ease: `cubic-bezier(0, 0, 0.2, 1)` — spring-like ease-out communicates "settling into place".
+* **Stage 4 (100ms)**: `useReducedMotion` check ensures instant fallback is always active. State is never gated behind animation completion.
+
+Total: ~630ms — within the 600–900ms target.
+
+---
+
 # 6. Visual Language Transformation
 
 ## Color System

@@ -22,13 +22,17 @@ export function Navigation({ perspective, className = "" }: NavigationProps) {
   return (
     <nav className={`flex items-center gap-6 ${className}`}>
       {visibleItems.map((item) => {
-        const isActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
+        const isActive =
+          pathname === item.href ||
+          (item.href !== "/" && pathname?.startsWith(item.href));
+
         return (
           <Link
             key={item.href}
             href={item.href}
-            className={`text-sm font-medium transition-colors hover:text-primary ${
-              isActive ? "text-primary" : "text-muted"
+            data-active={isActive ? "true" : undefined}
+            className={`nav-link text-sm font-medium transition-colors hover:text-primary ${
+              isActive ? "text-primary font-semibold" : "text-muted"
             }`}
           >
             {item.label}

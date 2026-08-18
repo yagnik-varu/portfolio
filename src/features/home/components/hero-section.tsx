@@ -1,3 +1,6 @@
+"use client";
+
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { Perspective } from "@/domains/perspective/types";
 import { profile } from "../../../../content/profile/profile";
 import { PerspectiveTransition } from "@/features/perspective/components/perspective-transition";
@@ -9,15 +12,86 @@ interface HeroSectionProps {
   onPerspectiveChange: (p: Perspective) => void;
 }
 
+const nameContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const wordVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0, 0, 0.2, 1],
+    },
+  },
+};
+
+const badgeContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.04,
+    },
+  },
+};
+
+const badgeVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 12,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0, 0, 0.2, 1],
+    },
+  },
+};
+
 export function HeroSection({ perspective, onPerspectiveChange }: HeroSectionProps) {
-  // Core identity remains fixed outside the transformation animation
-  const { name } = profile;
+  const shouldReduceMotion = useReducedMotion();
+  const nameWords = profile.name.split(" ");
 
   return (
-    <section className="w-full py-20 md:py-32 flex flex-col gap-6">
-      <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-text">
-        {name}
-      </h1>
+    <section className="relative w-full py-20 md:py-32 flex flex-col gap-6">
+      {/* Ambient Radial Glow (Subtle depth) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-10 -left-10 w-[400px] h-[300px] -z-10 blur-3xl opacity-40"
+        style={{
+          background: "radial-gradient(ellipse at center, color-mix(in oklab, var(--color-primary) 20%, transparent), transparent 70%)",
+        }}
+      />
+
+      {/* Stable Identity Anchor with One-Time Word Stagger Entrance */}
+      <motion.h1
+        variants={shouldReduceMotion ? undefined : nameContainerVariants}
+        initial="hidden"
+        animate="show"
+        className="text-4xl md:text-6xl font-bold tracking-tight text-text"
+      >
+        {nameWords.map((word) => (
+          <motion.span
+            key={word}
+            variants={shouldReduceMotion ? undefined : wordVariants}
+            className="inline-block mr-3"
+          >
+            {word}
+          </motion.span>
+        ))}
+      </motion.h1>
 
       <PerspectiveTransition perspective={perspective}>
         {perspective === "overview" ? (
@@ -56,16 +130,22 @@ export function HeroSection({ perspective, onPerspectiveChange }: HeroSectionPro
                 <p className="text-xs font-bold text-muted uppercase tracking-widest">
                   Current Technical Focus
                 </p>
-                <ul className="flex flex-wrap gap-2">
+                <motion.ul
+                  variants={shouldReduceMotion ? undefined : badgeContainerVariants}
+                  initial="hidden"
+                  animate="show"
+                  className="flex flex-wrap gap-2"
+                >
                   {profile.currentFocus.map((tech) => (
-                    <li
+                    <motion.li
                       key={tech}
+                      variants={shouldReduceMotion ? undefined : badgeVariants}
                       className="px-3 py-1.5 bg-surface border border-border rounded-md text-sm font-mono text-text shadow-sm"
                     >
                       {tech}
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
               </div>
             </div>
 

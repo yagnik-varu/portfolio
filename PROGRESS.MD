@@ -95,6 +95,8 @@ Only list completed functionality. Update as work progresses.
 ## Perspective System
 
 - Established a robust Perspective Engine architecture including: a centralized Zustand memory store, bidirectional URL synchronization enabling shareable state (with Zod validation fallback), desktop & mobile segmented controls mapped to global shortcuts (`Shift + P`), pure domain visibility calculation rules, Framer Motion-driven 4-stage UI layout shifts, and a one-time session-based discovery pulse affordance. (All systems gracefully degrade if `prefers-reduced-motion` is detected).
+- Enhanced motion fidelity across system: asymmetric staged exit/enter curves in `<PerspectiveTransition />`, spring physics layout animations on `<PerspectiveToggleDesktop />`, word-stagger entrance and badge orchestration on `<HeroSection />`, scroll-linked elevation on `<Header />`, and CSS underline slide on `<Navigation />`.
+- Canonicalized animation standards across documentation (`docs/11-design-system.md §13` and `docs/02-perspective-transformation-model.md §5`).
 - **TODO**: Implement Toast notification for invalid perspective URLs (`?perspective=wrong`). The app should gracefully fallback to `overview` but show a toast warning the user, and dynamically highlight the Perspective toggle button so they know where to fix it.
 
 ## Core UI Development
@@ -102,7 +104,7 @@ Only list completed functionality. Update as work progresses.
 - Implemented dynamic global Header and Footer in `src/app/layout.tsx`.
 - Constructed `<Navigation />` system that reads directly from the canonical `content/navigation/navigation.ts` file, dynamically filtering links based on the active `Perspective` rules.
 - Wired the global `usePerspectiveStore` to the Header per the Parent Controlled pattern, pushing state downwards to the responsive desktop and mobile toggles.
-- Built the `HeroSection` homepage component demonstrating the "lens shift" perspective transformation, reusing Phase 4 Framer Motion animation utilities and reading purely from `profile.ts` content.
+- Built the `HeroSection` homepage component demonstrating the "lens shift" perspective transformation, reusing Phase 4 Framer Motion animation utilities, page-load word stagger entrance, and reading purely from `profile.ts` content.
 
 ## Process / Tooling
 

@@ -1,18 +1,45 @@
 "use client";
 
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 import type { Perspective } from "@/domains/perspective/types";
 
 /**
  * Transformation stages defined in docs/02-perspective-transformation-model.md §5
- * Total duration: 600-900ms
+ * Total round-trip duration: ~630ms
  */
 export const PERSPECTIVE_TIMING = {
   stage1Activation: 0.1, // 100ms: Switch activated
-  stage2Layout: 0.25, // 250ms: Layout adjustments
-  stage3Expansion: 0.25, // 250ms: Information expansion
-  stage4Ready: 0.15, // 150ms: Workspace ready
+  stage2Exit: 0.18,      // 180ms: Fast exit snap
+  stage3Enter: 0.35,     // 350ms: Spring-like settle entrance
+  stage4Ready: 0.1,      // 100ms: Workspace ready
+};
+
+const transitionVariants: Variants = {
+  initial: {
+    opacity: 0,
+    y: 24,
+    filter: "blur(8px)",
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: PERSPECTIVE_TIMING.stage3Enter,
+      delay: PERSPECTIVE_TIMING.stage1Activation,
+      ease: [0, 0, 0.2, 1], // Spring-like ease-out
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -16,
+    filter: "blur(6px)",
+    transition: {
+      duration: PERSPECTIVE_TIMING.stage2Exit,
+      ease: [0.4, 0, 1, 1], // Fast ease-in
+    },
+  },
 };
 
 interface PerspectiveTransitionProps {
@@ -40,14 +67,10 @@ export function PerspectiveTransition({
     <AnimatePresence mode="wait">
       <motion.div
         key={perspective}
-        initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-        transition={{
-          duration: PERSPECTIVE_TIMING.stage3Expansion,
-          delay: PERSPECTIVE_TIMING.stage1Activation, // Begin after initial switch
-          ease: "easeInOut",
-        }}
+        variants={transitionVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
       >
         {children}
       </motion.div>
