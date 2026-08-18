@@ -3,7 +3,7 @@
 @theme {
   /* Fonts */
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-jetbrains-mono);
 
   /* 1. Base Seed Color */
   --color-primary-base: #10b981;

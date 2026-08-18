@@ -32,11 +32,11 @@ Project Phase:
 
 Current Phase: Design System
 
-Current Task: Set up Color Token System
+Current Task: Set up UI Components
 
 Blocked By: Nothing
 
-Next Task: Typography and UI Components
+Next Task: Content Architecture
 
 ---
 
@@ -88,6 +88,7 @@ Only list completed functionality. Update as work progresses.
 
 - Implemented token-based color system in `globals.css` using Tailwind v4 `@theme` and pure CSS `color-mix`.
 - Color system supports single-variable (`--color-primary-base`) regeneration for future theming.
+- Configured typography system using `next/font` (Geist for prose, JetBrains Mono for metrics/code) mapped to Tailwind v4 `font-sans` and `font-mono` tokens.
 
 ## Content
 
