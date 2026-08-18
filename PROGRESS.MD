@@ -102,6 +102,7 @@ Only list completed functionality. Update as work progresses.
 - Implemented dynamic global Header and Footer in `src/app/layout.tsx`.
 - Constructed `<Navigation />` system that reads directly from the canonical `content/navigation/navigation.ts` file, dynamically filtering links based on the active `Perspective` rules.
 - Wired the global `usePerspectiveStore` to the Header per the Parent Controlled pattern, pushing state downwards to the responsive desktop and mobile toggles.
+- Built the `HeroSection` homepage component demonstrating the "lens shift" perspective transformation, reusing Phase 4 Framer Motion animation utilities and reading purely from `profile.ts` content.
 
 ## Process / Tooling
 

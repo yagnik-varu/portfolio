@@ -1,8 +1,18 @@
+"use client";
+
+import { usePerspectiveStore } from "@/domains/perspective/store";
+import { HeroSection } from "@/features/home/components/hero-section";
+
 export default function Home() {
+  const perspective = usePerspectiveStore((state) => state.perspective);
+  const setPerspective = usePerspectiveStore((state) => state.setPerspective);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold">Yagnik Varu Portfolio</h1>
-      <p className="mt-4 text-xl">Perspective Transformation Model (Scaffolded)</p>
-    </main>
+    <div className="container mx-auto px-4 md:px-6">
+      <HeroSection 
+        perspective={perspective} 
+        onPerspectiveChange={setPerspective} 
+      />
+    </div>
   );
 }
