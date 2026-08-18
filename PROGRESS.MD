@@ -89,6 +89,7 @@ Only list completed functionality. Update as work progresses.
 - Implemented token-based color system in `globals.css` using Tailwind v4 `@theme` and pure CSS `color-mix`.
 - Color system supports single-variable (`--color-primary-base`) regeneration for future theming.
 - Configured typography system using `next/font` (Geist for prose, JetBrains Mono for metrics/code) mapped to Tailwind v4 `font-sans` and `font-mono` tokens.
+- Set up global baseline styles: body defaults, border reset, explicit focus-visible styling for accessibility, and prefers-reduced-motion media query.
 
 ## Content
 
