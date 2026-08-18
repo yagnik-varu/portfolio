@@ -1,0 +1,42 @@
+---
+slug: spendsync-v2
+title: SpendSync V2
+summary: Room expense management platform.
+status: active
+featured: true
+architectureType: modular-monolith
+complexity: advanced
+visibility: public
+stack:
+  frontend:
+    - Next.js
+    - TypeScript
+  backend:
+    - NestJS
+  database:
+    - PostgreSQL
+  infrastructure:
+    - Neon
+tags:
+  - finance
+  - room-management
+  - architecture
+---
+
+<!-- [PLACEHOLDER CONTENT] -->
+
+# Overview
+
+SpendSync V2 is a comprehensive room expense management platform designed to track, calculate, and distribute shared costs among roommates automatically. 
+
+# Architecture
+
+The system is built as a Modular Monolith using NestJS on the backend, ensuring distinct domain boundaries while maintaining deployment simplicity.
+
+# Database Design
+
+The data layer utilizes PostgreSQL deployed on Neon, featuring an isolated schema design for multi-tenancy at the room level.
+
+# Future Improvements
+
+Future iterations will focus on integrating automated bank feeds and implementing a robust event-driven notification system.

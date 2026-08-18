@@ -1,0 +1,42 @@
+---
+slug: techreel-ai
+title: TechReel AI
+summary: AI-powered automated video generation pipeline.
+status: completed
+featured: false
+architectureType: event-driven
+complexity: production
+visibility: public
+stack:
+  frontend:
+    - React
+  backend:
+    - Python
+    - FastAPI
+  database:
+    - Redis
+  infrastructure:
+    - AWS
+tags:
+  - ai
+  - video-processing
+  - automation
+---
+
+<!-- [PLACEHOLDER CONTENT] -->
+
+# Overview
+
+TechReel AI automates the extraction of key highlights from long-form technical talks, editing them into short-form content suitable for social media.
+
+# Architecture
+
+An event-driven architecture processes video chunks in parallel using AWS SQS and specialized worker nodes to ensure rapid processing.
+
+# Challenges
+
+The primary challenge involved minimizing the latency of the speech-to-text transcription model without degrading accuracy on technical jargon.
+
+# Future Improvements
+
+Expansion plans include supporting multi-lingual translation overlays and direct integration with platform APIs for automated posting.
