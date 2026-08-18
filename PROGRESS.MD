@@ -92,6 +92,7 @@ Only list completed functionality. Update as work progresses.
 
 - Installed core pipeline dependencies: `gray-matter` (frontmatter parsing) and `next-mdx-remote` (MDX compilation).
 - Created Zod validation schemas and inferred types for all five core content domains (Project, Profile, Experience, Navigation, Perspective) to guarantee runtime type safety.
+- Built the MDX loader (`src/lib/mdx/projects.ts`) which parses frontmatter, explicitly validates against the Zod schema, throws specific build-time errors for invalid fields, and returns typed domain objects.
 
 ## Perspective System
 
