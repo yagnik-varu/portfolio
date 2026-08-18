@@ -91,6 +91,7 @@ Only list completed functionality. Update as work progresses.
 ## Content
 
 - Installed core pipeline dependencies: `gray-matter` (frontmatter parsing) and `next-mdx-remote` (MDX compilation).
+- Created Zod validation schemas and inferred types for all five core content domains (Project, Profile, Experience, Navigation, Perspective) to guarantee runtime type safety.
 
 ## Perspective System
 
