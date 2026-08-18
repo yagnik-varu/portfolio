@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Core UI Development
+Current Phase: Perspective Engine
 
 Current Task: Phase 3 complete
 
 Blocked By: Nothing
 
-Next Task: Phase 4 — Core UI Development
+Next Task: Phase 4 — Perspective Engine
 
 ---
 
@@ -90,11 +90,7 @@ Only list completed functionality. Update as work progresses.
 
 ## Content
 
-- Installed core pipeline dependencies: `gray-matter` (frontmatter parsing) and `next-mdx-remote` (MDX compilation).
-- Created Zod validation schemas and inferred types for all five core content domains (Project, Profile, Experience, Navigation, Perspective) to guarantee runtime type safety.
-- Built the MDX loader (`src/lib/mdx/projects.ts`) which parses frontmatter, explicitly validates against the Zod schema, throws specific build-time errors for invalid fields, and returns typed domain objects.
-- Created initial sample content files (`profile.ts` and two project `.mdx` files) successfully verified against the Zod schemas and loader pipeline.
-- Wired the MDX loader into Next.js App Router using `generateStaticParams` at `src/app/projects/[slug]/page.tsx`, compiling MDX components at build time and enforcing strict 404s for unknown routes.
+- Established complete MDX content pipeline: implemented five strict Zod schemas, a type-safe `getProjects()` loader, created the sample profile and two sample MDX projects (`spendsync-v2`, `techreel-ai`), and wired them to `/projects/[slug]` with build-time static generation (`generateStaticParams`) and automated 404 handling.
 
 ## Perspective System
 
