@@ -90,7 +90,7 @@ Only list completed functionality. Update as work progresses.
 
 ## Content
 
-None
+- Installed core pipeline dependencies: `gray-matter` (frontmatter parsing) and `next-mdx-remote` (MDX compilation).
 
 ## Perspective System
 
