@@ -4,6 +4,7 @@ import { useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { usePerspectiveStore } from "./store";
 import { perspectiveSchema } from "@/lib/validation/perspective.schema";
+import { usePerspectiveShortcut } from "@/features/perspective/hooks/use-perspective-shortcut";
 
 function SyncLogic() {
   const searchParams = useSearchParams();
@@ -12,6 +13,9 @@ function SyncLogic() {
   const perspective = usePerspectiveStore((state) => state.perspective);
   const setPerspective = usePerspectiveStore((state) => state.setPerspective);
   const isInitialized = useRef(false);
+
+  // Initialize global keyboard shortcut (Shift + P)
+  usePerspectiveShortcut();
 
   // Initialize from URL on mount
   useEffect(() => {

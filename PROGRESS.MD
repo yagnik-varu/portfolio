@@ -99,6 +99,7 @@ Only list completed functionality. Update as work progresses.
 - Created `<PerspectiveToggleMobile />` segmented control with strict WCAG touch-target sizing for viewport widths < 768px.
 - Defined pure domain visibility rules (`src/domains/perspective/visibility.ts`) to programmatically calculate component rendering states without framework dependencies.
 - Implemented Framer Motion transformation wrapper (`<PerspectiveTransition />`) to orchestrate the 4-stage UI layout shifts while respecting `prefers-reduced-motion` constraints.
+- Integrated a one-time session-based discovery affordance (pulse animation) and a global `Shift + P` keyboard shortcut to improve feature discoverability without blocking core user flows.
 - **TODO**: Implement Toast notification for invalid perspective URLs (`?perspective=wrong`). The app should gracefully fallback to `overview` but show a toast warning the user, and dynamically highlight the Perspective toggle button so they know where to fix it.
 
 ## Telemetry
