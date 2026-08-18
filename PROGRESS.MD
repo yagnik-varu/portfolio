@@ -90,6 +90,7 @@ Only list completed functionality. Update as work progresses.
 - Color system supports single-variable (`--color-primary-base`) regeneration for future theming.
 - Configured typography system using `next/font` (Geist for prose, JetBrains Mono for metrics/code) mapped to Tailwind v4 `font-sans` and `font-mono` tokens.
 - Set up global baseline styles: body defaults, border reset, explicit focus-visible styling for accessibility, and prefers-reduced-motion media query.
+- Built shared Button and Card components using `cva` and semantic tokens, ensuring accessible focus states.
 
 ## Content
 
