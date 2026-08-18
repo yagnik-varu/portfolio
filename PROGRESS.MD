@@ -96,6 +96,7 @@ Only list completed functionality. Update as work progresses.
 
 - Established global state using Zustand (`src/domains/perspective/store.ts`) strictly typed to the `overview` and `architecture` schemas, ready for URL synchronization.
 - Built `<PerspectiveSync />` component injected at the root layout to seamlessly parse, validate, and write the perspective state back to the URL query string, establishing shareable links.
+- **TODO**: Implement Toast notification for invalid perspective URLs (`?perspective=wrong`). The app should gracefully fallback to `overview` but show a toast warning the user, and dynamically highlight the Perspective toggle button so they know where to fix it.
 
 ## Telemetry
 
