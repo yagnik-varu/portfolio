@@ -9,4 +9,5 @@ export const profile: Profile = {
   currentFocus: ["System Architecture", "Next.js", "NestJS"],
   githubUrl: "https://github.com/yagnik-varu",
   linkedinUrl: "https://linkedin.com/in/yagnik-varu-41216a22a",
+  resumeUrl: "/resume.pdf",
 };
