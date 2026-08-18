@@ -15,7 +15,7 @@ Owner: Yagnik Varu
 Project Phase:
 
 - [x] Foundation & Planning
-- [ ] Design System
+- [x] Design System (Colors)
 - [ ] Content Architecture
 - [ ] Core UI Development
 - [ ] Perspective Transformation System
@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Foundation & Planning
+Current Phase: Design System
 
-Current Task: Scaffolded the Next.js App Router project with TypeScript and Tailwind CSS.
+Current Task: Set up Color Token System
 
 Blocked By: Nothing
 
-Next Task: Continue Phase 1 — Project Foundation (Set up domain-driven folder structure per `docs/09`, install shadcn/ui).
+Next Task: Typography and UI Components
 
 ---
 
@@ -82,10 +82,12 @@ Only list completed functionality. Update as work progresses.
 
 - Next.js App Router initialized with TypeScript and Tailwind CSS.
 - Basic `page.tsx` cleaned up.
+- Next.js + TS + Tailwind scaffold, domain-oriented src/ structure, ESLint/Prettier, and path aliases configured.
 
 ## UI
 
-None
+- Implemented token-based color system in `globals.css` using Tailwind v4 `@theme` and pure CSS `color-mix`.
+- Color system supports single-variable (`--color-primary-base`) regeneration for future theming.
 
 ## Content
 
