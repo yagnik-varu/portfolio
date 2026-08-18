@@ -1,10 +1,11 @@
 # PROGRESS.md — Portfolio Build State
 
 > Read this file FIRST before starting work.
+> Also read `AGENT.md` FIRST — it's the operating guide for how work should get done on this project.
 > Update this file LAST before ending work.
 > This file is the project's current state, not a development diary.
 
-Last Updated: 2026-08-17
+Last Updated: 2026-08-18
 Owner: Yagnik Varu
 
 ---
@@ -31,11 +32,11 @@ Project Phase:
 
 Current Phase: Foundation & Planning
 
-Current Task: Documentation review & harmonization complete
+Current Task: Scaffolded the Next.js App Router project with TypeScript and Tailwind CSS.
 
 Blocked By: Nothing
 
-Next Task: Phase 1 — Project Foundation (Next.js scaffold, folder structure, tooling)
+Next Task: Continue Phase 1 — Project Foundation (Set up domain-driven folder structure per `docs/09`, install shadcn/ui).
 
 ---
 
@@ -62,13 +63,25 @@ Next Task: Phase 1 — Project Foundation (Next.js scaffold, folder structure, t
 
 ---
 
+# 3a. Agent Operating Files
+
+Root-level files (outside `docs/`, read first every session):
+
+| File | Purpose | Status |
+|---|---|---|
+| `AGENT.md` | Consolidated operating guide for any agent/contributor: golden rules, tech stack, architecture principles, repo map, coding standards, content rules, error-handling philosophy, doc index, and the Teaching Mode working agreement | ✅ Done |
+| `PROGRESS.MD` | This file — actual build state | ✅ Living document |
+
+---
+
 # 4. What's Actually Implemented
 
 Only list completed functionality. Update as work progresses.
 
 ## Infrastructure
 
-None
+- Next.js App Router initialized with TypeScript and Tailwind CSS.
+- Basic `page.tsx` cleaned up.
 
 ## UI
 
@@ -85,3 +98,17 @@ None
 ## Telemetry
 
 None
+
+## Process / Tooling
+
+- `AGENT.md` created — synthesizes `docs/00`–`15` into actionable rules and adds a standing **Teaching Mode** requirement: every implementation step must be explained in plain language (what's being built, why this approach over alternatives, what any new concept/library/pattern actually does, and how the decision traces back to the relevant doc). This applies for the rest of the build, not just at kickoff.
+
+---
+
+# 5. Working Agreement Reminder
+
+Before any code is written from this point forward:
+
+1. Check this file for current state.
+2. Check `AGENT.md` §2 (Golden Rules) before adding any dependency, pattern, state solution, build tool, or folder structure — approval required first.
+3. Explanations accompany implementation by default (`AGENT.md` §13, Teaching Mode) — this is a learning project as much as a build.
