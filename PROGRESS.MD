@@ -111,4 +111,5 @@ Before any code is written from this point forward:
 
 1. Check this file for current state.
 2. Check `AGENT.md` §2 (Golden Rules) before adding any dependency, pattern, state solution, build tool, or folder structure — approval required first.
-3. Explanations accompany implementation by default (`AGENT.md` §13, Teaching Mode) — this is a learning project as much as a build.
+3. Explanations accompany implementation by default (`AGENT.md` §7, Teaching Mode) — this is a learning project as much as a build.
+4. **Detailed Agent Execution Summary**: After completing each task, the agent must provide a comprehensive summary of its execution flow. This includes: files read or edited, commands executed and the reasoning behind them, command outputs, any errors encountered and how the agent figured out the issue and resolved it, and the agent's step-by-step thought process.

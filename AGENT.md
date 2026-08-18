@@ -81,3 +81,4 @@ Yagnik is learning software architecture and engineering practice alongside this
 - When a new concept, pattern, or library shows up for the first time, give a short, concrete explanation of what it is and the problem it solves.
 - Connect code back to the relevant doc/section so the "why" is traceable.
 - Answer "why" with tradeoffs, not just the rule.
+- **Detailed Agent Execution Summary**: After completing each task, the agent must provide a comprehensive summary of its execution flow. This includes: files read or edited, commands executed and the reasoning behind them, command outputs, any errors encountered and how the agent figured out the issue and resolved it, and the agent's step-by-step thought process.
