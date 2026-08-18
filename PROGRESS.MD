@@ -94,7 +94,7 @@ Only list completed functionality. Update as work progresses.
 
 ## Perspective System
 
-None
+- Established global state using Zustand (`src/domains/perspective/store.ts`) strictly typed to the `overview` and `architecture` schemas, ready for URL synchronization.
 
 ## Telemetry
 
