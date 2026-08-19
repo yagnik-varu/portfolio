@@ -30,6 +30,10 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 **Deliverables**:
 - Theme tokens: primary (`#10b981`), background, surface, border, text, muted
++ Cursor Spotlight (shared/components/cursor-spotlight)
++ Spring hover/press physics on Card, Button
++ Noise texture overlay (SVG feTurbulence)
++ Gradient text token + Perspective Typography Rule
 - Typography: Geist (headings/body), JetBrains Mono (technical/metrics)
 - Global styles via Tailwind config
 - Shared components: Button, Card, Badge, Container, Section Header, Empty State
@@ -44,6 +48,9 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 **Deliverables**:
 - MDX loader using `gray-matter` + `next-mdx-remote`
++ impactMetrics field on Project schema (Zod + TS)
++ highlights field on Profile schema
++ Post-mortem authoring guidance applied to sample MDX content
 - Zod schemas: Project, Profile, Experience, Navigation, Perspective
 - Sample content: `profile.ts`, `spendsync-v2.mdx`, `techreel-ai.mdx`
 - `generateStaticParams` integration
@@ -58,6 +65,9 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 **Deliverables**:
 - Zustand store for perspective state (`overview | architecture`)
++ Onboarding Pulse (concrete implementation of existing first-visit affordance)
++ Depth Shift Layer (Z-axis parallax on transformation)
++ Kbd Hint badge next to Perspective Toggle
 - URL sync: `?perspective=overview`, `?perspective=architecture`
 - Perspective Slider/Toggle component (desktop + mobile)
 - Visibility rules and transformation logic
@@ -73,6 +83,11 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 **Deliverables**:
 - Hero Section (Overview → Architecture transformation)
++ Rotating Stat in Hero
++ Progressive hover reveal on Featured Project cards
++ Project Impact Badges on cards
++ Staggered scroll-triggered entrance for homepage sections
++ Currently Focused On indicator in Engineering Snapshot (config-driven)
 - Current Focus badges
 - Engineering Snapshot (metrics)
 - Featured Projects grid

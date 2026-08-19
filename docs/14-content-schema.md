@@ -275,6 +275,12 @@ Project screenshots.
 
 ---
 
+## impactMetrics
+
+Short impact metrics (e.g. "↓ 60% API latency").
+
+---
+
 ## lessonsLearned
 
 List of engineering lessons.
@@ -315,6 +321,14 @@ Every project should contain:
 
 ---
 
+## Authoring Guidance: Post-Mortem Depth
+Within the existing Overview / Architecture / Challenges / Future Improvements
+structure, prefer this ordering when writing:
+Problem  Architecture Decision (with alternatives considered)  Implementation
+ Outcome (specific metrics)  What I'd Do Differently (goes under
+Lessons Learned or Future Improvements, per 03-domain-model.md §7/§8).
+No new section types are introduced — this only shapes how existing sections are written.
+
 # 7. Project Domain Contract
 
 ```ts
@@ -336,6 +350,8 @@ interface Project {
   stack: TechStack;
 
   tags: string[];
+
+  impactMetrics?: string[]; // e.g. ["↓ 60% API latency", "500+ concurrent users"]
 
   repositoryUrl?: string;
 
@@ -380,6 +396,7 @@ interface Profile {
   linkedinUrl: string;
 
   resumeUrl: string;
+  highlights: string[];
 }
 ```
 

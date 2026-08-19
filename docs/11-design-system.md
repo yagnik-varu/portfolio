@@ -528,6 +528,34 @@ CSS animations in globals.css already handle this via the @media (prefers-reduce
 
 ---
 
+## 14. Ambient Interaction Layer
+
+### Spotlight Cursor
+- Radial gradient, primary-500 @ 15% opacity, ~400px radius
+- Follows pointer via CSS custom properties (--cursor-x, --cursor-y), updated in a single top-level listener
+- Disabled entirely on touch devices and when prefers-reduced-motion is set
+
+### Spring Hover Physics (Card, Button)
+- whileHover: scale 1.02, y -4px
+- whileTap: scale 0.98
+- Spring: stiffness 300, damping 20
+- Reuses the same spring family already defined for the Perspective Toggle (§13)
+
+### Surface Noise Texture
+- SVG feTurbulence, 2–3% opacity, applied as a fixed background layer
+- No image asset, no new dependency
+
+### Gradient Text Token
+- --gradient-hero: linear-gradient(135deg, var(--foreground), var(--primary-400))
+- Reserved for: Hero name, at most one section title per page — never used for body text
+
+---
+## Perspective Typography Rule
+When Architecture perspective is active, section labels, metric values, and
+timestamps switch to JetBrains Mono (font-mono). Headings and body copy stay
+on Geist in both perspectives. This is a class toggle driven by perspective
+state — not a font swap at the theme level.
+
 # Design System Summary
 
 The portfolio uses a perspective-driven design system where:

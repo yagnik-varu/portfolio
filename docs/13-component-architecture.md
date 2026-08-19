@@ -264,6 +264,14 @@ Page width control.
 
 ---
 
+## Cursor Spotlight
+Path: `shared/components/cursor-spotlight`
+Responsibilities: Render the ambient pointer-follow glow. Mounted once in root layout.
+
+## Kbd Hint
+Path: `shared/components/kbd-hint`
+Responsibilities: Render a small `<kbd>`-styled badge next to any element that has a keyboard shortcut.
+
 # 5. Layout Components
 
 Location:
