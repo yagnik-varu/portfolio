@@ -1,8 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { experiences } from "../../../../content/experience/experience";
+import { profile } from "../../../../content/profile/profile";
 import { Card } from "@/shared/components/card/card";
 import { SectionHeader } from "@/shared/components/section-header/section-header";
+import { StaggeredSection, StaggeredItem } from "./staggered-section";
 
 interface EngineeringSnapshotSectionProps {
   projectCount?: number;
@@ -26,12 +28,10 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
   });
   const technologiesCountDisplay = `${Math.max(uniqueTechs.size, 10)}+`;
 
-  // 3. Projects Built count (truthful metric derived from MDX loader)
+  // 3. Projects Built count
   const projectsBuiltDisplay = `${projectCount}`;
 
-  // 4. GitHub Activity
-  // NOTE: Real telemetry integration with live GitHub API / contribution graph is built in Phase 9.
-  // We provide a static credibility placeholder here to keep Phase 5 decoupled from Phase 9 telemetry infrastructure.
+  // 4. GitHub Activity Placeholder
   const githubActivityDisplay = "500+";
 
   const metrics = [
@@ -64,21 +64,19 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
   ];
 
   return (
-    <section
-      aria-labelledby="engineering-snapshot-heading"
-      className="w-full flex flex-col gap-6"
-    >
-      <SectionHeader
-        id="engineering-snapshot-heading"
-        title="Engineering Snapshot"
-        description="Key technical metrics and architectural delivery at a glance."
-      />
+    <StaggeredSection className="w-full flex flex-col gap-6" aria-labelledby="engineering-snapshot-heading">
+      <StaggeredItem>
+        <SectionHeader
+          id="engineering-snapshot-heading"
+          title="Engineering Snapshot"
+          description="Key technical metrics and architectural delivery at a glance."
+        />
+      </StaggeredItem>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {metrics.map((metric) => {
           const cardContent = (
             <Card
-              key={metric.id}
               variant="elevated"
               className="p-5 flex flex-col justify-between gap-3 h-full hover:border-primary/40 transition-colors group"
             >
@@ -86,7 +84,6 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted group-hover:text-primary transition-colors">
                   {metric.label}
                 </span>
-                {/* Numeric values formatted in JetBrains Mono per docs/11-design-system.md §5 */}
                 <span className="text-3xl sm:text-4xl font-bold font-mono text-text tracking-tight">
                   {metric.value}
                 </span>
@@ -99,15 +96,30 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
 
           if (metric.href) {
             return (
-              <Link key={metric.id} href={metric.href} className="block focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
-                {cardContent}
-              </Link>
+              <StaggeredItem key={metric.id}>
+                <Link href={metric.href} className="block focus:outline-none focus:ring-2 focus:ring-primary rounded-lg h-full">
+                  {cardContent}
+                </Link>
+              </StaggeredItem>
             );
           }
 
-          return <div key={metric.id}>{cardContent}</div>;
+          return <StaggeredItem key={metric.id}>{cardContent}</StaggeredItem>;
         })}
       </div>
-    </section>
+
+      <StaggeredItem>
+        <div className="mt-2 p-4 rounded-lg border border-border bg-surface/50 text-sm flex flex-col sm:flex-row sm:items-center gap-3">
+          <span className="font-semibold text-primary uppercase text-xs tracking-wider shrink-0">Currently Focused On:</span>
+          <div className="flex flex-wrap gap-2">
+            {profile.currentFocus.map((focus, idx) => (
+              <span key={idx} className="px-2 py-1 bg-surface border border-border rounded-md text-xs font-mono text-muted-foreground shadow-sm">
+                {focus}
+              </span>
+            ))}
+          </div>
+        </div>
+      </StaggeredItem>
+    </StaggeredSection>
   );
 }

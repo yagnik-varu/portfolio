@@ -10,6 +10,7 @@ import type { HTMLMotionProps } from "framer-motion";
 import { Badge } from "@/shared/components/badge/badge";
 import { Button } from "@/shared/components/button/button";
 import { cn } from "@/lib/utils/cn";
+import { ProjectImpactBadge } from "./project-impact-badge";
 
 export interface ProjectCardProps extends HTMLMotionProps<"div"> {
   project: Project;
@@ -105,28 +106,44 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
   const storePerspective = usePerspectiveStore((state) => state.perspective);
   const activePerspective = propPerspective ?? storePerspective;
   const isArchitecture = activePerspective === "architecture";
+  
+  const targetHref = isArchitecture 
+    ? `/projects/${project.slug}?perspective=architecture` 
+    : `/projects/${project.slug}`;
 
   return (
     <Card
       variant={isArchitecture ? "technical" : "elevated"}
       className={cn(
-        "p-6 flex flex-col justify-between gap-5 h-full transition-all duration-200 group hover:border-primary/50",
+        "relative p-6 flex flex-col justify-between gap-5 h-full transition-all duration-200 group hover:border-primary/50 overflow-hidden",
         isArchitecture && "border-primary/30 shadow-md",
         className
       )}
       {...props}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 relative z-10">
         <ProjectCardHeader project={project} />
         <ProjectCardSummary project={project} />
         <ProjectCardStack project={project} />
       </div>
 
-      <div className="flex flex-col gap-4 mt-auto">
+      <div className="flex flex-col gap-4 mt-auto relative z-10">
         {isArchitecture && (
           <ProjectArchitecturePanel project={project} />
         )}
         <ProjectCardActions project={project} perspective={activePerspective} />
+      </div>
+
+      {/* Progressive Hover Reveal Panel */}
+      <div className="absolute inset-x-0 bottom-0 p-6 bg-surface/95 backdrop-blur-sm border-t border-border translate-y-[110%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-20 flex flex-col gap-3 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted">Impact & Outcomes</p>
+        <ProjectImpactBadge project={project} />
+        <Link 
+          href={targetHref}
+          className="text-xs font-medium text-primary hover:underline mt-1 inline-flex items-center gap-1"
+        >
+          View Case Study <span aria-hidden="true">&rarr;</span>
+        </Link>
       </div>
     </Card>
   );

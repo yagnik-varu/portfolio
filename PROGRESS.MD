@@ -123,7 +123,11 @@ Only list completed functionality. Update as work progresses.
 - Built the `ContactCTASection` homepage component (`src/features/home/components/contact-cta-section.tsx`) with `id="contact"` anchor support, providing low-friction email, resume download, and LinkedIn connection actions using data from `content/profile/profile.ts`.
 - Built the `EngineeringModulesSection` homepage component (`src/features/home/components/engineering-modules-section.tsx`) with dynamic perspective visibility (rendered strictly in Architecture mode), exposing entry points to Architecture Lab, Telemetry, and Learning Timeline workspaces with staggered entrance animations.
 - Assembled the full Homepage (`src/app/page.tsx`) as a thin Server Component composing feature sections with responsive vertical rhythm.
-
+- Created `RotatingStat` component replacing the static profile summary in the `HeroSection` with a 5s-interval crossfade cycling through `Profile.highlights`, gracefully halting on hover/focus.
+- Added a progressive hover reveal panel to the `ProjectCard`, housing a newly created `ProjectImpactBadge` (showing 1-2 key outcomes) and a "View Case Study" link without introducing a new grid wrapper.
+- Integrated a reusable `StaggeredSection` and `StaggeredItem` animation wrapper using `useInView` to handle staggered spring entrances (opacity 0->1 / y 40px->0) for the Hero, Engineering Snapshot, Featured Projects, Experience, and Contact CTA sections.
+- Embedded a "Currently Focused On" indicator into the `EngineeringSnapshotSection` utilizing `profile.currentFocus`.
+- Validated that `prefers-reduced-motion` strictly overrides the `RotatingStat` auto-play, the staggered entrances, and the `ProjectCard` hover transitions, maintaining 100% accessibility compliance.
 ## Process / Tooling
 
 - `AGENT.md` created — synthesizes `docs/00`–`15` into actionable rules and adds a standing **Teaching Mode** requirement: every implementation step must be explained in plain language (what's being built, why this approach over alternatives, what any new concept/library/pattern actually does, and how the decision traces back to the relevant doc). This applies for the rest of the build, not just at kickoff.
