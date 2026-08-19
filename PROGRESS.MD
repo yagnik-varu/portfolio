@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Home Page
+Current Phase: Home Page (Phase 5)
 
-Current Task: Phase 4 complete
+Current Task: Current Focus section complete (`src/features/home/components/current-focus-section.tsx`)
 
 Blocked By: Nothing
 
-Next Task: Phase 5 — Home Page
+Next Task: Phase 5 — Engineering Snapshot / Featured Projects Section
 
 ---
 
@@ -105,6 +105,7 @@ Only list completed functionality. Update as work progresses.
 - Constructed `<Navigation />` system that reads directly from the canonical `content/navigation/navigation.ts` file, dynamically filtering links based on the active `Perspective` rules.
 - Wired the global `usePerspectiveStore` to the Header per the Parent Controlled pattern, pushing state downwards to the responsive desktop and mobile toggles.
 - Built the `HeroSection` homepage component demonstrating the "lens shift" perspective transformation, reusing Phase 4 Framer Motion animation utilities, page-load word stagger entrance, and reading purely from `profile.ts` content.
+- Built the `CurrentFocusSection` homepage component (`src/features/home/components/current-focus-section.tsx`) rendering `profile.currentFocus` as technology badges, adhering to the Single Source of Truth architecture principle and perspective-agnostic visibility rules.
 
 ## Process / Tooling
 
