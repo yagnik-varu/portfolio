@@ -28,7 +28,7 @@ export function PerspectiveToggleMobile({
     <div
       role="group"
       aria-label="Perspective View Mode"
-      className={`flex rounded-xl bg-surface p-1 shadow-sm border transition-colors duration-1000 ${
+      className={`rounded-xl bg-surface p-1 shadow-sm border transition-colors duration-1000 ${
         shouldPulse ? "border-primary/50 animate-pulse" : "border-border"
       } ${className}`}
     >

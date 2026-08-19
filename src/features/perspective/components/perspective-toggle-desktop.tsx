@@ -22,7 +22,7 @@ export function PerspectiveToggleDesktop({
     <div
       role="group"
       aria-label="Perspective View Mode"
-      className={`relative inline-flex h-9 items-center rounded-full bg-surface p-1 shadow-sm border border-border ${className}`}
+      className={`relative h-9 items-center rounded-full bg-surface p-1 shadow-sm border border-border ${className}`}
     >
       <button
         onClick={() => onChange("overview")}
