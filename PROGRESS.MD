@@ -19,7 +19,7 @@ Project Phase:
 - [x] Content Architecture
 - [x] Core UI Development (Home Page - Phase 5 Complete)
 - [x] Perspective Transformation System
-- [ ] Project Pages (Phase 6)
+- [x] Project Pages (Phase 6)
 - [ ] Architecture Lab
 - [ ] Telemetry Dashboard
 - [ ] Performance & Accessibility
@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Projects Page (Phase 6)
+Current Phase: Phase 6 Complete (Project Pages)
 
-Current Task: Phase 5 complete
+Current Task: Phase 6 complete
 
 Blocked By: Nothing
 
-Next Task: Phase 6 — Projects Page
+Next Task: Phase 7 — Project Detail Pages
 
 ---
 
@@ -128,15 +128,12 @@ Only list completed functionality. Update as work progresses.
 - Integrated a reusable `StaggeredSection` and `StaggeredItem` animation wrapper using `useInView` to handle staggered spring entrances (opacity 0->1 / y 40px->0) for the Hero, Engineering Snapshot, Featured Projects, Experience, and Contact CTA sections.
 - Embedded a "Currently Focused On" indicator into the `EngineeringSnapshotSection` utilizing `profile.currentFocus`.
 - Validated that `prefers-reduced-motion` strictly overrides the `RotatingStat` auto-play, the staggered entrances, and the `ProjectCard` hover transitions, maintaining 100% accessibility compliance.
-- Built reusable `SearchInput` and `FilterDropdown` shared components (`src/shared/components/`) to serve as "dumb" UI primitives for Phase 6 project discovery, ensuring business logic separation.
+- Built reusable `SearchInput` and `FilterDropdown` shared components (`src/shared/components/`) to serve as "dumb" UI primitives.
+- Built the full `/projects` page featuring the `ProjectFilterBar`, `ProjectDiscovery` orchestrator, and `ProjectGrid`, fully wired with `EmptyState` fallbacks and functional search/filter logic.
 
-## Project Discovery (Phase 6)
+## Domain Logic
 
-- Implemented pure domain functions (`searchProjects` and `filterProjects`) in `src/domains/project/query.ts` to handle project discovery logic. Search matches case-insensitively against title, summary, stack, and tags, while filtering correctly isolates technology, status, architecture type, and complexity criteria independently of the UI.
-- Built the responsive `ProjectGrid` (`src/features/projects/components/project-grid.tsx`) using CSS Grid, orchestrating a top-down "Parent Controlled" global Perspective state pass to the reused Phase 5 `ProjectCard`.
-- Created the `/projects` page route (`src/app/projects/page.tsx`) mapping all MDX-loaded projects directly to the new `ProjectGrid` component.
-- Built a feature-level `ProjectDiscovery` orchestrator to wire the `SearchInput` component and `searchProjects` domain logic into the `/projects` page. Local component state (`useState`) is deliberately utilized for the search query to keep the global Zustand store strictly limited to Perspective preferences and to adhere to component boundary guidelines without over-engineering debouncing at this content scale.
-- Wired the Phase 2 `EmptyState` component into the `ProjectDiscovery` orchestrator to gracefully handle zero-result searches, providing an explicit action to reset local state, ensuring the UI remains robust against edge cases per our Error Handling philosophy.
+- Implemented pure domain functions (`searchProjects` and `filterProjects`) in `src/domains/project/query.ts` to handle complex project discovery and criteria filtering independent of the UI layer.
 
 ## Process / Tooling
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { Perspective } from "@/domains/perspective/types";
 import { KbdHint } from "@/shared/components/kbd-hint";
 
@@ -22,13 +22,19 @@ export function PerspectiveToggleDesktop({
 }: PerspectiveToggleProps) {
   const [showPulse, setShowPulse] = useState(false);
 
+  const dismissPulse = useCallback(() => {
+    setShowPulse(false);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("hasSeenPerspectiveHint", "true");
+    }
+  }, []);
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    
-    if (!sessionStorage.getItem("hasSeenPerspectiveHint")) {
-      const timer = setTimeout(() => {
-        setShowPulse(true);
-      }, 800);
+    if (typeof window !== "undefined") {
+      const hasSeen = sessionStorage.getItem("hasSeenPerspectiveHint");
+      if (hasSeen) return;
+      
+      const timer = setTimeout(() => setShowPulse(true), 800);
       
       const autoDismiss = setTimeout(() => {
         dismissPulse();
@@ -39,14 +45,7 @@ export function PerspectiveToggleDesktop({
         clearTimeout(autoDismiss);
       };
     }
-  }, []);
-
-  const dismissPulse = () => {
-    setShowPulse(false);
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("hasSeenPerspectiveHint", "true");
-    }
-  };
+  }, [dismissPulse]);
 
   const handleChange = (newPerspective: Perspective) => {
     if (showPulse) dismissPulse();
