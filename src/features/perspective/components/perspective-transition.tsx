@@ -19,12 +19,16 @@ const transitionVariants: Variants = {
   initial: {
     opacity: 0,
     y: 16,
+    z: -20,
     filter: "blur(4px)",
+    transformPerspective: 1000,
   },
   animate: {
     opacity: 1,
     y: 0,
+    z: 0,
     filter: "blur(0px)",
+    transformPerspective: 1000,
     transition: {
       duration: PERSPECTIVE_TIMING.stage3Enter,
       delay: PERSPECTIVE_TIMING.stage1Activation,
@@ -34,7 +38,9 @@ const transitionVariants: Variants = {
   exit: {
     opacity: 0,
     y: -12,
+    z: -20,
     filter: "blur(4px)",
+    transformPerspective: 1000,
     transition: {
       duration: PERSPECTIVE_TIMING.stage2Exit,
       ease: [0.32, 0, 0.67, 0], // Smoother ease-in
