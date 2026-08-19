@@ -23,8 +23,9 @@ export function Navigation({ perspective, className = "" }: NavigationProps) {
     <nav className={`flex items-center gap-6 ${className}`}>
       {visibleItems.map((item) => {
         const isActive =
-          pathname === item.href ||
-          (item.href !== "/" && pathname?.startsWith(item.href));
+          !item.href.includes("#") &&
+          (pathname === item.href ||
+            (item.href !== "/" && pathname?.startsWith(item.href)));
 
         return (
           <Link

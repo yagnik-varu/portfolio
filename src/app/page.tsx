@@ -2,6 +2,7 @@ import { getProjects } from "@/lib/mdx/projects";
 import { HeroSection } from "@/features/home/components/hero-section";
 import { CurrentFocusSection } from "@/features/home/components/current-focus-section";
 import { FeaturedProjectsSection } from "@/features/home/components/featured-projects-section";
+import { ExperienceSection } from "@/features/home/components/experience-section";
 import { EngineeringSnapshotSection } from "@/features/home/components/engineering-snapshot-section";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <HeroSection />
       <CurrentFocusSection />
       <FeaturedProjectsSection projects={projects} />
+      <ExperienceSection />
       <EngineeringSnapshotSection projectCount={projectCount} />
     </div>
   );

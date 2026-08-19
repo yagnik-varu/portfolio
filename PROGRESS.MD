@@ -32,11 +32,11 @@ Project Phase:
 
 Current Phase: Home Page (Phase 5)
 
-Current Task: Featured Projects section & ProjectCard component complete (`src/features/projects/components/project-card.tsx`, `src/features/home/components/featured-projects-section.tsx`)
+Current Task: Experience section complete (`src/features/home/components/experience-section.tsx`)
 
 Blocked By: Nothing
 
-Next Task: Phase 5 — Experience Section (`/#experience`)
+Next Task: Phase 5 — Contact CTA Section (`src/features/home/components/contact-cta-section.tsx`)
 
 ---
 
@@ -110,6 +110,7 @@ Only list completed functionality. Update as work progresses.
 - Built the `EngineeringSnapshotSection` homepage component (`src/features/home/components/engineering-snapshot-section.tsx`) displaying quick credibility metrics (Years Experience, Projects Built, Technologies Used, GitHub Activity) using `font-mono` JetBrains Mono token, deriving project metrics directly from the MDX content loader.
 - Built the composite `ProjectCard` component (`src/features/projects/components/project-card.tsx`) with discrete sub-components (`ProjectCardHeader`, `ProjectCardSummary`, `ProjectCardStack`, `ProjectArchitecturePanel`, `ProjectCardActions`) adhering to the Single Responsibility Principle and Perspective reveal rules ("same card, more info").
 - Built the `FeaturedProjectsSection` homepage component (`src/features/home/components/featured-projects-section.tsx`) filtering for featured MDX projects in a responsive grid.
+- Built the `ExperienceSection` homepage component (`src/features/home/components/experience-section.tsx`) with `id="experience"` anchor support and smooth scrolling, rendering career history from `content/experience/experience.ts`. Updated navigation links to route to `/#experience` smoothly across all pages.
 
 ## Process / Tooling
 
