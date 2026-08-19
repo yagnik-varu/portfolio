@@ -6,11 +6,12 @@ import type { Project } from "@/lib/validation/project.schema";
 import type { Perspective } from "@/domains/perspective/types";
 import { usePerspectiveStore } from "@/domains/perspective/store";
 import { Card } from "@/shared/components/card/card";
+import type { HTMLMotionProps } from "framer-motion";
 import { Badge } from "@/shared/components/badge/badge";
 import { Button } from "@/shared/components/button/button";
 import { cn } from "@/lib/utils/cn";
 
-export interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ProjectCardProps extends HTMLMotionProps<"div"> {
   project: Project;
   perspective?: Perspective;
 }

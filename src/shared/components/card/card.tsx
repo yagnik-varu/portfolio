@@ -1,5 +1,8 @@
+"use client";
+
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 
 import { cn } from "@/lib/utils/cn";
 
@@ -20,17 +23,24 @@ const cardVariants = cva(
 );
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends HTMLMotionProps<"div">,
     VariantProps<typeof cardVariants> {}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(cardVariants({ variant, className }))}
-      {...props}
-    />
-  )
+  ({ className, variant, ...props }, ref) => {
+    const prefersReducedMotion = useReducedMotion();
+
+    return (
+      <motion.div
+        ref={ref}
+        className={cn(cardVariants({ variant, className }))}
+        whileHover={prefersReducedMotion ? undefined : { scale: 1.02, y: -4 }}
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+        transition={prefersReducedMotion ? undefined : { type: "spring", stiffness: 300, damping: 20 }}
+        {...props}
+      />
+    );
+  }
 );
 Card.displayName = "Card";
 

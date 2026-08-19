@@ -1,5 +1,8 @@
+"use client";
+
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 
 import { cn } from "@/lib/utils/cn";
 
@@ -27,15 +30,20 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends HTMLMotionProps<"button">,
     VariantProps<typeof buttonVariants> {}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
-      <button
+      <motion.button
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        whileHover={prefersReducedMotion ? undefined : { scale: 1.02, y: -4 }}
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+        transition={prefersReducedMotion ? undefined : { type: "spring", stiffness: 300, damping: 20 }}
         {...props}
       />
     );

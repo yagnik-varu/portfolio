@@ -88,6 +88,8 @@ Only list completed functionality. Update as work progresses.
 
 - Established complete Design System foundation: pure CSS dynamic color token system, `next/font` typography (Geist & JetBrains Mono), global accessibility baselines, and six core shared components (Button, Card, Badge, Container, SectionHeader, EmptyState).
 - Built global Header/Footer/Navigation, and the full homepage (Hero, Current Focus, Engineering Snapshot, Featured Projects, Experience, Contact CTA, Engineering Modules).
+- Added Ambient Interaction Layer (CursorSpotlight, Spring Hover Physics on Card/Button, fixed SVG Noise Layer, Gradient Tokens).
+- Implemented Perspective Typography utility class (data-perspective-mono).
 
 ## Content
 
