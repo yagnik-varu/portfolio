@@ -2,14 +2,15 @@
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { Perspective } from "@/domains/perspective/types";
+import { usePerspectiveStore } from "@/domains/perspective/store";
 import { profile } from "../../../../content/profile/profile";
 import { PerspectiveTransition } from "@/features/perspective/components/perspective-transition";
 import { Button } from "@/shared/components/button/button";
 import Link from "next/link";
 
 interface HeroSectionProps {
-  perspective: Perspective;
-  onPerspectiveChange: (p: Perspective) => void;
+  perspective?: Perspective;
+  onPerspectiveChange?: (p: Perspective) => void;
 }
 
 const nameContainerVariants: Variants = {
@@ -60,7 +61,16 @@ const badgeVariants: Variants = {
   },
 };
 
-export function HeroSection({ perspective, onPerspectiveChange }: HeroSectionProps) {
+export function HeroSection({
+  perspective: propPerspective,
+  onPerspectiveChange: propOnPerspectiveChange,
+}: HeroSectionProps = {}) {
+  const storePerspective = usePerspectiveStore((state) => state.perspective);
+  const storeSetPerspective = usePerspectiveStore((state) => state.setPerspective);
+
+  const perspective = propPerspective ?? storePerspective;
+  const onPerspectiveChange = propOnPerspectiveChange ?? storeSetPerspective;
+
   const shouldReduceMotion = useReducedMotion();
   const nameWords = profile.name.split(" ");
 

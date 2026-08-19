@@ -32,11 +32,11 @@ Project Phase:
 
 Current Phase: Home Page (Phase 5)
 
-Current Task: Current Focus section complete (`src/features/home/components/current-focus-section.tsx`)
+Current Task: Engineering Snapshot section complete (`src/features/home/components/engineering-snapshot-section.tsx`)
 
 Blocked By: Nothing
 
-Next Task: Phase 5 — Engineering Snapshot / Featured Projects Section
+Next Task: Phase 5 — Featured Projects Grid Section
 
 ---
 
@@ -106,6 +106,8 @@ Only list completed functionality. Update as work progresses.
 - Wired the global `usePerspectiveStore` to the Header per the Parent Controlled pattern, pushing state downwards to the responsive desktop and mobile toggles.
 - Built the `HeroSection` homepage component demonstrating the "lens shift" perspective transformation, reusing Phase 4 Framer Motion animation utilities, page-load word stagger entrance, and reading purely from `profile.ts` content.
 - Built the `CurrentFocusSection` homepage component (`src/features/home/components/current-focus-section.tsx`) rendering `profile.currentFocus` as technology badges, adhering to the Single Source of Truth architecture principle and perspective-agnostic visibility rules.
+- Created `content/experience/experience.ts` content source validated against `experienceSchema`.
+- Built the `EngineeringSnapshotSection` homepage component (`src/features/home/components/engineering-snapshot-section.tsx`) displaying quick credibility metrics (Years Experience, Projects Built, Technologies Used, GitHub Activity) using `font-mono` JetBrains Mono token, deriving project metrics directly from the MDX content loader.
 
 ## Process / Tooling
 
