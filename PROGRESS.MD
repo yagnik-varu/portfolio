@@ -32,11 +32,11 @@ Project Phase:
 
 Current Phase: Home Page (Phase 5)
 
-Current Task: Engineering Snapshot section complete (`src/features/home/components/engineering-snapshot-section.tsx`)
+Current Task: Featured Projects section & ProjectCard component complete (`src/features/projects/components/project-card.tsx`, `src/features/home/components/featured-projects-section.tsx`)
 
 Blocked By: Nothing
 
-Next Task: Phase 5 — Featured Projects Grid Section
+Next Task: Phase 5 — Experience Section (`/#experience`)
 
 ---
 
@@ -108,6 +108,8 @@ Only list completed functionality. Update as work progresses.
 - Built the `CurrentFocusSection` homepage component (`src/features/home/components/current-focus-section.tsx`) rendering `profile.currentFocus` as technology badges, adhering to the Single Source of Truth architecture principle and perspective-agnostic visibility rules.
 - Created `content/experience/experience.ts` content source validated against `experienceSchema`.
 - Built the `EngineeringSnapshotSection` homepage component (`src/features/home/components/engineering-snapshot-section.tsx`) displaying quick credibility metrics (Years Experience, Projects Built, Technologies Used, GitHub Activity) using `font-mono` JetBrains Mono token, deriving project metrics directly from the MDX content loader.
+- Built the composite `ProjectCard` component (`src/features/projects/components/project-card.tsx`) with discrete sub-components (`ProjectCardHeader`, `ProjectCardSummary`, `ProjectCardStack`, `ProjectArchitecturePanel`, `ProjectCardActions`) adhering to the Single Responsibility Principle and Perspective reveal rules ("same card, more info").
+- Built the `FeaturedProjectsSection` homepage component (`src/features/home/components/featured-projects-section.tsx`) filtering for featured MDX projects in a responsive grid.
 
 ## Process / Tooling
 
