@@ -128,6 +128,12 @@ Only list completed functionality. Update as work progresses.
 - Integrated a reusable `StaggeredSection` and `StaggeredItem` animation wrapper using `useInView` to handle staggered spring entrances (opacity 0->1 / y 40px->0) for the Hero, Engineering Snapshot, Featured Projects, Experience, and Contact CTA sections.
 - Embedded a "Currently Focused On" indicator into the `EngineeringSnapshotSection` utilizing `profile.currentFocus`.
 - Validated that `prefers-reduced-motion` strictly overrides the `RotatingStat` auto-play, the staggered entrances, and the `ProjectCard` hover transitions, maintaining 100% accessibility compliance.
+- Built reusable `SearchInput` and `FilterDropdown` shared components (`src/shared/components/`) to serve as "dumb" UI primitives for Phase 6 project discovery, ensuring business logic separation.
+
+## Project Discovery (Phase 6)
+
+- Implemented pure domain functions (`searchProjects` and `filterProjects`) in `src/domains/project/query.ts` to handle project discovery logic. Search matches case-insensitively against title, summary, stack, and tags, while filtering correctly isolates technology, status, architecture type, and complexity criteria independently of the UI.
+
 ## Process / Tooling
 
 - `AGENT.md` created — synthesizes `docs/00`–`15` into actionable rules and adds a standing **Teaching Mode** requirement: every implementation step must be explained in plain language (what's being built, why this approach over alternatives, what any new concept/library/pattern actually does, and how the decision traces back to the relevant doc). This applies for the rest of the build, not just at kickoff.
