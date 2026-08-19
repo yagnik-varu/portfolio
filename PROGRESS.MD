@@ -112,6 +112,8 @@ Only list completed functionality. Update as work progresses.
 - Built the `FeaturedProjectsSection` homepage component (`src/features/home/components/featured-projects-section.tsx`) filtering for featured MDX projects in a responsive grid.
 - Built the `ExperienceSection` homepage component (`src/features/home/components/experience-section.tsx`) with `id="experience"` anchor support and smooth scrolling, rendering career history from `content/experience/experience.ts`. Updated navigation links to route to `/#experience` smoothly across all pages.
 - Built the `ContactCTASection` homepage component (`src/features/home/components/contact-cta-section.tsx`) with `id="contact"` anchor support, providing low-friction email, resume download, and LinkedIn connection actions using data from `content/profile/profile.ts`.
+- Built the `EngineeringModulesSection` homepage component (`src/features/home/components/engineering-modules-section.tsx`) with dynamic perspective visibility (rendered strictly in Architecture mode), exposing entry points to Architecture Lab, Telemetry, and Learning Timeline workspaces with staggered entrance animations.
+- Assembled the full Homepage (`src/app/page.tsx`) as a thin Server Component composing feature sections with responsive vertical rhythm.
 
 ## Process / Tooling
 
