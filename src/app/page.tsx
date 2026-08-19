@@ -4,6 +4,7 @@ import { CurrentFocusSection } from "@/features/home/components/current-focus-se
 import { FeaturedProjectsSection } from "@/features/home/components/featured-projects-section";
 import { ExperienceSection } from "@/features/home/components/experience-section";
 import { EngineeringSnapshotSection } from "@/features/home/components/engineering-snapshot-section";
+import { ContactCTASection } from "@/features/home/components/contact-cta-section";
 
 export default function Home() {
   const projects = getProjects();
@@ -16,6 +17,7 @@ export default function Home() {
       <FeaturedProjectsSection projects={projects} />
       <ExperienceSection />
       <EngineeringSnapshotSection projectCount={projectCount} />
+      <ContactCTASection />
     </div>
   );
 }

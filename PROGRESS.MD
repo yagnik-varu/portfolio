@@ -17,9 +17,9 @@ Project Phase:
 - [x] Foundation & Planning
 - [x] Design System
 - [x] Content Architecture
-- [ ] Core UI Development
+- [x] Core UI Development (Home Page - Phase 5 Complete)
 - [x] Perspective Transformation System
-- [ ] Project Pages
+- [ ] Project Pages (Phase 6)
 - [ ] Architecture Lab
 - [ ] Telemetry Dashboard
 - [ ] Performance & Accessibility
@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Home Page (Phase 5)
+Current Phase: Projects Page (Phase 6)
 
-Current Task: Experience section complete (`src/features/home/components/experience-section.tsx`)
+Current Task: Phase 5 (Home Page) complete — all sections delivered (Hero, Current Focus, Featured Projects, Experience, Engineering Snapshot, Contact CTA)
 
 Blocked By: Nothing
 
-Next Task: Phase 5 — Contact CTA Section (`src/features/home/components/contact-cta-section.tsx`)
+Next Task: Phase 6 — Projects Catalog Page (`/projects`) with search and filter bar
 
 ---
 
@@ -111,6 +111,7 @@ Only list completed functionality. Update as work progresses.
 - Built the composite `ProjectCard` component (`src/features/projects/components/project-card.tsx`) with discrete sub-components (`ProjectCardHeader`, `ProjectCardSummary`, `ProjectCardStack`, `ProjectArchitecturePanel`, `ProjectCardActions`) adhering to the Single Responsibility Principle and Perspective reveal rules ("same card, more info").
 - Built the `FeaturedProjectsSection` homepage component (`src/features/home/components/featured-projects-section.tsx`) filtering for featured MDX projects in a responsive grid.
 - Built the `ExperienceSection` homepage component (`src/features/home/components/experience-section.tsx`) with `id="experience"` anchor support and smooth scrolling, rendering career history from `content/experience/experience.ts`. Updated navigation links to route to `/#experience` smoothly across all pages.
+- Built the `ContactCTASection` homepage component (`src/features/home/components/contact-cta-section.tsx`) with `id="contact"` anchor support, providing low-friction email, resume download, and LinkedIn connection actions using data from `content/profile/profile.ts`.
 
 ## Process / Tooling
 
