@@ -6,20 +6,20 @@ import type { Perspective } from "@/domains/perspective/types";
 
 /**
  * Transformation stages defined in docs/02-perspective-transformation-model.md §5
- * Total round-trip duration: ~630ms
+ * Total round-trip duration: ~900ms (Adjusted for smoother, deliberate pacing)
  */
 export const PERSPECTIVE_TIMING = {
-  stage1Activation: 0.1, // 100ms: Switch activated
-  stage2Exit: 0.18,      // 180ms: Fast exit snap
-  stage3Enter: 0.35,     // 350ms: Spring-like settle entrance
+  stage1Activation: 0.15, // 150ms: Switch activated
+  stage2Exit: 0.30,      // 300ms: Smooth exit snap
+  stage3Enter: 0.45,     // 450ms: Deliberate settle entrance
   stage4Ready: 0.1,      // 100ms: Workspace ready
 };
 
 const transitionVariants: Variants = {
   initial: {
     opacity: 0,
-    y: 24,
-    filter: "blur(8px)",
+    y: 16,
+    filter: "blur(4px)",
   },
   animate: {
     opacity: 1,
@@ -28,16 +28,16 @@ const transitionVariants: Variants = {
     transition: {
       duration: PERSPECTIVE_TIMING.stage3Enter,
       delay: PERSPECTIVE_TIMING.stage1Activation,
-      ease: [0, 0, 0.2, 1], // Spring-like ease-out
+      ease: [0.16, 1, 0.3, 1], // Smoother ease-out (more elegant settle)
     },
   },
   exit: {
     opacity: 0,
-    y: -16,
-    filter: "blur(6px)",
+    y: -12,
+    filter: "blur(4px)",
     transition: {
       duration: PERSPECTIVE_TIMING.stage2Exit,
-      ease: [0.4, 0, 1, 1], // Fast ease-in
+      ease: [0.32, 0, 0.67, 0], // Smoother ease-in
     },
   },
 };
