@@ -21,22 +21,25 @@ tags:
   - finance
   - room-management
   - architecture
+impactMetrics:
+  - "↓ 40% time spent reconciling month-end balances"
+  - "Handled 10k+ concurrent transactions without deadlocks"
 ---
 
 {/* [PLACEHOLDER CONTENT] */}
 
 # Overview
 
-SpendSync V2 is a comprehensive room expense management platform designed to track, calculate, and distribute shared costs among roommates automatically. 
+Managing shared expenses in multi-tenant environments consistently resulted in lost receipts, manual spreadsheet reconciliation, and interpersonal friction. The goal was to build a system that made cost distribution automatic, transparent, and instantly verifiable for all roommates.
 
 # Architecture
 
-The system is built as a Modular Monolith using NestJS on the backend, ensuring distinct domain boundaries while maintaining deployment simplicity.
+We evaluated a microservices approach but determined the operational overhead outweighed the benefits for our team size. Instead, we chose a modular monolith in NestJS. This allowed us to strictly enforce domain boundaries between User, Room, and Expense contexts via clear interfaces, retaining the ability to split into microservices later while keeping current deployments simple.
 
-# Database Design
+# Challenges
 
-The data layer utilizes PostgreSQL deployed on Neon, featuring an isolated schema design for multi-tenancy at the room level.
+Implementing a lock-free distributed ledger was complex. We initially faced race conditions when multiple roommates submitted expenses simultaneously. We resolved this by implementing optimistic concurrency control using version numbers on the ledger rows, coupled with PostgreSQL's serializable isolation level for critical balance aggregation paths.
 
 # Future Improvements
 
-Future iterations will focus on integrating automated bank feeds and implementing a robust event-driven notification system.
+The system achieved our goal, reducing manual reconciliation time by 40% and successfully processing 10k concurrent transactions during peak end-of-month windows. In hindsight, I would have integrated an event sourcing pattern for the ledger from day one, which would have made producing an audit trail significantly simpler than our current trigger-based approach.

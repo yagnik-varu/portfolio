@@ -95,6 +95,8 @@ Only list completed functionality. Update as work progresses.
 
 - Established complete MDX content pipeline: implemented five strict Zod schemas, a type-safe `getProjects()` loader, created the sample profile and two sample MDX projects (`spendsync-v2`, `techreel-ai`), and wired them to `/projects/[slug]` with build-time static generation (`generateStaticParams`) and automated 404 handling.
 - Added `content/navigation/navigation.ts` and `content/experience/experience.ts` to power the site navigation and experience timeline.
+- Updated Project and Profile schemas to include `impactMetrics` and `highlights` fields, and rewrote sample project content (SpendSync V2 and TechReel AI) to follow the Post-Mortem Depth ordering (Problem -> Architecture Decision -> Implementation -> Outcome -> What I'd Do Differently) without introducing new markdown headings.
+- Validated that build gracefully fails on missing schema fields per `docs/08-error-handling.md §4`.
 
 ## Perspective System
 

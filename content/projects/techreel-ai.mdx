@@ -21,22 +21,25 @@ tags:
   - ai
   - video-processing
   - automation
+impactMetrics:
+  - "↓ 80% video editing time"
+  - "Processed 500+ GB of video content daily"
 ---
 
 {/* [PLACEHOLDER CONTENT] */}
 
 # Overview
 
-TechReel AI automates the extraction of key highlights from long-form technical talks, editing them into short-form content suitable for social media.
+Technical content creators struggled to repurpose hour-long talks into short-form content due to the massive time sink of manual editing. The system needed to automatically detect key highlights and generate platform-ready short videos without human intervention.
 
 # Architecture
 
-An event-driven architecture processes video chunks in parallel using AWS SQS and specialized worker nodes to ensure rapid processing.
+We considered a synchronous batch processing model but rejected it due to unpredictable video generation times causing HTTP timeouts. We designed an event-driven pipeline using AWS SQS and specialized worker nodes (Transcription Worker, NLP Summarizer, Video Cutter). This allowed us to scale workers independently based on queue depth and hardware requirements (e.g., GPU instances only for the NLP phase).
 
 # Challenges
 
-The primary challenge involved minimizing the latency of the speech-to-text transcription model without degrading accuracy on technical jargon.
+Transcribing technical jargon accurately at low latency was the biggest hurdle. Generic whisper models frequently hallucinated on specific acronyms. We mitigated this by fine-tuning a smaller, faster model on a custom dataset of developer talks, and caching frequent terms in Redis to assist the spell-correction step, balancing speed and accuracy.
 
 # Future Improvements
 
-Expansion plans include supporting multi-lingual translation overlays and direct integration with platform APIs for automated posting.
+The pipeline reduced manual editing time by 80% and successfully processed over 500GB of video daily at its peak. If building this again, I would bypass the intermediate object storage (S3) for small, ephemeral video chunks and stream them directly between worker memory spaces using gRPC to further cut down IO latency.

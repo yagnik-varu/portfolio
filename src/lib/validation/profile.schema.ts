@@ -10,6 +10,7 @@ export const profileSchema = z.object({
   githubUrl: z.string().url(),
   linkedinUrl: z.string().url(),
   resumeUrl: z.string().url().optional(),
+  highlights: z.array(z.string()).optional(),
 });
 
 export type Profile = z.infer<typeof profileSchema>;

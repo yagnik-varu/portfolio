@@ -19,6 +19,7 @@ export const projectSchema = z.object({
   visibility: z.enum(["public", "hidden", "draft"]).default("public"),
   stack: techStackSchema.optional(),
   tags: z.array(z.string()).optional(),
+  impactMetrics: z.array(z.string()).optional(),
   repositoryUrl: z.string().url().optional(),
   liveUrl: z.string().url().optional(),
   startedAt: z.string().optional(),
