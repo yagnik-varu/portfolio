@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Phase 6 Complete (Project Pages)
+Current Phase: Phase 7 (Project Detail Pages)
 
-Current Task: Phase 6 complete
+Current Task: Phase 7 in progress
 
 Blocked By: Nothing
 
-Next Task: Phase 7 — Project Detail Pages
+Next Task: Phase 7 — Compile MDX and Build Project Page UI
 
 ---
 
@@ -90,6 +90,7 @@ Only list completed functionality. Update as work progresses.
 - Built global Header/Footer/Navigation, and the full homepage (Hero, Current Focus, Engineering Snapshot, Featured Projects, Experience, Contact CTA, Engineering Modules).
 - Added Ambient Interaction Layer (CursorSpotlight, Spring Hover Physics on Card/Button, fixed SVG Noise Layer, Gradient Tokens).
 - Implemented Perspective Typography utility class (data-perspective-mono).
+- **Phase 7 UI Primitives**: Built `ComplexityIndicator` component (`src/shared/components/complexity-indicator/`) using `cva` to visually represent project complexity levels mapping strictly to the domain.
 
 ## Content
 
@@ -97,6 +98,8 @@ Only list completed functionality. Update as work progresses.
 - Added `content/navigation/navigation.ts` and `content/experience/experience.ts` to power the site navigation and experience timeline.
 - Updated Project and Profile schemas to include `impactMetrics` and `highlights` fields, and rewrote sample project content (SpendSync V2 and TechReel AI) to follow the Post-Mortem Depth ordering (Problem -> Architecture Decision -> Implementation -> Outcome -> What I'd Do Differently) without introducing new markdown headings.
 - Validated that build gracefully fails on missing schema fields per `docs/08-error-handling.md §4`.
+- **Phase 7 Content Loaders**: Built `splitMdxSections` utility in `src/lib/mdx/section-splitter.ts` to parse raw MDX bodies into structured domain models (`Overview`, `Architecture`, `EngineeringSections`, `FutureImprovements`), enforcing mandatory sections and normalizing engineering types.
+- **Phase 7 Content Rendering**: Created `mdxComponents` mapping for `next-mdx-remote` (`src/lib/mdx/mdx-components.tsx`) to map raw markdown tags to semantic Design System classes, and implemented a custom `<ArchitectureCallout />` MDX element.
 
 ## Perspective System
 
