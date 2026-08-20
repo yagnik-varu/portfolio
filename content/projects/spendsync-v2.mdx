@@ -34,6 +34,10 @@ Managing shared expenses in multi-tenant environments consistently resulted in l
 
 # Architecture
 
+<ArchitectureCallout title="Decision: Monolith vs Microservices">
+We explicitly avoided microservices here because the bounded contexts were too small to justify the network overhead. A modular monolith kept deployment simple while enforcing strict separation of concerns.
+</ArchitectureCallout>
+
 We evaluated a microservices approach but determined the operational overhead outweighed the benefits for our team size. Instead, we chose a modular monolith in NestJS. This allowed us to strictly enforce domain boundaries between User, Room, and Expense contexts via clear interfaces, retaining the ability to split into microservices later while keeping current deployments simple.
 
 # Challenges

@@ -36,9 +36,7 @@ Technical content creators struggled to repurpose hour-long talks into short-for
 
 We considered a synchronous batch processing model but rejected it due to unpredictable video generation times causing HTTP timeouts. We designed an event-driven pipeline using AWS SQS and specialized worker nodes (Transcription Worker, NLP Summarizer, Video Cutter). This allowed us to scale workers independently based on queue depth and hardware requirements (e.g., GPU instances only for the NLP phase).
 
-# Challenges
 
-Transcribing technical jargon accurately at low latency was the biggest hurdle. Generic whisper models frequently hallucinated on specific acronyms. We mitigated this by fine-tuning a smaller, faster model on a custom dataset of developer talks, and caching frequent terms in Redis to assist the spell-correction step, balancing speed and accuracy.
 
 # Future Improvements
 
