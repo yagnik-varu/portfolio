@@ -20,7 +20,7 @@ Project Phase:
 - [x] Core UI Development (Home Page - Phase 5 Complete)
 - [x] Perspective Transformation System
 - [x] Project Pages (Phase 6 & Phase 7)
-- [ ] Architecture Lab
+- [x] Architecture Lab
 - [ ] Telemetry Dashboard
 - [ ] Performance & Accessibility
 - [ ] Deployment
@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Phase 7 (Project Detail Pages) Complete!
+Current Phase: Phase 8 (Architecture Lab & Telemetry)
 
-Current Task: Phase 7 completed
+Current Task: Architecture Lab completed
 
 Blocked By: Nothing
 
-Next Task: Phase 8 — Architecture Lab or Telemetry Dashboard
+Next Task: Telemetry Dashboard
 
 ---
 
@@ -136,6 +136,8 @@ Only list completed functionality. Update as work progresses.
 - Validated that `prefers-reduced-motion` strictly overrides the `RotatingStat` auto-play, the staggered entrances, and the `ProjectCard` hover transitions, maintaining 100% accessibility compliance.
 - Built reusable `SearchInput` and `FilterDropdown` shared components (`src/shared/components/`) to serve as "dumb" UI primitives.
 - Built the full `/projects` page featuring the `ProjectFilterBar`, `ProjectDiscovery` orchestrator, and `ProjectGrid`, fully wired with `EmptyState` fallbacks and functional search/filter logic.
+- **Phase 8 Architecture Lab**: Built the `ModuleCard` (composing Shared `Card`), `ModuleGrid`, `LearningTimeline` (chronologically sorted local domain data), and `EngineeringPrinciples` (local constant array) components.
+- **Phase 8 Page Assembly**: Assembled the `/architecture-lab` route as a fully static, non-perspective-gated public landing page composing the Lab modules, Timeline, and Principles in a vertical rhythm.
 
 ## Domain Logic
 
