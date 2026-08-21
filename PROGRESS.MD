@@ -5,7 +5,7 @@
 > Update this file LAST before ending work.
 > This file is the project's current state, not a development diary.
 
-Last Updated: 2026-08-20
+Last Updated: 2026-08-21
 Owner: Yagnik Varu
 
 ---
@@ -21,7 +21,7 @@ Project Phase:
 - [x] Perspective Transformation System
 - [x] Project Pages (Phase 6 & Phase 7)
 - [x] Architecture Lab
-- [ ] Telemetry Dashboard
+- [x] Telemetry Dashboard
 - [ ] Performance & Accessibility
 - [ ] Deployment
 - [ ] V1 Complete
@@ -30,13 +30,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Phase 8 (Architecture Lab & Telemetry)
+Current Phase: Phase 9 (Telemetry Dashboard)
 
-Current Task: Phase 8 complete
+Current Task: Phase 9 complete
 
 Blocked By: Nothing
 
-Next Task: Phase 9 — Telemetry
+Next Task: Phase 10 — Motion & Polish
 
 ---
 
@@ -140,7 +140,7 @@ Only list completed functionality. Update as work progresses.
 - **Phase 8 Architecture Lab**: Built the `ModuleCard` (composing Shared `Card`), `ModuleGrid`, `LearningTimeline` (chronologically sorted local domain data), and `EngineeringPrinciples` (local constant array) components.
 - **Phase 8 Page Assembly**: Assembled the `/architecture-lab` route as a fully static, non-perspective-gated public landing page composing the Lab modules, Timeline, and Principles in a vertical rhythm.
 - **Phase 9 Telemetry UI Primitives**: Built `MetricCard` (composing Shared `Card` with JetBrains Mono metrics), `MetricsGrid` components adhering to the Parent-Controlled widget architecture pattern, a dependency-free CSS-grid `ContributionHeatmap`, and pure CSS `LanguageChart` / `ActivityFeed` representations to avoid charting library overhead while maintaining strict token usage.
-- **Phase 9 Page Assembly & Resiliency**: Built generic `ErrorBoundary` shared component. Assembled the `/telemetry` page with three-layer failure handling (Adapter validation -> Mock Fallback via try/catch with honest UI communication -> ErrorBoundary localized catch) ensuring 100% graceful degradation on GitHub API failure. (Note: ContributionHeatmap was removed per user request).
+- **Phase 9 Page Assembly & Resiliency**: Built generic `ErrorBoundary` shared component. Assembled the `/telemetry` page with three-layer failure handling (Adapter validation -> Mock Fallback via try/catch with honest UI communication -> ErrorBoundary localized catch) ensuring 100% graceful degradation on GitHub API failure. Note: Architecture Lab and Project Detail pages still need this boundary wired around them (flagged as follow-up).
 
 ## Domain Logic
 

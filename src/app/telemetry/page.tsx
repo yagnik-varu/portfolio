@@ -11,7 +11,7 @@ import { SectionHeader } from "@/shared/components/section-header/section-header
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
 
 import { MetricsGrid } from "@/features/telemetry/components/metrics-grid";
-
+import { MonthlyContributionChart } from "@/features/telemetry/components/monthly-contribution-chart";
 import { LanguageChart } from "@/features/telemetry/components/language-chart";
 import { ActivityFeed } from "@/features/telemetry/components/activity-feed";
 
@@ -78,6 +78,7 @@ export default async function TelemetryPage() {
         <div className="flex flex-col gap-8">
           <MetricsGrid metrics={metrics} />
 
+          <MonthlyContributionChart data={telemetry.heatmapData} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             <LanguageChart languages={telemetry.languages} />
