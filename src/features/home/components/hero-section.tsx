@@ -10,36 +10,16 @@ import { Button } from "@/shared/components/button/button";
 import Link from "next/link";
 import { RotatingStat } from "./rotating-stat";
 import { StaggeredSection, StaggeredItem } from "./staggered-section";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, SplitText } from "@/lib/motion/gsap-config";
 
 interface HeroSectionProps {
   perspective?: Perspective;
   onPerspectiveChange?: (p: Perspective) => void;
 }
 
-const nameContainerVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-const wordVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0, 0, 0.2, 1],
-    },
-  },
-};
-
+// Badge stagger variants (architecture mode only) — unchanged
 const badgeContainerVariants: Variants = {
   hidden: {},
   show: {
@@ -75,7 +55,44 @@ export function HeroSection({
   const onPerspectiveChange = propOnPerspectiveChange ?? storeSetPerspective;
 
   const shouldReduceMotion = useMotionPreference();
-  const nameWords = profile.name.split(" ");
+  const h1Ref = useRef<HTMLHeadingElement>(null);
+
+  // Page-load-only word stagger via GSAP SplitText.
+  // Empty dependency array ensures this fires exactly once on mount — never
+  // replays on perspective switch (perspective state is not a dependency).
+  useGSAP(
+    () => {
+      if (!h1Ref.current) return;
+
+      // Under prefers-reduced-motion: skip animation, ensure text is visible.
+      if (shouldReduceMotion) {
+        gsap.set(h1Ref.current, { opacity: 1, visibility: "visible" });
+        return;
+      }
+
+      // Split by words — matches existing stagger granularity (docs/11-design-system.md §13).
+      const split = SplitText.create(h1Ref.current, { type: "words" });
+
+      // Set words invisible before the tween starts (prevents FOUC).
+      gsap.set(split.words, { opacity: 0, y: 20 });
+
+      // Animate — exact spec from §13:
+      // 80ms stagger delay, 500ms per-word, opacity 0→1, y 20→0, ease [0,0,0.2,1]
+      gsap.to(split.words, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "cubic-bezier(0, 0, 0.2, 1)",
+        stagger: 0.08,
+        onComplete: () => {
+          // Revert DOM wrapping after animation finishes to keep the DOM clean
+          split.revert();
+        },
+      });
+    },
+    // No deps — intentional: animation is page-load-only, never replays
+    { scope: h1Ref, dependencies: [] }
+  );
 
   return (
     <StaggeredSection className="relative w-full py-20 md:py-32 flex flex-col gap-6" delay={0.1}>
@@ -88,23 +105,13 @@ export function HeroSection({
         }}
       />
 
-      {/* Stable Identity Anchor with One-Time Word Stagger Entrance */}
-      <motion.h1
-        variants={shouldReduceMotion ? undefined : nameContainerVariants}
-        initial="hidden"
-        animate="show"
+      {/* Stable Identity Anchor — SplitText word-stagger on page load only */}
+      <h1
+        ref={h1Ref}
         className="text-4xl md:text-6xl font-bold tracking-tight text-text"
       >
-        {nameWords.map((word) => (
-          <motion.span
-            key={word}
-            variants={shouldReduceMotion ? undefined : wordVariants}
-            className="inline-block mr-3"
-          >
-            {word}
-          </motion.span>
-        ))}
-      </motion.h1>
+        {profile.name}
+      </h1>
 
       <StaggeredItem>
         <PerspectiveTransition perspective={perspective}>

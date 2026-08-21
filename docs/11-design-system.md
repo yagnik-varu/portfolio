@@ -488,8 +488,14 @@ No component refactoring required.
 Word-level stagger entrance is used for primary headings (Hero H1) on initial page load only.
 It does NOT replay on perspective switch — the heading is the stable identity anchor.
 
+**Implementation**: powered by GSAP `SplitText.create(el, { type: "words" })` + `useGSAP()` from `@gsap/react`.
+The Framer Motion variant approach has been replaced; SplitText handles DOM splitting and cleanup.
+
 Stagger delay between words: 80ms
-Word animation: opacity 0→1, y 20→0, duration 500ms, ease [0, 0, 0.2, 1]
+Word animation: opacity 0→1, y 20→0, duration 500ms, ease cubic-bezier(0, 0, 0.2, 1)
+(Timing values unchanged from original spec.)
+
+Under `prefers-reduced-motion`: SplitText is skipped entirely; text is immediately set visible via `gsap.set()`.
 
 ## Perspective Transition Animation
 
