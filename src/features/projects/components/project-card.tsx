@@ -114,8 +114,8 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
   const shouldReduceMotion = useMotionPreference();
   
   const cardRef = React.useRef<HTMLDivElement>(null);
-  const xTo = React.useRef<gsap.QuickToFunc>();
-  const yTo = React.useRef<gsap.QuickToFunc>();
+  const xTo = React.useRef<gsap.QuickToFunc | null>(null);
+  const yTo = React.useRef<gsap.QuickToFunc | null>(null);
 
   useGSAP(() => {
     if (shouldReduceMotion || !cardRef.current) return;

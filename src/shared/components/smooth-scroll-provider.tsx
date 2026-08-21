@@ -58,7 +58,7 @@ function useReducedMotionMediaQuery(): boolean {
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const prefersReducedMotion = useReducedMotionMediaQuery();
   // Hold a stable ref to the lenis instance for the GSAP ticker cleanup
-  const lenisRef = useRef<{ lenis?: { raf: (time: number) => void; on: (event: string, cb: () => void) => void; off: (event: string, cb: () => void) => void } } | null>(null);
+  const lenisRef = useRef<any>(null);
 
   useEffect(() => {
     // When reduced motion is active we bail out immediately — no ticker wired

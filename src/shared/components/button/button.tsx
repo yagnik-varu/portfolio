@@ -39,8 +39,8 @@ export interface ButtonProps
 
 function MagneticWrapper({ children, className }: { children: React.ReactNode, className?: string }) {
   const wrapperRef = React.useRef<HTMLSpanElement>(null);
-  const xTo = React.useRef<gsap.QuickToFunc>();
-  const yTo = React.useRef<gsap.QuickToFunc>();
+  const xTo = React.useRef<gsap.QuickToFunc | null>(null);
+  const yTo = React.useRef<gsap.QuickToFunc | null>(null);
 
   useGSAP(() => {
     if (!wrapperRef.current) return;

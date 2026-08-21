@@ -21,6 +21,8 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
   const cursorRef = useRef<HTMLSpanElement>(null);
   // Track the ticker ID so we can remove it on cleanup
   const tickerRef = useRef<((time: number, deltaTime: number, frame: number) => void) | null>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const splitRef = useRef<any>(null); // Type any since SplitText type might not be exported directly
   const [mounted, setMounted] = useState(false);
 
   // Avoid SSR mismatch — only run after mount
@@ -67,9 +69,9 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
             cursorRef.current.style.display = "none";
           }
           
-          const split = SplitText.create(displayRef.current, { type: "chars" });
+          splitRef.current = SplitText.create(displayRef.current, { type: "chars" });
           
-          gsap.to(split.chars, {
+          tweenRef.current = gsap.to(splitRef.current.chars, {
             opacity: 0,
             y: -6,
             filter: "blur(3px)",
@@ -77,7 +79,7 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
             stagger: { amount: 0.25, from: "end" },
             ease: "power2.in",
             onComplete: () => {
-              split.revert();
+              if (splitRef.current) splitRef.current.revert();
               if (displayRef.current) displayRef.current.textContent = "";
               if (cursorRef.current) cursorRef.current.style.display = "inline-block";
               
@@ -85,6 +87,8 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
               phase = "gap";
               phaseTimer = 0;
               lastTime = 0; // reset to avoid large delta jump
+              tweenRef.current = null;
+              splitRef.current = null;
             }
           });
         }
@@ -115,6 +119,14 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
       if (tickerRef.current) {
         gsap.ticker.remove(tickerRef.current);
         tickerRef.current = null;
+      }
+      if (tweenRef.current) {
+        tweenRef.current.kill();
+        tweenRef.current = null;
+      }
+      if (splitRef.current) {
+        splitRef.current.revert();
+        splitRef.current = null;
       }
     };
   }, [mounted, shouldReduceMotion, highlights.length, runTypewriter]);
