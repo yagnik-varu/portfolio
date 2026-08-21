@@ -221,7 +221,11 @@ src/
 ├── domains/
 ├── features/
 ├── shared/
+│   └── components/
+│       └── smooth-scroll-provider.tsx  ← Lenis root provider, gsap.ticker-synced
 └── lib/
+    └── motion/
+        └── gsap-config.ts              ← GSAP plugin registration (one-time)
 ```
 
 ---
@@ -460,6 +464,7 @@ Application infrastructure.
 src/lib/
 
 ├── mdx/
+├── motion/
 ├── telemetry/
 ├── analytics/
 ├── validation/
@@ -473,6 +478,15 @@ src/lib/
 ## mdx
 
 Content loading.
+
+---
+
+## motion
+
+GSAP plugin registration and Lenis smooth-scroll provider.
+
+Entry point: `src/lib/motion/gsap-config.ts` — registers ScrollTrigger, SplitText, and Flip once per app load.
+Smooth scroll: `src/shared/components/smooth-scroll-provider.tsx` — mounts Lenis at root, synced to gsap.ticker.
 
 ---
 

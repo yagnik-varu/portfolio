@@ -130,6 +130,10 @@ Tailwind CSS
 shadcn/ui
 
 Framer Motion
+
+GSAP & @gsap/react (See docs/11-design-system.md §15)
+
+Lenis (See docs/11-design-system.md §15)
 ```
 
 ---

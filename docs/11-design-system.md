@@ -556,6 +556,10 @@ timestamps switch to JetBrains Mono (font-mono). Headings and body copy stay
 on Geist in both perspectives. This is a class toggle driven by perspective
 state — not a font swap at the theme level.
 
+## 15. Dual-Engine Motion Ownership
+
+TODO: Add ownership matrix details here.
+
 # Design System Summary
 
 The portfolio uses a perspective-driven design system where:
