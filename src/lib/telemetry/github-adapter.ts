@@ -1,4 +1,4 @@
-import type { Telemetry, TelemetryAdapter } from "../validation/telemetry.schema";
+import type { Telemetry, TelemetryAdapter, ContributionWeek, ActivityEvent } from "../validation/telemetry.schema";
 
 export class TelemetryError extends Error {
   constructor(message: string, public readonly cause?: unknown) {
@@ -16,7 +16,7 @@ export const getGithubTelemetry: TelemetryAdapter = async (): Promise<Telemetry>
   const token = process.env.GITHUB_TOKEN;
   const username = process.env.GITHUB_USERNAME;
 
-  // Predictable failure if misconfigured — do not decide on fallbacks here.
+  // Predictable failure if misconfigured
   if (!token || !username) {
     throw new TelemetryError("GitHub token or username is not configured in environment variables.");
   }
@@ -27,11 +27,19 @@ export const getGithubTelemetry: TelemetryAdapter = async (): Promise<Telemetry>
         contributionsCollection {
           contributionCalendar {
             totalContributions
+            weeks {
+              contributionDays {
+                contributionCount
+                date
+              }
+            }
           }
         }
         repositories(first: 100, ownerAffiliations: OWNER, isFork: false, orderBy: {field: PUSHED_AT, direction: DESC}) {
           totalCount
           nodes {
+            name
+            pushedAt
             languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
               edges {
                 size
@@ -55,7 +63,6 @@ export const getGithubTelemetry: TelemetryAdapter = async (): Promise<Telemetry>
       },
       body: JSON.stringify({ query, variables: { username } }),
       // Basic time-based caching: revalidate every hour to respect rate limits
-      // No external caching libraries needed (AGENT.md §2)
       next: { revalidate: 3600 },
     });
 
@@ -74,14 +81,25 @@ export const getGithubTelemetry: TelemetryAdapter = async (): Promise<Telemetry>
       throw new Error("User not found in GitHub response.");
     }
 
-    const contributions = user.contributionsCollection?.contributionCalendar?.totalContributions ?? 0;
-    const repositories = user.repositories?.totalCount ?? 0;
+    const calendar = user.contributionsCollection?.contributionCalendar;
+    const contributions = calendar?.totalContributions ?? 0;
+    const repositoriesCount = user.repositories?.totalCount ?? 0;
+
+    // Heatmap data is returned exactly as weeks
+    const heatmapData: ContributionWeek[] = (calendar?.weeks || []).map((week: { contributionDays: Array<{ date: string; contributionCount: number }> }) => ({
+      contributionDays: week.contributionDays.map((day: { date: string; contributionCount: number }) => ({
+        date: day.date,
+        count: day.contributionCount,
+      })),
+    }));
 
     // Aggregate languages by byte size
     const languageMap = new Map<string, number>();
     let totalSize = 0;
 
-    for (const repo of user.repositories?.nodes || []) {
+    const recentActivity: ActivityEvent[] = [];
+    const repos = user.repositories?.nodes || [];
+    for (const repo of repos) {
       for (const edge of repo.languages?.edges || []) {
         const name = edge.node.name;
         const size = edge.size;
@@ -90,23 +108,50 @@ export const getGithubTelemetry: TelemetryAdapter = async (): Promise<Telemetry>
       }
     }
 
+    // Use recent repositories as "recent activity"
+    const sortedRepos = [...repos].sort((a, b) => new Date(b.pushedAt).getTime() - new Date(a.pushedAt).getTime());
+    for (let i = 0; i < Math.min(5, sortedRepos.length); i++) {
+      const repo = sortedRepos[i];
+      recentActivity.push({
+        id: `push-${repo.name}-${i}`,
+        type: "commit",
+        repository: repo.name,
+        description: `Pushed to ${repo.name}`,
+        timestamp: repo.pushedAt,
+      });
+    }
+
     // Calculate percentages and sort
-    const languages = Array.from(languageMap.entries())
+    const allLanguages = Array.from(languageMap.entries())
       .map(([name, size]) => ({
         name,
-        percentage: totalSize > 0 ? Number(((size / totalSize) * 100).toFixed(1)) : 0,
+        percentage: totalSize > 0 ? (size / totalSize) * 100 : 0,
       }))
-      .sort((a, b) => b.percentage - a.percentage)
-      .slice(0, 5); // Return top 5 languages
+      .sort((a, b) => b.percentage - a.percentage);
+
+    const topLanguages = allLanguages.slice(0, 4);
+    const otherLanguages = allLanguages.slice(4);
+
+    if (otherLanguages.length > 0) {
+      const otherPercentage = otherLanguages.reduce((sum, lang) => sum + lang.percentage, 0);
+      topLanguages.push({ name: "Other", percentage: otherPercentage });
+    }
+
+    // Format to 1 decimal place after grouping
+    const languages = topLanguages.map(l => ({
+      name: l.name,
+      percentage: Number(l.percentage.toFixed(1))
+    }));
 
     return {
       provider: "github",
       contributions,
-      repositories,
+      repositories: repositoriesCount,
       languages,
+      heatmapData,
+      recentActivity,
     };
   } catch (error) {
-    // Narrow job: fail clearly. UI layer handles what to do with the failure.
     throw new TelemetryError("Failed to fetch or transform GitHub telemetry", error);
   }
 };

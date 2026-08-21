@@ -139,6 +139,8 @@ Only list completed functionality. Update as work progresses.
 - Built the full `/projects` page featuring the `ProjectFilterBar`, `ProjectDiscovery` orchestrator, and `ProjectGrid`, fully wired with `EmptyState` fallbacks and functional search/filter logic.
 - **Phase 8 Architecture Lab**: Built the `ModuleCard` (composing Shared `Card`), `ModuleGrid`, `LearningTimeline` (chronologically sorted local domain data), and `EngineeringPrinciples` (local constant array) components.
 - **Phase 8 Page Assembly**: Assembled the `/architecture-lab` route as a fully static, non-perspective-gated public landing page composing the Lab modules, Timeline, and Principles in a vertical rhythm.
+- **Phase 9 Telemetry UI Primitives**: Built `MetricCard` (composing Shared `Card` with JetBrains Mono metrics), `MetricsGrid` components adhering to the Parent-Controlled widget architecture pattern, a dependency-free CSS-grid `ContributionHeatmap`, and pure CSS `LanguageChart` / `ActivityFeed` representations to avoid charting library overhead while maintaining strict token usage.
+- **Phase 9 Page Assembly & Resiliency**: Built generic `ErrorBoundary` shared component. Assembled the `/telemetry` page with three-layer failure handling (Adapter validation -> Mock Fallback via try/catch with honest UI communication -> ErrorBoundary localized catch) ensuring 100% graceful degradation on GitHub API failure. (Note: ContributionHeatmap was removed per user request).
 
 ## Domain Logic
 
