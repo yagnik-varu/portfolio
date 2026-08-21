@@ -4,6 +4,7 @@ import { experiences } from "../../../../content/experience/experience";
 import { profile } from "../../../../content/profile/profile";
 import { Card } from "@/shared/components/card/card";
 import { SectionHeader } from "@/shared/components/section-header/section-header";
+import { ScrubCountUp } from "@/shared/components/motion/scrub-count-up";
 import { StaggeredSection, StaggeredItem } from "./staggered-section";
 
 interface EngineeringSnapshotSectionProps {
@@ -19,45 +20,41 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
   const earliestYear = startYears.length > 0 ? Math.min(...startYears) : new Date().getFullYear();
   const currentYear = new Date().getFullYear();
   const calculatedYears = Math.max(1, currentYear - earliestYear);
-  const yearsExperienceDisplay = `${calculatedYears}+`;
 
   // 2. Calculate unique technologies across experiences
   const uniqueTechs = new Set<string>();
   experiences.forEach((exp) => {
     exp.technologies.forEach((tech) => uniqueTechs.add(tech));
   });
-  const technologiesCountDisplay = `${Math.max(uniqueTechs.size, 10)}+`;
-
-  // 3. Projects Built count
-  const projectsBuiltDisplay = `${projectCount}`;
-
-  // 4. GitHub Activity Placeholder
-  const githubActivityDisplay = "500+";
 
   const metrics = [
     {
       id: "years-experience",
       label: "Years Experience",
-      value: yearsExperienceDisplay,
+      numericValue: calculatedYears,
+      suffix: "+",
       description: "Production & project delivery",
     },
     {
       id: "projects-built",
       label: "Projects Built",
-      value: projectsBuiltDisplay,
+      numericValue: projectCount,
+      suffix: "",
       description: "Validated architectural builds",
       href: "/projects",
     },
     {
       id: "technologies-used",
       label: "Technologies Used",
-      value: technologiesCountDisplay,
+      numericValue: Math.max(uniqueTechs.size, 10),
+      suffix: "+",
       description: "Backend, frontend & cloud",
     },
     {
       id: "github-activity",
       label: "GitHub Activity",
-      value: githubActivityDisplay,
+      numericValue: 500,
+      suffix: "+",
       description: "Contributions & telemetry",
       href: "/telemetry",
     },
@@ -85,7 +82,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
                   {metric.label}
                 </span>
                 <span className="text-3xl sm:text-4xl font-bold font-mono text-text tracking-tight">
-                  {metric.value}
+                  <ScrubCountUp value={metric.numericValue} suffix={metric.suffix} />
                 </span>
               </div>
               <p className="text-xs text-muted">

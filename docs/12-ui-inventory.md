@@ -230,6 +230,9 @@ Show career progression, roles, key achievements, and tech stack per company.
 ### Purpose
 Quick technical credibility.
 
+### Interaction
+Uses GSAP ScrollTrigger to scrub numeric metrics from 0 to their actual value based on scroll position. The animation locks (`once: true` equivalent) when it reaches 100% so it doesn't replay or reverse on scroll-up. Respects `prefers-reduced-motion` by instantly rendering final values.
+
 ### Metrics
 - Years Experience
 - Projects Built
