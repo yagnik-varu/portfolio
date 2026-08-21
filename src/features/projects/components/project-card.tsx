@@ -7,10 +7,13 @@ import type { Perspective } from "@/domains/perspective/types";
 import { usePerspectiveStore } from "@/domains/perspective/store";
 import { Card } from "@/shared/components/card/card";
 import type { HTMLMotionProps } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/shared/components/badge/badge";
 import { Button } from "@/shared/components/button/button";
 import { cn } from "@/lib/utils/cn";
+import { PERSPECTIVE_TIMING } from "@/features/perspective/components/perspective-transition";
 import { ProjectImpactBadge } from "./project-impact-badge";
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 
 export interface ProjectCardProps extends HTMLMotionProps<"div"> {
   project: Project;
@@ -106,6 +109,7 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
   const storePerspective = usePerspectiveStore((state) => state.perspective);
   const activePerspective = propPerspective ?? storePerspective;
   const isArchitecture = activePerspective === "architecture";
+  const shouldReduceMotion = useMotionPreference();
   
   const targetHref = isArchitecture 
     ? `/projects/${project.slug}?perspective=architecture` 
@@ -128,9 +132,33 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
       </div>
 
       <div className="flex flex-col gap-4 mt-auto relative z-10">
-        {isArchitecture && (
-          <ProjectArchitecturePanel project={project} />
-        )}
+        <AnimatePresence initial={false}>
+          {isArchitecture && (
+            <motion.div
+              key="architecture-panel"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+              animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
+              transition={{ 
+                duration: PERSPECTIVE_TIMING.stage3Enter, 
+                delay: PERSPECTIVE_TIMING.stage1Activation, 
+                ease: [0.16, 1, 0.3, 1] 
+              }}
+              {...(!shouldReduceMotion && {
+                exit: {
+                  opacity: 0,
+                  height: 0,
+                  transition: {
+                    duration: PERSPECTIVE_TIMING.stage2Exit,
+                    ease: [0.32, 0, 0.67, 0]
+                  }
+                }
+              })}
+              className="overflow-hidden"
+            >
+              <ProjectArchitecturePanel project={project} />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <ProjectCardActions project={project} perspective={activePerspective} />
       </div>
 
