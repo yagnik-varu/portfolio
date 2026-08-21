@@ -32,11 +32,11 @@ Project Phase:
 
 Current Phase: Phase 8 (Architecture Lab & Telemetry)
 
-Current Task: Architecture Lab completed
+Current Task: Phase 8 complete
 
 Blocked By: Nothing
 
-Next Task: Telemetry Dashboard
+Next Task: Phase 9 — Telemetry
 
 ---
 
@@ -102,6 +102,7 @@ Only list completed functionality. Update as work progresses.
 - Validated that build gracefully fails on missing schema fields per `docs/08-error-handling.md §4`.
 - **Phase 7 Content Loaders**: Built `splitMdxSections` utility in `src/lib/mdx/section-splitter.ts` to parse raw MDX bodies into structured domain models (`Overview`, `Architecture`, `EngineeringSections`, `FutureImprovements`), enforcing mandatory sections and normalizing engineering types.
 - **Phase 7 Content Rendering**: Created `mdxComponents` mapping for `next-mdx-remote` (`src/lib/mdx/mdx-components.tsx`) to map raw markdown tags to semantic Design System classes, and implemented a custom `<ArchitectureCallout />` MDX element.
+- **Phase 8 Content**: Added `EngineeringModule` and `LearningMilestone` Zod schemas and their respective content files (`content/perspectives/engineering-modules.ts`, `content/profile/learning-timeline.ts`). Refactored Phase 5's homepage `EngineeringModulesSection` to pull from this real content file instead of a hardcoded array, establishing a single source of truth.
 
 ## Perspective System
 
