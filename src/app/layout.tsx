@@ -5,6 +5,7 @@ import { PerspectiveSync } from "@/domains/perspective/perspective-sync";
 import { Header } from "@/shared/components/layout/header";
 import { Footer } from "@/shared/components/layout/footer";
 import { SmoothScrollProvider } from "@/shared/components/smooth-scroll-provider";
+import { PageTransition } from "@/shared/components/motion/page-transition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScrollProvider>
           <PerspectiveSync />
           <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main className="flex-1 flex flex-col">
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </main>
           <Footer />
         </SmoothScrollProvider>
       </body>

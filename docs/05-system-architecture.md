@@ -575,6 +575,19 @@ Components
 
 ---
 
+## Page Transitions
+
+Selected Strategy:
+Framer Motion `AnimatePresence`
+
+Responsibilities:
+*   Wrap page-level `children` only (Header/Nav persist).
+*   Fast, lightweight fade/slide (`200ms` exit, `300ms` enter).
+*   Visually distinct from the slower perspective transitions.
+*   Respect `prefers-reduced-motion` strictly.
+
+---
+
 # 13. Homepage Architecture
 
 ## Overview Mode
