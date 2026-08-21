@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { Perspective } from "./types";
+import { capturePerspectiveLayout } from "@/lib/motion/perspective-flip";
 
 interface PerspectiveState {
   perspective: Perspective;
@@ -7,12 +8,16 @@ interface PerspectiveState {
   toggle: () => void;
 }
 
-export const usePerspectiveStore = create<PerspectiveState>((set) => ({
+export const usePerspectiveStore = create<PerspectiveState>((set, get) => ({
   perspective: "overview",
-  setPerspective: (perspective) => set({ perspective }),
-  toggle: () =>
-    set((state) => ({
-      perspective:
-        state.perspective === "overview" ? "architecture" : "overview",
-    })),
+  setPerspective: (perspective) => {
+    if (get().perspective === perspective) return;
+    capturePerspectiveLayout();
+    set({ perspective });
+  },
+  toggle: () => {
+    const next = get().perspective === "overview" ? "architecture" : "overview";
+    capturePerspectiveLayout();
+    set({ perspective: next });
+  },
 }));

@@ -33,15 +33,18 @@ const presentationMetadata: Record<string, { category: string; actionText: strin
 };
 
 const containerVariants: Variants = {
-  hidden: { opacity: 0, height: 0, overflow: "hidden" },
+  hidden: { opacity: 0, height: 0, overflow: "visible" },
   visible: {
     opacity: 1,
     height: "auto",
     overflow: "visible",
     transition: {
-      duration: PERSPECTIVE_TIMING.stage3Enter,
-      delay: PERSPECTIVE_TIMING.stage1Activation,
-      ease: [0.16, 1, 0.3, 1],
+      // Animate opacity, but height will snap instantly for Flip
+      opacity: {
+        duration: PERSPECTIVE_TIMING.stage3Enter,
+        delay: PERSPECTIVE_TIMING.stage1Activation,
+        ease: [0.16, 1, 0.3, 1],
+      },
       staggerChildren: 0.08,
       delayChildren: PERSPECTIVE_TIMING.stage1Activation + 0.1,
     },
@@ -49,10 +52,15 @@ const containerVariants: Variants = {
   exit: {
     opacity: 0,
     height: 0,
-    overflow: "hidden",
+    overflow: "visible",
     transition: {
-      duration: PERSPECTIVE_TIMING.stage2Exit,
-      ease: [0.32, 0, 0.67, 0],
+      // Animate opacity, but height will snap instantly for Flip
+      opacity: {
+        duration: PERSPECTIVE_TIMING.stage2Exit,
+        ease: [0.32, 0, 0.67, 0],
+      },
+      // Height transitions with 0 duration to collapse instantly
+      height: { duration: 0 },
     },
   },
 };
@@ -81,7 +89,7 @@ export function EngineeringModulesSection({ perspective: propPerspective }: Engi
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="w-full flex flex-col gap-6 overflow-hidden"
+          className="w-full flex flex-col gap-6"
         >
           <SectionHeader
             id="engineering-modules-heading"

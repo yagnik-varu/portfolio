@@ -564,7 +564,16 @@ state — not a font swap at the theme level.
 
 ## 15. Dual-Engine Motion Ownership
 
-TODO: Add ownership matrix details here.
+To achieve maximum performance without conflicts, animation responsibilities are strictly divided between GSAP and Framer Motion:
+
+| Feature / Animation | Engine | Implementation Strategy |
+| :--- | :--- | :--- |
+| **Hero Text Reveal** | GSAP (`SplitText`) | `useGSAP()` runs once on mount. Splits H1 into words and staggers their entrance. Never replays on perspective shift. |
+| **Hero Typewriter** | GSAP (`ticker`) | Custom `gsap.ticker` loop types strings and implements a "magic backspace" vanish effect via `SplitText`. |
+| **Perspective Opacity/Blur** | Framer Motion | `AnimatePresence` handles the mount/unmount and fades (`opacity`, `filter blur`, localized `y` shift). |
+| **Perspective Layout Morph** | GSAP (`Flip`) | Intercepts Zustand state updates to capture DOM before React renders. Animates the physical `translateY` shift of surrounding sections while Framer handles the fade. |
+| **Interactive Springs** | Framer Motion | `whileHover`, `whileTap`, and layout springs on the Perspective Toggle pill. |
+| **Smooth Scrolling** | Lenis + GSAP | `lenis/react` synced to `gsap.ticker` ensures scroll triggers remain perfectly aligned. |
 
 # Design System Summary
 

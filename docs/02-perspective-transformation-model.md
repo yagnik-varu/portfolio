@@ -285,6 +285,17 @@ Total: ~630ms — within the 600–900ms target.
 
 ---
 
+## GSAP Flip Layout Morph (The Hardware-Accelerated Accordion)
+
+To prevent expensive layout thrashing when sections (like Engineering Modules) appear or disappear, the physical shifting of the page is orchestrated via GSAP Flip:
+
+1. **State Interception:** The global Zustand store intercepts `setPerspective` calls to trigger `Flip.getState()` *before* React renders the new state.
+2. **Instant Collapse:** Framer Motion layout changes (e.g. `height` from `auto` to `0` on exit) are configured to happen instantaneously with `duration: 0`, rather than being animated.
+3. **Smooth Translation:** After React updates the DOM, `requestAnimationFrame` triggers `Flip.from()`. The sibling sections that instantly snapped to new positions are smoothly animated via hardware-accelerated `transform: translateY` to their new locations.
+4. **Visual Overlap:** Because the exiting elements collapse their layout space instantly but remain visible (`overflow: visible`) as they fade out, the lower page sections smoothly slide *over* them, creating a premium cross-fade morph effect.
+
+---
+
 # 6. Visual Language Transformation
 
 ## Color System
