@@ -10,6 +10,8 @@ import { EngineeringSections } from "@/features/project-detail/components/engine
 import { FutureImprovementsSection } from "@/features/project-detail/components/future-improvements-section";
 import { PerspectiveGater } from "@/features/perspective/components/perspective-gater";
 
+import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
+
 export async function generateStaticParams() {
   const projects = getProjects();
   return projects.map((project) => ({
@@ -34,25 +36,29 @@ export default async function ProjectPage({
 
   return (
     <Container className="py-12 md:py-20 flex flex-col gap-8 md:gap-16">
-      {/* 1. Identity & Stack (Always Visible) */}
-      <div className="flex flex-col gap-12">
-        <ProjectHero project={project} />
-        <TechnologyStackSection stack={project.stack} />
-      </div>
+      <ErrorBoundary fallbackMessage={`Unable to load project details for ${project.title}.`}>
+        <div className="flex flex-col gap-8 md:gap-16 w-full">
+          {/* 1. Identity & Stack (Always Visible) */}
+          <div className="flex flex-col gap-12">
+            <ProjectHero project={project} />
+            <TechnologyStackSection stack={project.stack} />
+          </div>
 
-      <div className="mx-auto w-full max-w-3xl flex flex-col">
-        {/* 2. Overview (Always Visible) */}
-        <OverviewSection content={sections.overview} />
+          <div className="mx-auto w-full max-w-3xl flex flex-col">
+            {/* 2. Overview (Always Visible) */}
+            <OverviewSection content={sections.overview} />
 
-        {/* 3. Engineering Deep Dives (Perspective Gated) */}
-        <PerspectiveGater requiredPerspective="architecture">
-          <ArchitectureSection content={sections.architecture} perspective="architecture" />
-          <EngineeringSections sections={sections.engineeringSections} perspective="architecture" />
-        </PerspectiveGater>
+            {/* 3. Engineering Deep Dives (Perspective Gated) */}
+            <PerspectiveGater requiredPerspective="architecture">
+              <ArchitectureSection content={sections.architecture} perspective="architecture" />
+              <EngineeringSections sections={sections.engineeringSections} perspective="architecture" />
+            </PerspectiveGater>
 
-        {/* 4. Future Improvements (Always Visible) */}
-        <FutureImprovementsSection content={sections.futureImprovements} />
-      </div>
+            {/* 4. Future Improvements (Always Visible) */}
+            <FutureImprovementsSection content={sections.futureImprovements} />
+          </div>
+        </div>
+      </ErrorBoundary>
     </Container>
   );
 }

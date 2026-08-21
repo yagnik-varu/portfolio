@@ -1,7 +1,8 @@
 "use client";
 
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { useState, useEffect } from "react";
-import { useReducedMotion } from "framer-motion";
+
 
 /**
  * Manages the first-visit discovery affordance for the Perspective toggle.
@@ -9,7 +10,7 @@ import { useReducedMotion } from "framer-motion";
  */
 export function usePerspectiveDiscovery() {
   const [shouldPulse, setShouldPulse] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
 
   useEffect(() => {
     // Only run on the client

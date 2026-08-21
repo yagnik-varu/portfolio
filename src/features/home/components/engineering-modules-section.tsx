@@ -1,8 +1,9 @@
 "use client";
 
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import * as React from "react";
 import Link from "next/link";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from 'framer-motion';
 import type { Perspective } from "@/domains/perspective/types";
 import { usePerspectiveStore } from "@/domains/perspective/store";
 import { Card } from "@/shared/components/card/card";
@@ -55,7 +56,7 @@ const itemVariants: Variants = {
 export function EngineeringModulesSection({ perspective: propPerspective }: EngineeringModulesSectionProps) {
   const storePerspective = usePerspectiveStore((state) => state.perspective);
   const activePerspective = propPerspective ?? storePerspective;
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
 
   // Explicit Perspective Visibility Rule (docs/05-system-architecture.md §14)
   // Only rendered in Architecture perspective

@@ -1,8 +1,9 @@
 "use client";
 
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from 'framer-motion';
 
 import { cn } from "@/lib/utils/cn";
 
@@ -35,7 +36,7 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
-    const prefersReducedMotion = useReducedMotion();
+    const prefersReducedMotion = useMotionPreference();
 
     return (
       <motion.button

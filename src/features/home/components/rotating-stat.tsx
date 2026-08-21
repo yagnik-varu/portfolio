@@ -1,7 +1,8 @@
 "use client";
 
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface RotatingStatProps {
   summary: string;
@@ -11,7 +12,7 @@ interface RotatingStatProps {
 export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
 
   useEffect(() => {
     if (highlights.length === 0 || shouldReduceMotion) return;

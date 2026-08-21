@@ -5,6 +5,8 @@ import { LearningTimeline } from "@/features/architecture-lab/components/learnin
 import { EngineeringPrinciples } from "@/features/architecture-lab/components/engineering-principles";
 import { engineeringModules } from "../../../content/perspectives/engineering-modules";
 
+import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
+
 export const metadata: Metadata = {
   title: "Architecture Lab",
   description: "Dedicated engineering workspace and architectural deep-dives.",
@@ -24,14 +26,18 @@ export default function ArchitectureLabPage() {
         </p>
       </div>
 
-      {/* 1. Module Grid */}
-      <ModuleGrid modules={engineeringModules} />
+      <ErrorBoundary fallbackMessage="Unable to load the Architecture Lab content at this time.">
+        <div className="flex flex-col gap-24">
+          {/* 1. Module Grid */}
+          <ModuleGrid modules={engineeringModules} />
 
-      {/* 2. Learning Timeline */}
-      <LearningTimeline />
+          {/* 2. Learning Timeline */}
+          <LearningTimeline />
 
-      {/* 3. Engineering Principles */}
-      <EngineeringPrinciples />
+          {/* 3. Engineering Principles */}
+          <EngineeringPrinciples />
+        </div>
+      </ErrorBoundary>
       </Container>
     </main>
   );

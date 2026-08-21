@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
+import { motion, type Variants } from 'framer-motion';
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
@@ -14,7 +15,7 @@ interface StaggeredSectionProps {
 export function StaggeredSection({ children, className = "", delay = 0 }: StaggeredSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
 
   if (shouldReduceMotion) {
     return <section className={className}>{children}</section>;
@@ -44,7 +45,7 @@ export function StaggeredSection({ children, className = "", delay = 0 }: Stagge
 }
 
 export function StaggeredItem({ children, className = "" }: { children: ReactNode; className?: string }) {
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
 
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>;

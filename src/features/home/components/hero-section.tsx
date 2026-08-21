@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
+import { motion, type Variants } from 'framer-motion';
 import type { Perspective } from "@/domains/perspective/types";
 import { usePerspectiveStore } from "@/domains/perspective/store";
 import { profile } from "../../../../content/profile/profile";
@@ -73,7 +74,7 @@ export function HeroSection({
   const perspective = propPerspective ?? storePerspective;
   const onPerspectiveChange = propOnPerspectiveChange ?? storeSetPerspective;
 
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
   const nameWords = profile.name.split(" ");
 
   return (

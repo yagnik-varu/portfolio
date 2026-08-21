@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import type { ReactNode } from "react";
 import type { Perspective } from "@/domains/perspective/types";
 
@@ -61,7 +62,7 @@ export function PerspectiveTransition({
   children,
   perspective,
 }: PerspectiveTransitionProps) {
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useMotionPreference();
 
   // Instant transition if reduced motion is requested
   // Also acts as a fallback ensuring state applies regardless of animation status

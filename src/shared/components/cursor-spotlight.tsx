@@ -1,10 +1,11 @@
 'use client';
 
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { useEffect, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
+
 
 export function CursorSpotlight() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useMotionPreference();
   const [mounted, setMounted] = useState(false);
   const [isHoverable, setIsHoverable] = useState(false);
 

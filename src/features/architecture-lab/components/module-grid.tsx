@@ -4,6 +4,7 @@ import { ModuleCard } from "./module-card";
 
 interface ModuleGridProps {
   modules: EngineeringModule[];
+  className?: string;
 }
 
 export function ModuleGrid({ modules }: ModuleGridProps) {
