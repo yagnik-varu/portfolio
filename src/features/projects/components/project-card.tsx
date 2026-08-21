@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/shared/components/badge/badge";
 import { Button } from "@/shared/components/button/button";
 import { cn } from "@/lib/utils/cn";
+import { gsap } from "@/lib/motion/gsap-config";
+import { useGSAP } from "@gsap/react";
 import { PERSPECTIVE_TIMING } from "@/features/perspective/components/perspective-transition";
 import { ProjectImpactBadge } from "./project-impact-badge";
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
@@ -111,15 +113,55 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
   const isArchitecture = activePerspective === "architecture";
   const shouldReduceMotion = useMotionPreference();
   
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const xTo = React.useRef<gsap.QuickToFunc>();
+  const yTo = React.useRef<gsap.QuickToFunc>();
+
+  useGSAP(() => {
+    if (shouldReduceMotion || !cardRef.current) return;
+    // Apply perspective to the parent to make the 3D rotation visible.
+    // Setting transformPerspective on the element itself allows its children/rotation to be drawn in 3D space.
+    gsap.set(cardRef.current, { transformPerspective: 1000 });
+    xTo.current = gsap.quickTo(cardRef.current, "rotateY", { duration: 0.5, ease: "power3.out" });
+    yTo.current = gsap.quickTo(cardRef.current, "rotateX", { duration: 0.5, ease: "power3.out" });
+  }, [shouldReduceMotion]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion || !cardRef.current) return;
+    // Skip on touch devices where hover states get stuck
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const xPct = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const yPct = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+
+    xTo.current?.(xPct * 3);
+    yTo.current?.(-yPct * 3); // Invert Y so card tilts toward cursor
+    
+    // Call any passed onMouseMove
+    props.onMouseMove?.(e);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!shouldReduceMotion) {
+      xTo.current?.(0);
+      yTo.current?.(0);
+    }
+    props.onMouseLeave?.(e);
+  };
+
   const targetHref = isArchitecture 
     ? `/projects/${project.slug}?perspective=architecture` 
     : `/projects/${project.slug}`;
 
   return (
     <Card
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       variant={isArchitecture ? "technical" : "elevated"}
       className={cn(
-        "relative p-6 flex flex-col justify-between gap-5 h-full transition-all duration-200 group hover:border-primary/50 overflow-hidden",
+        "relative p-6 flex flex-col justify-between gap-5 h-full transition-colors duration-200 group hover:border-primary/50 overflow-hidden",
         isArchitecture && "border-primary/30 shadow-md",
         className
       )}

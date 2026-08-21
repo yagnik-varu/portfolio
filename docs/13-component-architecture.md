@@ -426,6 +426,10 @@ Responsibilities:
 
 Compose project information.
 
+Interactions (Dual-Engine Motion Ownership):
+- **Framer Motion**: Handles the initial mount and layout spring (`scale` / `y` hover lift).
+- **GSAP (`quickTo`)**: Handles the continuous `mousemove` 3D tilt tracking (`rotateX` / `rotateY`). layered over the Framer Motion spring to provide premium depth without layout thrashing.
+
 ---
 
 ## ProjectCardHeader
