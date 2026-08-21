@@ -6,36 +6,41 @@ import { FeaturedProjectsSection } from "@/features/home/components/featured-pro
 import { ExperienceSection } from "@/features/home/components/experience-section";
 import { EngineeringSnapshotSection } from "@/features/home/components/engineering-snapshot-section";
 import { ContactCTASection } from "@/features/home/components/contact-cta-section";
-
-import { PerspectiveFlipProvider } from "@/features/perspective/components/perspective-flip-provider";
+import { LayoutShiftWrapper } from "@/shared/components/motion/layout-shift-wrapper";
 
 export default function Home() {
   const projects = getProjects();
   const projectCount = projects.length;
 
   return (
-    <PerspectiveFlipProvider>
-      <div className="container mx-auto px-4 md:px-6 flex flex-col gap-16 md:gap-24 pb-20">
+    <div className="container mx-auto px-4 md:px-6 max-w-5xl flex flex-col gap-12 md:gap-16 pt-8 pb-20">
+      <LayoutShiftWrapper>
         <HeroSection />
+      </LayoutShiftWrapper>
+      
+      <LayoutShiftWrapper>
         <CurrentFocusSection />
-        
-        {/* Engineering Modules are only visible in Architecture mode, no flip ID needed for itself */}
+      </LayoutShiftWrapper>
+      
+      <LayoutShiftWrapper>
         <EngineeringModulesSection />
-        
-        {/* Sections below modules must have flip IDs to animate smoothly as they shift */}
-        <div data-flip-id="featured-projects">
-          <FeaturedProjectsSection projects={projects} />
-        </div>
-        <div data-flip-id="experience">
-          <ExperienceSection />
-        </div>
-        <div data-flip-id="engineering-snapshot">
-          <EngineeringSnapshotSection projectCount={projectCount} />
-        </div>
-        <div data-flip-id="contact-cta">
-          <ContactCTASection />
-        </div>
-      </div>
-    </PerspectiveFlipProvider>
+      </LayoutShiftWrapper>
+      
+      <LayoutShiftWrapper>
+        <FeaturedProjectsSection projects={projects} />
+      </LayoutShiftWrapper>
+      
+      <LayoutShiftWrapper>
+        <ExperienceSection />
+      </LayoutShiftWrapper>
+      
+      <LayoutShiftWrapper>
+        <EngineeringSnapshotSection projectCount={projectCount} />
+      </LayoutShiftWrapper>
+      
+      <LayoutShiftWrapper>
+        <ContactCTASection />
+      </LayoutShiftWrapper>
+    </div>
   );
 }

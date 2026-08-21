@@ -63,32 +63,32 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
   return (
     <StaggeredSection className="w-full flex flex-col gap-6" aria-labelledby="engineering-snapshot-heading">
       <StaggeredItem>
-        <SectionHeader
-          id="engineering-snapshot-heading"
-          title="Engineering Snapshot"
-          description="Key technical metrics and architectural delivery at a glance."
-        />
+        <div className="border-t border-white/10 pt-8 mb-4">
+          <h2 id="engineering-snapshot-heading" className="text-2xl font-bold text-text mb-2">
+            Engineering Snapshot
+          </h2>
+          <p className="text-muted">Key technical metrics and architectural delivery at a glance.</p>
+        </div>
       </StaggeredItem>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {metrics.map((metric) => {
           const cardContent = (
-            <Card
-              variant="elevated"
-              className="p-5 flex flex-col justify-between gap-3 h-full hover:border-primary/40 transition-colors group"
+            <div
+              className="relative p-6 flex flex-col justify-between gap-6 h-full transition-colors duration-300 group"
             >
-              <div className="flex flex-col gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted group-hover:text-primary transition-colors">
+              <div className="flex flex-col gap-2 relative z-10">
+                <span className="text-sm font-semibold uppercase tracking-wider text-muted group-hover:text-text transition-colors">
                   {metric.label}
                 </span>
-                <span className="text-3xl sm:text-4xl font-bold font-mono text-text tracking-tight">
+                <span className="text-6xl sm:text-7xl font-bold font-mono text-text tracking-tighter">
                   <ScrubCountUp value={metric.numericValue} suffix={metric.suffix} />
                 </span>
               </div>
-              <p className="text-xs text-muted">
+              <p className="text-sm text-muted/80 relative z-10 border-t border-white/10 pt-4 mt-2">
                 {metric.description}
               </p>
-            </Card>
+            </div>
           );
 
           if (metric.href) {
@@ -105,18 +105,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
         })}
       </div>
 
-      <StaggeredItem>
-        <div className="mt-2 p-4 rounded-lg border border-border bg-surface/50 text-sm flex flex-col sm:flex-row sm:items-center gap-3">
-          <span className="font-semibold text-primary uppercase text-xs tracking-wider shrink-0">Currently Focused On:</span>
-          <div className="flex flex-wrap gap-2">
-            {profile.currentFocus.map((focus, idx) => (
-              <span key={idx} className="px-2 py-1 bg-surface border border-border rounded-md text-xs font-mono text-muted-foreground shadow-sm">
-                {focus}
-              </span>
-            ))}
-          </div>
-        </div>
-      </StaggeredItem>
+
     </StaggeredSection>
   );
 }

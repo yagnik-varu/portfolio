@@ -71,7 +71,7 @@ export function PerspectiveTransition({
   }
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.div
         key={perspective}
         variants={transitionVariants}

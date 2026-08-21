@@ -16,23 +16,30 @@ export function ExperienceSection() {
     >
       <div id="experience" className="absolute -translate-y-24" aria-hidden="true" />
       <StaggeredItem>
-        <SectionHeader
-          id="experience-heading"
-          title="Experience"
-          description="Professional engineering history, technical responsibilities, and delivered systems."
-        />
+        <div className="border-t border-white/10 pt-8 mb-4">
+          <h2 id="experience-heading" className="text-2xl font-bold text-text mb-2">
+            Experience
+          </h2>
+          <p className="text-muted text-lg">Professional engineering history and delivered systems.</p>
+        </div>
       </StaggeredItem>
 
-      <div className="flex flex-col gap-6">
+      <div className="relative border-l border-white/10 ml-4 md:ml-6 flex flex-col gap-10 pb-4">
         {experiences.map((exp, index) => {
           const dateRange = `${exp.startDate} — ${exp.current ? "Present" : exp.endDate || "Present"}`;
 
           return (
-            <StaggeredItem key={`${exp.company}-${index}`}>
-              <Card
-                variant="elevated"
-                className="p-6 md:p-8 flex flex-col gap-4 transition-colors hover:border-primary/40"
-              >
+            <StaggeredItem key={`${exp.company}-${index}`} className="relative pl-8 md:pl-12">
+              {/* Timeline Dot */}
+              <div 
+                className={`absolute left-[-5px] top-10 w-2.5 h-2.5 rounded-full z-10 ${
+                  exp.current 
+                    ? "bg-primary ring-4 ring-primary/20" 
+                    : "bg-muted"
+                }`} 
+              />
+              
+              <div className="flex flex-col gap-6 py-6 border-b border-white/5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex flex-col gap-0.5">
                     <h3 className="text-xl font-bold tracking-tight text-text">
@@ -48,9 +55,9 @@ export function ExperienceSection() {
                       {dateRange}
                     </span>
                     {exp.current && (
-                      <Badge variant="status" className="text-[10px] uppercase tracking-wider">
+                      <span className="text-[10px] uppercase tracking-wider text-text font-bold">
                         Current
-                      </Badge>
+                      </span>
                     )}
                   </div>
                 </div>
@@ -60,15 +67,15 @@ export function ExperienceSection() {
                 </p>
 
                 {exp.technologies && exp.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-2">
+                  <div className="flex flex-wrap gap-2 pt-2">
                     {exp.technologies.map((tech) => (
-                      <Badge key={tech} variant="technology" className="text-xs">
+                      <span key={tech} className="text-sm font-mono text-muted/70 hover:text-text transition-colors">
                         {tech}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 )}
-              </Card>
+              </div>
             </StaggeredItem>
           );
         })}

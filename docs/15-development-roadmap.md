@@ -158,10 +158,14 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 **Goal**: Animations that support UX, never decorative.
 
-**Deliverables** (Framer Motion):
-- Perspective morph transitions (600–900ms)
-- Card expansion, hover states, page transitions
-- `prefers-reduced-motion` fallback (instant state changes)
+**Deliverables** (Dual-Engine: GSAP + Framer Motion):
+- Lenis smooth scroll and GSAP `ticker` integration
+- GSAP `SplitText` hero reveal and typewriter vanish effect
+- GSAP `Flip` perspective morph transitions alongside Framer Motion fades
+- GSAP `ScrollTrigger` metric count-up
+- GSAP `quickTo` 3D card tilts and magnetic primary CTAs
+- Framer Motion `AnimatePresence` fast page-to-page transitions
+- Comprehensive `prefers-reduced-motion` audit and fallback (instant state changes)
 
 **Done when**: Transitions feel natural. Animations degrade gracefully.
 

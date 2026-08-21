@@ -25,16 +25,17 @@ export function FeaturedProjectsSection({ projects, perspective }: FeaturedProje
   return (
     <StaggeredSection className="w-full flex flex-col gap-8" aria-labelledby="featured-projects-heading">
       <StaggeredItem>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <SectionHeader
-            id="featured-projects-heading"
-            title="Featured Projects"
-            description="Selected software architectures and production-ready systems."
-          />
-          <Link href="/projects" className="shrink-0">
-            <Button variant="ghost" size="sm" className="font-medium text-primary hover:text-primary/80">
-              View All Projects →
-            </Button>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-t border-white/10 pt-8 mb-4">
+          <div>
+            <h2 id="featured-projects-heading" className="text-2xl font-bold text-text mb-2">
+              Featured Projects
+            </h2>
+            <p className="text-muted text-lg">Selected software architectures and production-ready systems.</p>
+          </div>
+          <Link href="/projects" className="shrink-0 group">
+            <span className="font-mono text-sm text-text group-hover:text-text/80 transition-colors flex items-center gap-2">
+              View All Projects <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </span>
           </Link>
         </div>
       </StaggeredItem>

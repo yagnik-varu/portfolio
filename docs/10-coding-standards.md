@@ -941,23 +941,17 @@ Do not restructure folders automatically.
 
 ## Rule 3
 
-Do not introduce libraries without justification.
+Do not create abstractions for future assumptions.
 
 ---
 
 ## Rule 4
 
-Do not create abstractions for future assumptions.
-
----
-
-## Rule 5
-
 Follow existing architecture before introducing new patterns.
 
 ---
 
-## Rule 6
+## Rule 5
 
 When architecture changes:
 

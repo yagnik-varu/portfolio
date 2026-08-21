@@ -10,11 +10,10 @@ interface StaggeredSectionProps {
   children: ReactNode;
   className?: string;
   delay?: number;
+  animateInView?: boolean;
 }
 
-export function StaggeredSection({ children, className = "", delay = 0 }: StaggeredSectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
+export function StaggeredSection({ children, className = "", delay = 0, animateInView = true }: StaggeredSectionProps) {
   const shouldReduceMotion = useMotionPreference();
 
   if (shouldReduceMotion) {
@@ -33,10 +32,11 @@ export function StaggeredSection({ children, className = "", delay = 0 }: Stagge
 
   return (
     <motion.section
-      ref={ref}
       variants={containerVariants}
       initial="hidden"
-      animate={isInView ? "show" : "hidden"}
+      whileInView={animateInView ? "show" : undefined}
+      animate={!animateInView ? "show" : undefined}
+      viewport={{ once: true, margin: "-50px" }}
       className={className}
     >
       {children}

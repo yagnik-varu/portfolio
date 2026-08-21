@@ -553,7 +553,25 @@ CSS animations in globals.css already handle this via the @media (prefers-reduce
 
 ### Gradient Text Token
 - --gradient-hero: linear-gradient(135deg, var(--foreground), var(--primary-400))
-- Reserved for: Hero name, at most one section title per page — never used for body text
+### Spotlight Mask Reveal
+- Used for massive Stark Hero Titles and CTA Headings.
+- Original text fades down slightly (group-hover:opacity-20).
+- A perfectly overlapping, primary-colored text layer is revealed via a CSS radial gradient mask (`mask-image: radial-gradient(150px circle at var(--x) var(--y)...`).
+- The mask position tracks the user's cursor (`onMouseMove` updating `--x` and `--y` CSS custom properties).
+- Result: a dynamic "flashlight in the dark" effect revealing the primary color.
+
+### Outline-to-Fill Sweep
+- Used for subheadings ("System Architect & Backend Engineer") and Technical Focus Badges.
+- On hover, the base text transforms into a subtle transparent outline (`-webkit-text-stroke: 1px var(--color-border)`).
+- A primary-colored fill layer sweeps across the text from left to right using `clip-path: inset(0 100% 0 0)` transitioning to `clip-path: inset(0 0 0 0)`.
+- This creates a highly premium, Awwwards-style fill animation that seamlessly supports multiline text wrapping.
+
+### Brand Specific CTA Hovers
+- Standard buttons use the app's primary/surface theme colors.
+- Social/Contact buttons utilize strict brand identity colors exclusively on the hover state.
+- Email: Google Red (`#EA4335`)
+- LinkedIn: LinkedIn Blue (`#0A66C2`)
+- GitHub: GitHub Dark (`#24292e`)
 
 ---
 ## Perspective Typography Rule
@@ -572,8 +590,12 @@ To achieve maximum performance without conflicts, animation responsibilities are
 | **Hero Typewriter** | GSAP (`ticker`) | Custom `gsap.ticker` loop types strings and implements a "magic backspace" vanish effect via `SplitText`. |
 | **Perspective Opacity/Blur** | Framer Motion | `AnimatePresence` handles the mount/unmount and fades (`opacity`, `filter blur`, localized `y` shift). |
 | **Perspective Layout Morph** | GSAP (`Flip`) | Intercepts Zustand state updates to capture DOM before React renders. Animates the physical `translateY` shift of surrounding sections while Framer handles the fade. |
-| **Interactive Springs** | Framer Motion | `whileHover`, `whileTap`, and layout springs on the Perspective Toggle pill. |
-| **Smooth Scrolling** | Lenis + GSAP | `lenis/react` synced to `gsap.ticker` ensures scroll triggers remain perfectly aligned. |
+| **Scroll-Driven Metrics** | GSAP (`ScrollTrigger`) | Scrubs values from 0 to target based on scroll position, locking with `kill()` at 100%. |
+| **Interactive Springs** | Framer Motion | Layout springs on the Perspective Toggle pill, and base hover states (`whileHover` scale/lift). |
+| **3D Card Tilt** | GSAP (`quickTo`) | Tracks `mousemove` to apply max 3-degree `rotateX/Y` tilt on top of Framer Motion's base hover lift. |
+| **Magnetic CTAs** | GSAP (`quickTo`) | Tracks `mousemove` to pull an invisible wrapper around Primary CTAs by max 4px, isolated from Framer Motion's button hover. |
+| **Page Transitions** | Framer Motion | `AnimatePresence` on page routes handles fast 200/300ms fade+slide routing swaps independently from perspective morphs. |
+| **Smooth Scrolling** | Lenis + GSAP | `lenis/react` synced to `gsap.ticker` ensures scroll triggers remain perfectly aligned. Bypassed natively on reduced motion. |
 
 # Design System Summary
 

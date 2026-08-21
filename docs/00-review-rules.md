@@ -8,7 +8,6 @@ The project owner prefers:
 
 Before introducing:
 
-- New dependency
 - New architecture pattern
 - New state management solution
 - New build tool
