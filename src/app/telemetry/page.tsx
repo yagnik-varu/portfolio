@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getGithubTelemetry } from "@/lib/telemetry/github-adapter";
 import { getMockTelemetry } from "@/lib/telemetry/mock-source";
 import type { Telemetry } from "@/lib/validation/telemetry.schema";
-import { SectionHeader } from "@/shared/components/section-header/section-header";
+import { TelemetryHero } from "@/features/telemetry/components/telemetry-hero";
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
 
 import { MetricsGrid } from "@/features/telemetry/components/metrics-grid";
@@ -44,10 +44,7 @@ export default async function TelemetryPage() {
   return (
     <div className="flex flex-col gap-12 pt-8 md:pt-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <SectionHeader 
-          title="Engineering Telemetry" 
-          description="Live architectural metrics and open-source contribution activity." 
-        />
+        <TelemetryHero />
         
         {/* Honest Communication Notice if degraded */}
         {isFallback && (

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Card } from "@/shared/components/card/card";
 import { cn } from "@/lib/utils/cn";
 
 export interface ActivityEvent {
@@ -23,19 +22,23 @@ export interface ActivityFeedProps {
 
 export function ActivityFeed({ events, className }: ActivityFeedProps) {
   return (
-    <Card className={cn("p-6 flex flex-col gap-6 border-border/80 bg-surface/20", className)}>
-      <h3 className="text-sm font-sans font-medium text-text">Recent Activity</h3>
+    <div className={cn("relative p-6 sm:p-8 flex flex-col gap-8 rounded-2xl border border-white/5 bg-surface/30 hover:border-white/10 transition-colors duration-500 overflow-hidden", className)}>
+      {/* Background glow */}
+      <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-primary/5 blur-[80px] pointer-events-none rounded-full" />
+
+      <h3 className="relative z-10 text-xl font-bold font-sans text-text">Recent Activity</h3>
       
       {(!events || events.length === 0) ? (
         <div className="text-sm text-muted">No recent activity.</div>
       ) : (
         <div className="flex flex-col gap-5">
           {events.map((event) => (
-            <div key={event.id} className="flex flex-col gap-1 border-l-[3px] border-border pl-4 relative group">
-              {/* Timeline dot */}
-              <div className="absolute -left-[6px] top-1.5 w-[9px] h-[9px] rounded-full bg-surface border-2 border-primary group-hover:bg-primary transition-colors" />
+            <div key={event.id} className="flex flex-col gap-2 border-l-[3px] border-border/50 pl-6 relative group">
+              {/* Timeline dot & Glow */}
+              <div className="absolute -left-[7px] top-1.5 w-[11px] h-[11px] rounded-full bg-surface border-2 border-primary/50 group-hover:border-primary transition-colors duration-300 z-10" />
+              <div className="absolute -left-[7px] top-1.5 w-[11px] h-[11px] rounded-full bg-primary/0 group-hover:bg-primary/50 group-hover:shadow-[0_0_12px_2px_rgba(var(--color-primary-rgb),0.5)] group-hover:scale-150 transition-all duration-500 z-0" />
               
-              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 relative z-10">
                 <span className="text-sm font-semibold text-text group-hover:text-primary transition-colors">
                   {event.repository}
                 </span>
@@ -53,6 +56,6 @@ export function ActivityFeed({ events, className }: ActivityFeedProps) {
           ))}
         </div>
       )}
-    </Card>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Card } from "@/shared/components/card/card";
 import { cn } from "@/lib/utils/cn";
 import type { LanguageMetric } from "@/lib/validation/telemetry.schema";
 
@@ -22,8 +21,11 @@ export function LanguageChart({ languages, className }: LanguageChartProps) {
   ];
 
   return (
-    <Card className={cn("p-6 flex flex-col gap-6 border-border/80 bg-surface/20", className)}>
-      <h3 className="text-sm font-sans font-medium text-text">Language Distribution</h3>
+    <div className={cn("relative p-6 sm:p-8 flex flex-col gap-8 rounded-2xl border border-white/5 bg-surface/30 hover:border-white/10 transition-colors duration-500 overflow-hidden", className)}>
+      {/* Background glow */}
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/5 blur-[80px] pointer-events-none rounded-full" />
+      
+      <h3 className="relative z-10 text-xl font-bold font-sans text-text">Language Distribution</h3>
       
       {(!languages || languages.length === 0) ? (
         <div className="text-sm text-muted">No language data available.</div>
@@ -60,6 +62,6 @@ export function LanguageChart({ languages, className }: LanguageChartProps) {
           </div>
         </div>
       )}
-    </Card>
+    </div>
   );
 }
