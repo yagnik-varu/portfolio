@@ -79,8 +79,8 @@ export function GlobalShortcuts() {
         return;
       }
 
-      // Ignore if modifier keys are pressed (e.g. Ctrl+R, Cmd+R for refresh)
-      if (e.ctrlKey || e.metaKey || e.altKey) {
+      // Ignore if modifier keys are pressed (e.g. Ctrl+R, Cmd+R for refresh, Shift+P for perspective)
+      if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) {
         return;
       }
 
