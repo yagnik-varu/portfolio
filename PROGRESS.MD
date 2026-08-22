@@ -165,6 +165,7 @@ Only list completed functionality. Update as work progresses.
 
 - **Phase 14.1 Placeholder Pet**: Scaffolded `src/features/portfolio-pet/` module, `pet-config.ts`, `pet-types.ts`, and a working Zustand store (`use-pet-store.ts`). Implemented `PortfolioPet` component injected directly into `layout.tsx` at a fixed bottom-right position. Added Hide toggle menu and persistence to `localStorage`. (Note: Phase 14 is pre-approved per `16-portfolio-pet-agent-context.md §0`).
 - **Phase 14.2 Rive Integration**: Installed `@rive-app/react-canvas` dependency. Replaced the static stub in `pet-visual.tsx` with a dynamic client-only import pointing to a new `rive-pet.tsx` wrapper. Integrated graceful degradation allowing fallbacks to the SVG stub upon 404/load errors or when `prefers-reduced-motion` is active.
+- **Phase 14.3 Welcome Experience**: Added a sequenced first-visit welcome greeting in `pet-controller.tsx` utilizing a `setTimeout` chain tracking state securely via `localStorage`. Enhanced `pet-speech.tsx` using `framer-motion`'s `<AnimatePresence>` for fluid entry/exit, adjusting speech bubble widths automatically between desktop (280px) and mobile (200px), while bypassing animations entirely for users who prefer reduced motion.
 
 ---
 
