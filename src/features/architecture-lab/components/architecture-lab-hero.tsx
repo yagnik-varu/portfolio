@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 
-export function ProjectsHero() {
+export function ArchitectureLabHero() {
   const shouldReduceMotion = useMotionPreference();
 
   return (
@@ -19,11 +19,11 @@ export function ProjectsHero() {
             ${!shouldReduceMotion ? "group-hover:bg-[position:-200%_center]" : ""}
           `}
         >
-          All Projects
+          Architecture Lab
         </span>
       </h1>
       <p className="text-xl md:text-2xl text-muted mt-6 max-w-2xl">
-        A complete directory of all software systems and architectures built, from full-stack platforms to module integrations.
+        A dedicated engineering workspace exploring system design, backend architectures, and technical growth.
       </p>
     </div>
   );
