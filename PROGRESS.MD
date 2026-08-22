@@ -24,6 +24,7 @@ Project Phase:
 - [x] Telemetry Dashboard
 - [x] Performance & Accessibility
 - [ ] Deployment
+- [ ] Portfolio Pet (Phase 14)
 - [ ] V1 Complete
 
 ---
@@ -159,6 +160,10 @@ Only list completed functionality. Update as work progresses.
 ## Process / Tooling
 
 - `AGENT.md` created — synthesizes `docs/00`–`15` into actionable rules and adds a standing **Teaching Mode** requirement: every implementation step must be explained in plain language (what's being built, why this approach over alternatives, what any new concept/library/pattern actually does, and how the decision traces back to the relevant doc). This applies for the rest of the build, not just at kickoff.
+
+## Phase 14: Portfolio Pet
+
+- **Phase 14.1 Placeholder Pet**: Scaffolded `src/features/portfolio-pet/` module, `pet-config.ts`, `pet-types.ts`, and a working Zustand store (`use-pet-store.ts`). Implemented `PortfolioPet` component injected directly into `layout.tsx` at a fixed bottom-right position. Added Hide toggle menu and persistence to `localStorage`. (Note: Phase 14 is pre-approved per `16-portfolio-pet-agent-context.md §0`).
 
 ---
 

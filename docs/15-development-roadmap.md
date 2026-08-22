@@ -198,6 +198,23 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 ---
 
+# Phase 14 — Portfolio Pet
+
+**Goal**: Add a discoverable interactive companion to the portfolio.
+
+**Deliverables**:
+- Phase 14.1: Placeholder Pet
+- Phase 14.2: Rive Integration
+- Phase 14.3: Welcome Experience
+- Phase 14.4: Event Wiring
+- Phase 14.5: Idle, Sleep, Wake
+- Phase 14.6: Hide/Disable & Accessibility
+- Phase 14.7: Polish & Perf Check
+
+**Done when**: Phase 14.7 completes and meets definition of done in `docs/16-portfolio-pet-implementation-plan.md`.
+
+---
+
 # Future Phases (Not V1)
 
 **CMS**: Admin dashboard, content editor, CMS integration, authentication, analytics dashboard.
