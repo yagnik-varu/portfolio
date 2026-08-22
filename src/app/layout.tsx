@@ -7,7 +7,7 @@ import { Footer } from "@/shared/components/layout/footer";
 import { SmoothScrollProvider } from "@/shared/components/smooth-scroll-provider";
 
 import { GlobalShortcuts } from "@/shared/components/global-shortcuts";
-import { PortfolioPet } from "@/features/portfolio-pet/components/portfolio-pet";
+// import { PortfolioPet } from "@/features/portfolio-pet/components/portfolio-pet";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScrollProvider>
           <GlobalShortcuts />
           <PerspectiveSync />
-          <PortfolioPet />
+          {/* <PortfolioPet /> */}
           <Header />
           <main className="flex-1 flex flex-col pt-24 md:pt-28 pb-20 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
