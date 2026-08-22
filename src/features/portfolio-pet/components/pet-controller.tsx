@@ -13,18 +13,6 @@ export function PetController() {
   
   const sequenceRunning = useRef(false);
 
-  // Initialize visibility from localStorage safely (SSR guarded by useEffect)
-  useEffect(() => {
-    try {
-      const isDisabled = localStorage.getItem("portfolio_pet_disabled");
-      if (isDisabled === "true") {
-        setVisible(false);
-      }
-    } catch (e) {
-      // Ignore private browsing errors
-    }
-  }, [setVisible]);
-
   // Welcome sequence
   useEffect(() => {
     if (typeof window === "undefined" || sequenceRunning.current) return;
@@ -149,6 +137,7 @@ export function PetController() {
       ambientTimer = setTimeout(() => {
         if (usePetStore.getState().status === 'idle') {
           const isMobile = window.matchMedia(`(max-width: ${petConfig.mobileBreakpointPx}px)`).matches;
+          const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           const rand = Math.random();
           
           if (rand < 0.8) {
@@ -156,7 +145,7 @@ export function PetController() {
           } else if (rand < 0.9) {
             setStatus('look');
             decayTimer = setTimeout(() => setStatus('idle'), 2000);
-          } else if (rand < 0.95 && (!isMobile || petConfig.mobileWalkEnabled)) {
+          } else if (rand < 0.95 && (!isMobile || petConfig.mobileWalkEnabled) && !prefersReducedMotion) {
             setStatus('walk');
             decayTimer = setTimeout(() => setStatus('idle'), 4000);
           } else {

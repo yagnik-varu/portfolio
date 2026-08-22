@@ -1,4 +1,5 @@
 import { profile } from "../../../../content/profile/profile";
+import { PetToggleFooterLink } from "@/features/portfolio-pet/components/pet-toggle-footer-link";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -52,6 +53,7 @@ export function Footer() {
               Resume
             </a>
           )}
+          <PetToggleFooterLink />
         </nav>
       </div>
     </footer>

@@ -10,23 +10,33 @@ import { PetController } from "./pet-controller";
 
 export function PortfolioPet() {
   const visible = usePetStore((s) => s.visible);
+  const setVisible = usePetStore((s) => s.setVisible);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
+    try {
+      if (localStorage.getItem("portfolio_pet_disabled") === "true") {
+        setDisabled(true);
+        setVisible(false);
+      }
+    } catch (e) {}
+
     setMounted(true);
+    
     const mql = window.matchMedia(`(max-width: ${petConfig.mobileBreakpointPx}px)`);
     setIsMobile(mql.matches);
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
-  }, []);
+  }, [setVisible]);
 
   // Avoid hydration mismatch by not rendering until mounted
   if (!mounted) return null;
 
-  // Don't render anything if the user has disabled the pet
-  if (!visible) return null;
+  // Immediately return null if disabled (prevents mounting PetController and listeners)
+  if (disabled || !visible) return null;
 
   const size = isMobile ? petConfig.mobileSize : petConfig.desktopSize;
 

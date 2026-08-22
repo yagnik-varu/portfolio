@@ -159,7 +159,7 @@ export function GlobalShortcuts() {
   if (!showToast) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-none">
+    <div className="fixed bottom-6 left-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-none">
       <div className="bg-surface/90 backdrop-blur-sm border border-border px-4 py-2 rounded-full shadow-lg flex items-center gap-3">
         <span className="text-sm font-medium font-mono text-text flex items-center gap-3">
           {toastMessage}
