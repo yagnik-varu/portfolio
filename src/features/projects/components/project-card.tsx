@@ -117,11 +117,14 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
   return (
     <motion.div
       className={cn(
-        "relative py-8 flex flex-col justify-between gap-6 h-full transition-colors duration-300 group border-t border-white/10 hover:border-text",
+        "relative p-6 sm:p-8 rounded-2xl flex flex-col justify-between gap-6 h-full transition-all duration-500 group border border-white/5 bg-surface/30 hover:bg-surface/60 hover:border-white/10 hover:shadow-2xl hover:-translate-y-1 overflow-hidden",
         className
       )}
       {...props}
     >
+      {/* Subtle top gradient accent on hover */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
       <div className="flex flex-col gap-4 relative z-10">
         <ProjectCardHeader project={project} />
         <ProjectCardSummary project={project} />
@@ -156,9 +159,10 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
             </motion.div>
           )}
         </AnimatePresence>
-        <Link href={targetHref} className="inline-block mt-4">
-          <span className="font-mono text-sm text-text flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300">
-            {isArchitecture ? "Inspect Architecture" : "View Project"} →
+        <Link href={targetHref} className="inline-block mt-4 w-fit">
+          <span className="font-mono text-sm text-muted flex items-center gap-2 group-hover:text-primary transition-colors duration-300">
+            {isArchitecture ? "Inspect Architecture" : "View Project"}
+            <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
           </span>
         </Link>
       </div>

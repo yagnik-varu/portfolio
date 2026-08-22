@@ -8,6 +8,7 @@ import { ProjectGrid } from "@/features/projects/components/project-grid";
 import { EmptyState } from "@/shared/components/empty-state/empty-state";
 import { Button } from "@/shared/components/button/button";
 import { ProjectFilterBar } from "./project-filter-bar";
+import { MagneticWrapper } from "@/shared/components/magnetic-wrapper";
 
 export interface ProjectDiscoveryProps {
   /** The full array of validated projects loaded from the server */
@@ -28,16 +29,18 @@ export function ProjectDiscovery({ initialProjects }: ProjectDiscoveryProps) {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       {/* Controls Area */}
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <SearchInput 
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Search by title, stack, or tags..."
-            className="w-full lg:max-w-sm"
-          />
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <MagneticWrapper strength={2} className="w-full lg:max-w-sm">
+            <SearchInput 
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search by title, stack, or tags..."
+              className="w-full"
+            />
+          </MagneticWrapper>
           
           <div className="w-full lg:w-auto">
             <ProjectFilterBar 

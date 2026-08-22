@@ -18,7 +18,7 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       <div className={cn("relative flex items-center w-full max-w-md", className)}>
         {/* Search Icon (Heroicons: magnifying-glass) */}
         <svg
-          className="absolute left-3 h-4 w-4 text-muted pointer-events-none"
+          className="absolute left-4 h-5 w-5 text-muted pointer-events-none"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -36,9 +36,9 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
-            "flex h-10 w-full rounded-md border border-border bg-surface pl-9 pr-4 text-sm text-text",
-            "transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium",
-            "placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent",
+            "flex h-12 md:h-14 w-full rounded-2xl border border-white/10 bg-surface/50 backdrop-blur-md pl-10 pr-4 text-sm md:text-base text-text shadow-sm",
+            "transition-all duration-300 file:border-0 file:bg-transparent file:text-sm file:font-medium",
+            "placeholder:text-muted hover:border-white/20 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-4 focus-visible:ring-primary/10",
             "disabled:cursor-not-allowed disabled:opacity-50"
           )}
           {...props}
