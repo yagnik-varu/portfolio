@@ -1,6 +1,5 @@
 import * as React from "react";
 import { SectionHeader } from "@/shared/components/section-header/section-header";
-import { Card } from "@/shared/components/card/card";
 
 // Lightweight local constant rather than a heavy Zod-validated content file.
 // These principles rarely change, are low-volume, and aren't reused across other pages.
@@ -38,23 +37,29 @@ export function EngineeringPrinciples() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {principles.map((principle, index) => (
-          <Card
+          <div
             key={index}
-            variant="default"
-            className="p-6 flex flex-col gap-3 border-border/50 bg-surface/30 hover:bg-surface/60 transition-colors"
+            className="relative p-6 sm:p-8 rounded-2xl flex flex-col gap-4 border border-white/5 bg-surface/30 hover:bg-surface/60 hover:border-white/10 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 group overflow-hidden"
           >
-            <div className="flex items-center gap-3">
-              <span className="flex items-center justify-center h-8 w-8 rounded bg-primary/10 text-primary font-mono text-sm font-bold">
-                0{index + 1}
-              </span>
-              <h3 className="text-lg font-bold font-sans text-foreground">
-                {principle.title}
-              </h3>
+            {/* Background number watermark */}
+            <span className="absolute -bottom-6 -right-2 text-[8rem] font-bold font-mono leading-none text-white/[0.02] group-hover:text-primary/[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none select-none z-0">
+              0{index + 1}
+            </span>
+            
+            <div className="relative z-10 flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary/10 text-primary font-mono text-sm font-bold shadow-[0_0_15px_-3px_rgba(var(--color-primary-rgb),0.2)] group-hover:shadow-[0_0_20px_-3px_rgba(var(--color-primary-rgb),0.4)] transition-shadow duration-500">
+                  0{index + 1}
+                </span>
+                <h3 className="text-xl font-bold font-sans text-text group-hover:text-primary transition-colors duration-300">
+                  {principle.title}
+                </h3>
+              </div>
+              <p className="text-sm text-muted leading-relaxed font-sans pl-14">
+                {principle.description}
+              </p>
             </div>
-            <p className="text-sm text-muted leading-relaxed font-sans pl-11">
-              {principle.description}
-            </p>
-          </Card>
+          </div>
         ))}
       </div>
     </section>
