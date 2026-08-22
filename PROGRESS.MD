@@ -24,20 +24,20 @@ Project Phase:
 - [x] Telemetry Dashboard
 - [x] Performance & Accessibility
 - [ ] Deployment
-- [ ] Portfolio Pet (Phase 14)
+- [x] Portfolio Pet (Phase 14)
 - [ ] V1 Complete
 
 ---
 
 # 2. Current Focus
 
-Current Phase: Phase 11 (Accessibility & Performance)
+Current Phase: Phase 14 (Portfolio Pet)
 
-Current Task: Phase 10 complete
+Current Task: Phase 14 complete
 
 Blocked By: Nothing
 
-Next Task: Phase 11 — Accessibility & Performance
+Next Task: Phase 13 — Deployment
 
 ---
 
@@ -168,6 +168,8 @@ Only list completed functionality. Update as work progresses.
 - **Phase 14.3 Welcome Experience**: Added a sequenced first-visit welcome greeting in `pet-controller.tsx` utilizing a `setTimeout` chain tracking state securely via `localStorage`. Enhanced `pet-speech.tsx` using `framer-motion`'s `<AnimatePresence>` for fluid entry/exit, adjusting speech bubble widths automatically between desktop (280px) and mobile (200px), while bypassing animations entirely for users who prefer reduced motion.
 - **Phase 14.4 Event Wiring**: Connected the pet to the user's portfolio journey. Modified the Perspective domain store to expose a shortcut counter (avoiding a second global keydown listener). Dropped in a thin `<PetEventTrigger>` client wrapper to dispatch events from Server Components (`ProjectPage`, `TelemetryPage`, `ArchitectureLabPage`) without breaking SSR. Added a probability-based background idle loop inside `pet-controller.tsx` (idle, look, walk, speech) to make the companion feel alive.
 - **Phase 14.5 Idle, Sleep, Wake**: Implemented comprehensive interactivity tracking (`mousemove`, `keydown`, `scroll`, etc.) on the window to track user presence. After 60 seconds (configured via `petConfig.idleTimeoutMs`) of inactivity, the pet transitions to a `sleep` state. The next interaction wakes the pet briefly before reverting to `idle`. Refactored the ambient behavior loop to use a self-cleaning recursive `setTimeout` pattern, avoiding CPU waste and `setInterval` overlaps when the browser throttles inactive tabs.
+- **Phase 14.6 Hide/Disable & Accessibility**: Built `<PetMenu>` with 'Hide pet' functionality and bound it to `localStorage` ('portfolio_pet_disabled'). Added ARIA labels, `aria-hidden` to purely decorative elements, and keyboard accessibility. Implemented system-level `prefers-reduced-motion` fallbacks across Rive animations, ensuring a completely static SVG placeholder renders when motion is disabled or Rive fails to load.
+- **Phase 14.7 Polish & Performance Check**: Conducted final codebase audit. Validated `@rive-app/react-canvas` is dynamically loaded (`ssr: false`) in `<PetVisual>`. Applied `React.memo` to `<PetVisual>`, `<PetSpeech>`, and `<PetMenu>` to prevent unnecessary re-renders. Reviewed all `useEffect` hooks across the module, ensuring every event listener, timeout, and media query is properly cleaned up on unmount (including fixing custom event timeouts in `<PetController>`). Verified error boundaries and `try/catch` wrappers around all `localStorage` calls to prevent crashes in private browsing.
 
 ---
 

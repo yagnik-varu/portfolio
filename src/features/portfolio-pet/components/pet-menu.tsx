@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import { usePetStore } from "../hooks/use-pet-store";
 
-export function PetMenu() {
+export const PetMenu = memo(function PetMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const setVisible = usePetStore((s) => s.setVisible);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -62,4 +62,4 @@ export function PetMenu() {
       )}
     </div>
   );
-}
+});

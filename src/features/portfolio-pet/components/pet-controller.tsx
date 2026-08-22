@@ -102,28 +102,35 @@ export function PetController() {
 
   // Listen to Custom Pet Events
   useEffect(() => {
+    let eventTimer: NodeJS.Timeout;
+
     const handlePetEvent = (e: Event) => {
       if (sequenceRunning.current) return;
       const customEvent = e as CustomEvent;
       const eventName = customEvent.detail?.event;
       recordInteraction();
 
+      clearTimeout(eventTimer);
+
       if (eventName === 'PROJECT_OPENED') {
         setStatus('happy');
         const msgs = petConfig.messages.projectOpened;
         setMessage(msgs[Math.floor(Math.random() * msgs.length)]);
-        setTimeout(() => { setMessage(null); setStatus('idle'); }, petConfig.speechDurationMs);
+        eventTimer = setTimeout(() => { setMessage(null); setStatus('idle'); }, petConfig.speechDurationMs);
       } else if (eventName === 'ARCHITECTURE_LAB_OPENED') {
         setStatus('point');
-        setTimeout(() => { setStatus('idle'); }, petConfig.speechDurationMs);
+        eventTimer = setTimeout(() => { setStatus('idle'); }, petConfig.speechDurationMs);
       } else if (eventName === 'TELEMETRY_VIEWED') {
         setStatus('look');
-        setTimeout(() => { setStatus('idle'); }, petConfig.speechDurationMs);
+        eventTimer = setTimeout(() => { setStatus('idle'); }, petConfig.speechDurationMs);
       }
     };
     
     window.addEventListener('portfolio-pet-event', handlePetEvent);
-    return () => window.removeEventListener('portfolio-pet-event', handlePetEvent);
+    return () => {
+      window.removeEventListener('portfolio-pet-event', handlePetEvent);
+      clearTimeout(eventTimer);
+    };
   }, [setStatus, setMessage, recordInteraction]);
 
   // Ambient Idle Behaviors (Resettable Timeout)

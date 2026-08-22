@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import dynamic from "next/dynamic";
 import { useReducedMotion } from "framer-motion";
 import { usePetStore } from "../hooks/use-pet-store";
@@ -8,7 +8,7 @@ import { usePetStore } from "../hooks/use-pet-store";
 // SSR-safe lazy loading for the Rive runtime
 const RivePet = dynamic(() => import("./rive-pet").then((mod) => mod.RivePet), { ssr: false });
 
-export function PetVisual() {
+export const PetVisual = memo(function PetVisual() {
   const status = usePetStore((s) => s.status);
   const prefersReducedMotion = useReducedMotion();
   const [assetError, setAssetError] = useState(false);
@@ -29,4 +29,4 @@ export function PetVisual() {
        <RivePet status={status} onError={() => setAssetError(true)} />
     </div>
   );
-}
+});

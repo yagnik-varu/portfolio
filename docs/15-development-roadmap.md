@@ -202,6 +202,8 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 
 **Goal**: Add a discoverable interactive companion to the portfolio.
 
+**Status**: ✅ Complete
+
 **Deliverables**:
 - Phase 14.1: Placeholder Pet
 - Phase 14.2: Rive Integration
@@ -210,8 +212,6 @@ Foundation → Design System → Content → Perspective Engine → Pages → Po
 - Phase 14.5: Idle, Sleep, Wake
 - Phase 14.6: Hide/Disable & Accessibility
 - Phase 14.7: Polish & Perf Check
-
-**Done when**: Phase 14.7 completes and meets definition of done in `docs/16-portfolio-pet-implementation-plan.md`.
 
 ---
 

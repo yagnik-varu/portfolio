@@ -3,9 +3,9 @@
 import { usePetStore } from "../hooks/use-pet-store";
 import { petConfig } from "../pet-config";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 
-export function PetSpeech() {
+export const PetSpeech = memo(function PetSpeech() {
   const message = usePetStore((s) => s.message);
   const prefersReducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
@@ -41,4 +41,4 @@ export function PetSpeech() {
       )}
     </AnimatePresence>
   );
-}
+});
