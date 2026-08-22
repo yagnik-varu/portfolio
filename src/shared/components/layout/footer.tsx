@@ -10,9 +10,13 @@ export function Footer() {
           <p className="text-sm text-muted">
             &copy; {currentYear} {profile.name}. All rights reserved.
           </p>
-          <p className="text-xs text-muted/60 font-mono">
-            Press <kbd className="px-1.5 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">C</kbd> to cycle theme colors
-          </p>
+          <div className="text-xs text-muted/60 font-mono flex flex-wrap gap-x-2 gap-y-1">
+            <span>Press <kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">C</kbd> to cycle theme</span>
+            <span>&bull;</span>
+            <span><kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">R</kbd> for Resume</span>
+            <span>&bull;</span>
+            <span><kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">H</kbd> <kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">P</kbd> <kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">A</kbd> to navigate</span>
+          </div>
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-6">

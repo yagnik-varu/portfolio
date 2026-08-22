@@ -6,8 +6,7 @@ import { Header } from "@/shared/components/layout/header";
 import { Footer } from "@/shared/components/layout/footer";
 import { SmoothScrollProvider } from "@/shared/components/smooth-scroll-provider";
 
-
-import { ThemeCycler } from "@/shared/components/theme-cycler";
+import { GlobalShortcuts } from "@/shared/components/global-shortcuts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-full flex flex-col bg-background text-text overflow-x-hidden">
         <SmoothScrollProvider>
-          <ThemeCycler />
+          <GlobalShortcuts />
           <PerspectiveSync />
           <Header />
           <main className="flex-1 flex flex-col pt-24 md:pt-28 pb-20 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

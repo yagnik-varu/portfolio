@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { profile } from "../../../content/profile/profile";
 
 // const THEMES = [
 //   { name: "Emerald", hex: "#10b981" },
@@ -64,9 +66,11 @@ const THEMES = [
 ]
 
 
-export function ThemeCycler() {
+export function GlobalShortcuts() {
+  const router = useRouter();
   const [themeIndex, setThemeIndex] = useState(0);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState<React.ReactNode>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,43 +79,90 @@ export function ThemeCycler() {
         return;
       }
 
-      // 'c' or 'C' key
-      if (e.key.toLowerCase() === 'c') {
+      // Ignore if modifier keys are pressed (e.g. Ctrl+R, Cmd+R for refresh)
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+
+      // 'c' or 'C' key - Change Color
+      if (key === 'c') {
         setThemeIndex((prev) => {
           const nextIndex = (prev + 1) % THEMES.length;
           const nextTheme = THEMES[nextIndex];
 
           document.documentElement.style.setProperty('--color-primary-base', nextTheme.hex);
-
+          
+          setToastMessage(
+            <>
+              <div 
+                className="w-3 h-3 rounded-full shadow-sm"
+                style={{ backgroundColor: nextTheme.hex }}
+              />
+              <span>Theme: {nextTheme.name}</span>
+            </>
+          );
           setShowToast(true);
 
           return nextIndex;
         });
+        return;
+      }
+
+      // 'r' or 'R' key - Resume
+      if (key === 'r') {
+        if (profile.resumeUrl) {
+          window.open(profile.resumeUrl, "_blank");
+          setToastMessage(<span>Opening Resume...</span>);
+          setShowToast(true);
+        }
+        return;
+      }
+
+      // 'h' or 'H' key - Home
+      if (key === 'h') {
+        router.push('/');
+        setToastMessage(<span>Navigating to Home</span>);
+        setShowToast(true);
+        return;
+      }
+
+      // 'p' or 'P' key - Projects
+      if (key === 'p') {
+        router.push('/projects');
+        setToastMessage(<span>Navigating to Projects</span>);
+        setShowToast(true);
+        return;
+      }
+
+      // 'a' or 'A' key - Architecture Lab
+      if (key === 'a') {
+        router.push('/architecture-lab');
+        setToastMessage(<span>Navigating to Architecture Lab</span>);
+        setShowToast(true);
+        return;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (showToast) {
       const timer = setTimeout(() => setShowToast(false), 2000);
       return () => clearTimeout(timer);
     }
-  }, [showToast, themeIndex]);
+  }, [showToast, themeIndex, toastMessage]);
 
   if (!showToast) return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-none">
       <div className="bg-surface/90 backdrop-blur-sm border border-border px-4 py-2 rounded-full shadow-lg flex items-center gap-3">
-        <div
-          className="w-3 h-3 rounded-full shadow-sm"
-          style={{ backgroundColor: THEMES[themeIndex].hex }}
-        />
-        <span className="text-sm font-medium font-mono text-text">
-          {THEMES[themeIndex].name}
+        <span className="text-sm font-medium font-mono text-text flex items-center gap-3">
+          {toastMessage}
         </span>
       </div>
     </div>
