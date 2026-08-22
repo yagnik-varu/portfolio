@@ -138,35 +138,98 @@ export function PetController() {
     return () => window.removeEventListener('portfolio-pet-event', handlePetEvent);
   }, [setStatus, setMessage, recordInteraction]);
 
-  // Probability Loop (Background idle animations)
+  // Ambient Idle Behaviors (Resettable Timeout)
   useEffect(() => {
-    if (!hasSeenIntro || sequenceRunning.current || !isIdle) return;
+    if (!hasSeenIntro || sequenceRunning.current) return;
 
-    const interval = setInterval(() => {
-      const isMobile = window.matchMedia(`(max-width: ${petConfig.mobileBreakpointPx}px)`).matches;
-      const rand = Math.random();
-      
-      if (rand < 0.8) {
-        // 80% Idle (Do nothing)
-      } else if (rand < 0.9) {
-        // 10% Look
-        setStatus('look');
-        setTimeout(() => setStatus('idle'), 2000);
-      } else if (rand < 0.95 && !isMobile) {
-        // 5% Walk (Desktop only)
-        setStatus('walk');
-        setTimeout(() => setStatus('idle'), 4000);
-      } else {
-        // 5% Speech (just a random small bark/noise, but we might just do happy/point if no generic text is configured)
-        setStatus('point');
-        setTimeout(() => setStatus('idle'), 2000);
+    let ambientTimer: NodeJS.Timeout;
+    let decayTimer: NodeJS.Timeout;
+
+    const scheduleNext = () => {
+      ambientTimer = setTimeout(() => {
+        if (usePetStore.getState().status === 'idle') {
+          const isMobile = window.matchMedia(`(max-width: ${petConfig.mobileBreakpointPx}px)`).matches;
+          const rand = Math.random();
+          
+          if (rand < 0.8) {
+            // 80% Do nothing
+          } else if (rand < 0.9) {
+            setStatus('look');
+            decayTimer = setTimeout(() => setStatus('idle'), 2000);
+          } else if (rand < 0.95 && (!isMobile || petConfig.mobileWalkEnabled)) {
+            setStatus('walk');
+            decayTimer = setTimeout(() => setStatus('idle'), 4000);
+          } else {
+            setStatus('point');
+            decayTimer = setTimeout(() => setStatus('idle'), 2000);
+          }
+        }
+        
+        // Always schedule next check
+        scheduleNext();
+      }, 15000); // Check every 15s
+    };
+
+    scheduleNext();
+
+    return () => {
+      clearTimeout(ambientTimer);
+      clearTimeout(decayTimer);
+    };
+  }, [hasSeenIntro, setStatus]);
+
+  // Activity Tracking & Sleep Threshold
+  useEffect(() => {
+    if (!hasSeenIntro || sequenceRunning.current) return;
+
+    let sleepTimer: NodeJS.Timeout;
+    let wakeDecayTimer: NodeJS.Timeout;
+    let throttleTimer: NodeJS.Timeout | null = null;
+
+    const resetSleepTimer = () => {
+      clearTimeout(sleepTimer);
+      sleepTimer = setTimeout(() => {
+        if (usePetStore.getState().status !== 'sleep') {
+          setStatus('sleep');
+        }
+      }, petConfig.idleTimeoutMs); // defaults to 60s
+    };
+
+    const handleActivity = () => {
+      const currentStatus = usePetStore.getState().status;
+      if (currentStatus === 'sleep') {
+        setStatus('wake');
+        clearTimeout(wakeDecayTimer);
+        wakeDecayTimer = setTimeout(() => {
+          setStatus('idle');
+        }, 2000); // Return to idle after a brief wake state
       }
-    }, 10000); // Check every 10s
+      
+      usePetStore.getState().recordInteraction();
+      resetSleepTimer();
+    };
 
-    return () => clearInterval(interval);
-  }, [hasSeenIntro, isIdle, setStatus]);
+    const throttledActivity = () => {
+      if (throttleTimer) return;
+      handleActivity();
+      throttleTimer = setTimeout(() => {
+        throttleTimer = null;
+      }, 500); // Throttle global listeners to max 2 executions per second
+    };
 
-  // Phase 14.5 will add more logic here (Idle cycle/Sleep)
-  
+    // Initial start
+    resetSleepTimer();
+
+    const events = ['mousemove', 'click', 'keydown', 'scroll', 'touchstart'];
+    events.forEach(e => window.addEventListener(e, throttledActivity, { passive: true }));
+
+    return () => {
+      events.forEach(e => window.removeEventListener(e, throttledActivity));
+      clearTimeout(sleepTimer);
+      clearTimeout(wakeDecayTimer);
+      if (throttleTimer) clearTimeout(throttleTimer);
+    };
+  }, [hasSeenIntro, setStatus]);
+
   return null; // Controller doesn't render anything
 }
