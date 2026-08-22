@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScrollProvider>
           <PerspectiveSync />
           <Header />
-          <main className="flex-1 flex flex-col pt-24 md:pt-28">
+          <main className="flex-1 flex flex-col pt-24 md:pt-28 pb-20 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </main>
           <Footer />

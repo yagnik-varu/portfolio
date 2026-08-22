@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { Container } from "@/shared/components/container/container";
 import { ModuleGrid } from "@/features/architecture-lab/components/module-grid";
 import { LearningTimeline } from "@/features/architecture-lab/components/learning-timeline";
 import { EngineeringPrinciples } from "@/features/architecture-lab/components/engineering-principles";
@@ -14,8 +13,8 @@ export const metadata: Metadata = {
 
 export default function ArchitectureLabPage() {
   return (
-    <main>
-      <Container className="py-20 md:py-32 flex flex-col gap-24">
+    <>
+      <div className="flex flex-col gap-24 pt-8 md:pt-12">
       {/* Page Header */}
       <div className="flex flex-col gap-4">
         <h1 className="text-4xl md:text-5xl font-bold font-sans text-foreground">
@@ -38,7 +37,7 @@ export default function ArchitectureLabPage() {
           <EngineeringPrinciples />
         </div>
       </ErrorBoundary>
-      </Container>
-    </main>
+      </div>
+    </>
   );
 }

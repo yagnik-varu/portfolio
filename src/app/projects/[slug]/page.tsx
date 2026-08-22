@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProjects } from "@/lib/mdx/projects";
 import { splitMdxSections } from "@/lib/mdx/section-splitter";
-import { Container } from "@/shared/components/container/container";
 import { ProjectHero } from "@/features/project-detail/components/project-hero";
 import { TechnologyStackSection } from "@/features/project-detail/components/technology-stack-section";
 import { OverviewSection } from "@/features/project-detail/components/overview-section";
@@ -35,7 +34,7 @@ export default async function ProjectPage({
   const sections = splitMdxSections(project.content);
 
   return (
-    <Container className="py-12 md:py-20 flex flex-col gap-8 md:gap-16">
+    <div className="flex flex-col gap-8 md:gap-16 pt-8">
       <ErrorBoundary fallbackMessage={`Unable to load project details for ${project.title}.`}>
         <div className="flex flex-col gap-8 md:gap-16 w-full">
           {/* 1. Identity & Stack (Always Visible) */}
@@ -59,6 +58,6 @@ export default async function ProjectPage({
           </div>
         </div>
       </ErrorBoundary>
-    </Container>
+    </div>
   );
 }

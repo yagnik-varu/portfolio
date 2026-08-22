@@ -50,7 +50,15 @@ export function Header() {
           }
           className="pointer-events-auto flex h-16 w-full max-w-5xl items-center justify-between rounded-full border border-white/[0.08] backdrop-blur-2xl px-6 transition-colors"
         >
-          <Link href="/" className="font-bold tracking-tight text-text text-lg hover:text-primary transition-colors">
+          <Link 
+            href="/" 
+            className="font-bold tracking-tight text-text text-lg hover:text-primary transition-colors"
+            onClick={() => {
+              if (window.location.pathname === "/") {
+                window.dispatchEvent(new Event("trigger-scroll-top"));
+              }
+            }}
+          >
             Yagnik Varu
           </Link>
 

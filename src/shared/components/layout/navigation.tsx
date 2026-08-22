@@ -32,6 +32,11 @@ export function Navigation({ perspective, className = "" }: NavigationProps) {
             key={item.href}
             href={item.href}
             data-active={isActive ? "true" : undefined}
+            onClick={() => {
+              if (pathname === item.href) {
+                window.dispatchEvent(new Event("trigger-scroll-top"));
+              }
+            }}
             className={`nav-link text-sm font-medium transition-colors hover:text-primary ${
               isActive ? "text-primary font-semibold" : "text-muted"
             }`}

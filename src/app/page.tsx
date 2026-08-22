@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <BackgroundEffects />
-      <div className="container mx-auto px-4 md:px-6 max-w-5xl flex flex-col gap-12 md:gap-16 pt-8 pb-20">
+      <div className="flex flex-col gap-12 md:gap-16 pt-8">
         <LayoutShiftWrapper>
           <HeroSection />
         </LayoutShiftWrapper>

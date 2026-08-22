@@ -5,8 +5,6 @@ import { revalidatePath } from "next/cache";
 import { getGithubTelemetry } from "@/lib/telemetry/github-adapter";
 import { getMockTelemetry } from "@/lib/telemetry/mock-source";
 import type { Telemetry } from "@/lib/validation/telemetry.schema";
-
-import { Container } from "@/shared/components/container/container";
 import { SectionHeader } from "@/shared/components/section-header/section-header";
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
 
@@ -44,7 +42,7 @@ export default async function TelemetryPage() {
   ];
 
   return (
-    <Container className="py-12 md:py-24 flex flex-col gap-12">
+    <div className="flex flex-col gap-12 pt-8 md:pt-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <SectionHeader 
           title="Engineering Telemetry" 
@@ -86,6 +84,6 @@ export default async function TelemetryPage() {
           </div>
         </div>
       </ErrorBoundary>
-    </Container>
+    </div>
   );
 }

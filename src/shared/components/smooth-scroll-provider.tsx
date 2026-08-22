@@ -3,6 +3,7 @@
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "@/lib/motion/gsap-config";
 import { ScrollTrigger } from "@/lib/motion/gsap-config";
 
@@ -59,6 +60,31 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const prefersReducedMotion = useReducedMotionMediaQuery();
   // Hold a stable ref to the lenis instance for the GSAP ticker cleanup
   const lenisRef = useRef<any>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Scroll to top on route change to prevent layout issues like navbar overlapping
+    // Route changes should be immediate so we don't see jarring cross-page scrolls
+    if (lenisRef.current?.lenis) {
+      lenisRef.current.lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    // Listen for manual trigger (e.g. clicking same-page links) which should be smooth
+    const handleManualScrollTop = () => {
+      if (lenisRef.current?.lenis) {
+        lenisRef.current.lenis.scrollTo(0, { immediate: false });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    window.addEventListener("trigger-scroll-top", handleManualScrollTop);
+    return () => window.removeEventListener("trigger-scroll-top", handleManualScrollTop);
+  }, []);
 
   useEffect(() => {
     // When reduced motion is active we bail out immediately — no ticker wired
