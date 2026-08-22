@@ -6,6 +6,7 @@ import { EngineeringPrinciples } from "@/features/architecture-lab/components/en
 import { engineeringModules } from "../../../content/perspectives/engineering-modules";
 
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
+import { PetEventTrigger } from "@/features/portfolio-pet/components/pet-event-trigger";
 
 export const metadata: Metadata = {
   title: "Architecture Lab",
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 export default function ArchitectureLabPage() {
   return (
     <>
+      <PetEventTrigger event="ARCHITECTURE_LAB_OPENED" />
       <div className="flex flex-col gap-24 pt-8 md:pt-12">
         {/* Page Header */}
         <ArchitectureLabHero />

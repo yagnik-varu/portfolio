@@ -9,8 +9,12 @@ import { usePerspectiveStore } from "@/domains/perspective/store";
  */
 export function usePerspectiveShortcut() {
   const toggle = usePerspectiveStore((state) => state.toggle);
+  const incrementShortcutCount = usePerspectiveStore((state) => state.incrementShortcutCount);
 
   useEffect(() => {
+    // Mobile guard: Do not track/attach logic if on mobile viewport
+    if (window.matchMedia("(max-width: 767px)").matches) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key.toLowerCase() === "p") {
         const target = e.target as HTMLElement;
@@ -26,6 +30,7 @@ export function usePerspectiveShortcut() {
 
         e.preventDefault();
         toggle();
+        incrementShortcutCount();
       }
     };
 

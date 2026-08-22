@@ -10,6 +10,7 @@ import { FutureImprovementsSection } from "@/features/project-detail/components/
 import { PerspectiveGater } from "@/features/perspective/components/perspective-gater";
 
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
+import { PetEventTrigger } from "@/features/portfolio-pet/components/pet-event-trigger";
 
 export async function generateStaticParams() {
   const projects = getProjects();
@@ -35,6 +36,7 @@ export default async function ProjectPage({
 
   return (
     <div className="flex flex-col gap-8 md:gap-16 pt-8">
+      <PetEventTrigger event="PROJECT_OPENED" />
       <ErrorBoundary fallbackMessage={`Unable to load project details for ${project.title}.`}>
         <div className="flex flex-col gap-8 md:gap-16 w-full">
           {/* 1. Identity & Stack (Always Visible) */}
