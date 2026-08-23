@@ -3,27 +3,27 @@ import type { LearningMilestone } from "../../src/lib/validation/learning-milest
 export const learningTimeline: LearningMilestone[] = [
   {
     title: "React",
-    description: "[PLACEHOLDER] Initial focus on frontend component-driven development and state management.",
-    date: "[YEAR PLACEHOLDER]",
+    description: "Initial focus on frontend component-driven development and state management.",
+    date: "2023",
   },
   {
     title: "Full Stack",
-    description: "[PLACEHOLDER] Expanding into backend API development, relational databases, and end-to-end type safety.",
-    date: "[YEAR PLACEHOLDER]",
+    description: "Expanding into backend API development, relational databases, and end-to-end type safety.",
+    date: "2024",
   },
   {
     title: "NestJS",
-    description: "[PLACEHOLDER] Shifting focus toward robust backend frameworks, dependency injection, and enforcing strict domain boundaries.",
-    date: "[YEAR PLACEHOLDER]",
+    description: "Shifting focus toward robust backend frameworks, dependency injection, and enforcing strict domain boundaries.",
+    date: "2025",
   },
   {
     title: "System Design",
-    description: "[PLACEHOLDER] Studying architecture patterns, database design trade-offs, and horizontal scaling strategies.",
-    date: "[YEAR PLACEHOLDER]",
+    description: "Studying architecture patterns, database design trade-offs, and horizontal scaling strategies.",
+    date: "2025",
   },
   {
     title: "Microservices",
-    description: "[PLACEHOLDER] Exploring distributed systems, event-driven architectures, and handling inter-service communication.",
-    date: "[YEAR PLACEHOLDER]",
+    description: "Exploring distributed systems, event-driven architectures, and handling inter-service communication.",
+    date: "2026",
   }
 ];
