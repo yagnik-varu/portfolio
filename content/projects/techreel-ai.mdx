@@ -1,43 +1,60 @@
 ---
-slug: techreel-ai
-title: TechReel AI
-summary: AI-powered automated video generation pipeline.
-status: completed
-featured: false
+slug: n8n-ai-reel-generator
+title: n8n Automated Reel Generator
+summary: Currently building a fully automated video generation pipeline using n8n to orchestrate AI models for short-form content creation.
+status: active
+featured: true
 architectureType: event-driven
-complexity: production
+complexity: advanced
 visibility: public
 stack:
-  frontend:
-    - React
-  backend:
-    - Python
-    - FastAPI
+  frontend: []
+  backend: 
+    - n8n
   database:
-    - Redis
+    - PostgreSQL (Planned)
   infrastructure:
-    - AWS
+    - Docker
+    - AWS S3
 tags:
-  - ai
-  - video-processing
   - automation
+  - n8n
+  - generative-ai
 impactMetrics:
-  - "↓ 80% video editing time"
-  - "Processed 500+ GB of video content daily"
+  - "Targeting the automation of a 4-hour manual editing process into a 2-minute workflow"
+  - "Designing a 15+ node orchestration pipeline"
 ---
-
-{/* [PLACEHOLDER CONTENT] */}
 
 # Overview
 
-Technical content creators struggled to repurpose hour-long talks into short-form content due to the massive time sink of manual editing. The system needed to automatically detect key highlights and generate platform-ready short videos without human intervention.
+I am currently developing an automated video generation engine that will be powered almost entirely by **n8n workflows**. The ultimate goal of this project is to take a simple text prompt (or a webhook payload from a CMS) and automatically generate a polished, ready-to-publish short-form reel. 
+
+Instead of writing a custom monolithic backend from scratch, I am utilizing n8n to orchestrate a complex sequence of AI services. Once completed, the workflow will handle everything from expanding the prompt into a script, generating a voiceover, fetching background assets, and combining them into a final video.
 
 # Architecture
 
-We considered a synchronous batch processing model but rejected it due to unpredictable video generation times causing HTTP timeouts. We designed an event-driven pipeline using AWS SQS and specialized worker nodes (Transcription Worker, NLP Summarizer, Video Cutter). This allowed us to scale workers independently based on queue depth and hardware requirements (e.g., GPU instances only for the NLP phase).
+The system is designed to rely on an event-driven n8n pipeline hosted via Docker. 
 
+<ArchitectureCallout title="Decision in Progress: Handling Long-Running Renders">
+Because video rendering is highly asynchronous and takes time, I am currently evaluating the best way to handle this in n8n. I am moving away from long-polling HTTP request nodes and instead planning to implement a webhook callback architecture. The render service will ping a specific n8n webhook node once the video is finished to resume the workflow.
+</ArchitectureCallout>
 
+**The Planned Workflow Steps:**
+1. **Trigger**: Will receive a webhook containing the video topic.
+2. **Script Generation**: An OpenAI node will draft a 60-second engaging script.
+3. **Voiceover**: The script will be passed via HTTP request to the ElevenLabs API for high-quality TTS (Text-to-Speech).
+4. **Assembly**: Audio and background visuals will be sent to a rendering service (via FFmpeg or an external API).
+5. **Delivery**: The final MP4 will be uploaded to AWS S3, and a Slack notification will be triggered.
+
+# Implementation Challenges
+
+The hardest part of building this workflow right now is designing for **error handling and rate limiting**. 
+
+Because the pipeline will rely on multiple external AI APIs (OpenAI, ElevenLabs, etc.), a timeout or rate limit on a single node could cause the entire video generation to fail. Currently, I am actively mapping out how to use n8n’s built-in Error Trigger nodes and planning to implement exponential backoff and retry logic for all external HTTP requests.
 
 # Future Improvements
 
-The pipeline reduced manual editing time by 80% and successfully processed over 500GB of video daily at its peak. If building this again, I would bypass the intermediate object storage (S3) for small, ephemeral video chunks and stream them directly between worker memory spaces using gRPC to further cut down IO latency.
+Because this workflow is actively being built, my immediate roadmap includes:
+- Connecting the n8n workflow to a **PostgreSQL database** to log generation history, track API costs per reel, and manage user prompts.
+- Implementing a Sub-Workflow architecture in n8n to cleanly separate the "Scripting", "Audio", and "Video Rendering" phases into modular, reusable components.
+- Adding an automatic publishing node (e.g., YouTube API or Instagram Graph API) to post the video directly once generation is complete.

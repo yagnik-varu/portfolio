@@ -9,6 +9,8 @@ import { ContactCTASection } from "@/features/home/components/contact-cta-sectio
 import { LayoutShiftWrapper } from "@/shared/components/motion/layout-shift-wrapper";
 import { BackgroundEffects } from "@/shared/components/layout/background-effects";
 
+import { PerspectiveGater } from "@/features/perspective/components/perspective-gater";
+
 export default function Home() {
   const projects = getProjects();
   const projectCount = projects.length;
@@ -22,7 +24,9 @@ export default function Home() {
         </LayoutShiftWrapper>
         
         <LayoutShiftWrapper>
-          <CurrentFocusSection />
+          <PerspectiveGater requiredPerspective="overview">
+            <CurrentFocusSection />
+          </PerspectiveGater>
         </LayoutShiftWrapper>
         
         <LayoutShiftWrapper>

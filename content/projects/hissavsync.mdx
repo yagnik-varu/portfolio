@@ -1,0 +1,52 @@
+---
+slug: hisaabsync
+title: HisaabSync
+summary: A collaborative room treasury and pool expense management system with an immutable ledger.
+status: completed
+featured: true
+architectureType: modular-monolith
+complexity: production
+visibility: public
+stack:
+  frontend:
+    - API Only
+  backend:
+    - Node.js
+    - NestJS
+    - TypeScript
+  database:
+    - PostgreSQL
+    - Prisma ORM
+  infrastructure:
+    - Docker
+tags:
+  - backend
+  - system-design
+  - fintech
+impactMetrics:
+  - "Eliminated peer-to-peer debt complexity with a unified pool model"
+  - "Guaranteed ACID consistency via row-level database locking"
+repositoryUrl: https://github.com/yagnik-varu/hissabSync
+---
+
+# Overview
+
+Managing shared expenses in living arrangements (hostels, flats, trip groups) using traditional peer-to-peer debt simplification tools often leads to messy cross-member debts and lack of visibility. The core business issue HisaabSync solves is providing 100% financial transparency by operating on a shared treasury pool model. Members pool funds, and when someone pays for a shared expense out-of-pocket, the system creates a debt owed by the treasury to that member, effectively centralizing all cash flow.
+
+# Architecture
+
+HisaabSync is architected as a Modular Monolith built on NestJS, utilizing PostgreSQL and Prisma ORM. Each domain module (Auth, Room, Treasury, Expense, Reimbursement) follows strict Clean Architecture separation. Modules communicate purely via exported service interfaces or asynchronously through an in-memory event bus (`EventEmitter2`), with zero direct cross-module database queries.
+
+<ArchitectureCallout title="Decision: Why Modular Monolith for V1?">
+We evaluated a Microservices architecture but chose a Modular Monolith to eliminate distributed system complexities (like distributed tracing and sagas) during early development. This drastically simplified ACID transactions, enabling single-database transactions (`prisma.$transaction`) across ledger operations without 2-phase commit overhead, while still maintaining strict domain boundaries for future extraction.
+</ArchitectureCallout>
+
+All ledger mutations use Pessimistic Row Locking (`SELECT ... FOR UPDATE`) to prevent race conditions and double-spending during concurrent financial operations.
+
+# Implementation Challenges
+
+One of the hardest parts of building this was ensuring cross-module consistency during high-stakes financial operations (like reimbursement payouts) without tightly coupling the modules. We faced architectural challenges when dealing with asynchronous side-effects—for example, approving an expense asynchronously triggers a reimbursement creation. We discovered a minor race condition during E2E testing where querying reimbursements immediately after an expense approval returned empty. We resolved this by explicitly mapping out these event-driven async flows so that frontends can account for the slight delay.
+
+# Future Improvements
+
+The V1 system successfully handles the core ledger and treasury rules cleanly via a REST API. In the future, I plan to extract the Notification and Audit modules into standalone microservices listening to a real message broker (like RabbitMQ). Additionally, I would integrate automated UPI payouts via a payment gateway to replace the manual `Mark Paid` step for reimbursements.
