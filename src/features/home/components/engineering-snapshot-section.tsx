@@ -75,19 +75,32 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
         {metrics.map((metric) => {
           const cardContent = (
             <div
-              className="relative p-6 flex flex-col justify-between gap-6 h-full transition-colors duration-300 group"
+              className="relative p-6 flex flex-col justify-between gap-6 h-full transition-all duration-500 group rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 hover:-translate-y-2 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)] overflow-hidden"
             >
+              {/* Corner glow */}
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+              
+              {/* Ambient background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
               <div className="flex flex-col gap-2 relative z-10">
-                <span className="text-sm font-semibold uppercase tracking-wider text-muted group-hover:text-text transition-colors">
+                <span className="text-sm font-semibold uppercase tracking-wider text-muted group-hover:text-white transition-colors duration-300">
                   {metric.label}
                 </span>
-                <span className="text-6xl sm:text-7xl font-bold font-mono text-text tracking-tighter">
+                <span className="text-6xl sm:text-7xl font-bold font-mono text-text tracking-tighter group-hover:scale-[1.03] group-hover:text-white origin-left transition-all duration-500 ease-out">
                   <ScrubCountUp value={metric.numericValue} suffix={metric.suffix} />
                 </span>
               </div>
-              <p className="text-sm text-muted/80 relative z-10 border-t border-white/10 pt-4 mt-2">
-                {metric.description}
-              </p>
+              
+              <div className="relative z-10 mt-2">
+                {/* Animated shimmer line */}
+                <div className="h-[1px] w-full bg-white/10 relative overflow-hidden mb-4 transition-colors duration-500 group-hover:bg-white/20">
+                  <div className="absolute inset-0 w-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out" />
+                </div>
+                <p className="text-sm text-muted/80 group-hover:text-white/90 transition-colors duration-300">
+                  {metric.description}
+                </p>
+              </div>
             </div>
           );
 
