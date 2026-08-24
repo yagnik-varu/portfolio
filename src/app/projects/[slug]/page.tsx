@@ -34,20 +34,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${project.title} | Yagnik Varu`,
       description: project.summary,
       type: "article",
-      images: [
-        {
-          url: `/og/projects/${project.slug}.png`, // TODO (Phase 13): Replace placeholder with actual per-project OG generation
-          width: 1200,
-          height: 630,
-          alt: `Architecture and case study for ${project.title}`,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
       title: project.title,
       description: project.summary,
-      images: [`/og/projects/${project.slug}.png`], // TODO (Phase 13): Replace placeholder
     },
   };
 }

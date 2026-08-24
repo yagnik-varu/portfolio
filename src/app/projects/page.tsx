@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Projects | Yagnik Varu",
     description: "A complete directory of all software systems and architectures built by Yagnik Varu.",
-    images: [{ url: "/og/projects.png", width: 1200, height: 630 }], // TODO (Phase 13): Replace placeholder
   },
 };
 

@@ -8,6 +8,8 @@ import { SmoothScrollProvider } from "@/shared/components/smooth-scroll-provider
 
 import { GlobalShortcuts } from "@/shared/components/global-shortcuts";
 // import { PortfolioPet } from "@/features/portfolio-pet/components/portfolio-pet";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,20 +37,11 @@ export const metadata: Metadata = {
     title: "Yagnik Varu | Backend Engineer",
     description: "Portfolio of Yagnik Varu, Backend Engineer focusing on scalable systems and clean architecture.",
     siteName: "Yagnik Varu Portfolio",
-    images: [
-      {
-        url: "/og/default.png", // TODO (Phase 13): Replace placeholder with actual OG image
-        width: 1200,
-        height: 630,
-        alt: "Yagnik Varu - Backend Engineer Portfolio",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Yagnik Varu | Backend Engineer",
     description: "Portfolio of Yagnik Varu, Backend Engineer focusing on scalable systems and clean architecture.",
-    images: ["/og/default.png"], // TODO (Phase 13): Replace placeholder with actual Twitter card image
   },
 };
 
@@ -69,6 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
         </SmoothScrollProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

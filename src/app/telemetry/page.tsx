@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Telemetry | Yagnik Varu",
     description: "Live engineering metrics and activity dashboard.",
-    images: [{ url: "/og/telemetry.png", width: 1200, height: 630 }], // TODO (Phase 13): Replace placeholder
   },
 };
 
