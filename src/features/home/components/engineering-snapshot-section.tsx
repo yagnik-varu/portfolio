@@ -12,14 +12,20 @@ interface EngineeringSnapshotSectionProps {
 }
 
 export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnapshotSectionProps) {
-  // 1. Calculate Years Experience from earliest start date
-  const startYears = experiences.map((exp) => {
-    const year = parseInt(exp.startDate.split("-")[0], 10);
-    return isNaN(year) ? new Date().getFullYear() : year;
+  // 1. Calculate Years Experience from earliest start date with month precision
+  const startDates = experiences.map((exp) => {
+    // startDate is in YYYY-MM format
+    const [year, month] = exp.startDate.split("-").map(Number);
+    if (!isNaN(year) && !isNaN(month)) {
+      return new Date(year, month - 1);
+    }
+    return new Date();
   });
-  const earliestYear = startYears.length > 0 ? Math.min(...startYears) : new Date().getFullYear();
-  const currentYear = new Date().getFullYear();
-  const calculatedYears = Math.max(1, currentYear - earliestYear);
+  const earliestDate = startDates.length > 0 ? new Date(Math.min(...startDates.map(d => d.getTime()))) : new Date();
+  const currentDate = new Date();
+  
+  const totalMonths = (currentDate.getFullYear() - earliestDate.getFullYear()) * 12 + (currentDate.getMonth() - earliestDate.getMonth());
+  const calculatedYears = Math.max(1, +(totalMonths / 12).toFixed(1));
 
   // 2. Calculate unique technologies across experiences
   const uniqueTechs = new Set<string>();
@@ -32,6 +38,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
       id: "years-experience",
       label: "Years Experience",
       numericValue: calculatedYears,
+      decimals: 1,
       suffix: "+",
       description: "Production & project delivery",
     },
@@ -39,6 +46,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
       id: "projects-built",
       label: "Projects Built",
       numericValue: projectCount,
+      decimals: 0,
       suffix: "",
       description: "Validated architectural builds",
       href: "/projects",
@@ -47,6 +55,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
       id: "technologies-used",
       label: "Technologies Used",
       numericValue: Math.max(uniqueTechs.size, 10),
+      decimals: 0,
       suffix: "+",
       description: "Backend, frontend & cloud",
     },
@@ -54,6 +63,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
       id: "github-activity",
       label: "GitHub Activity",
       numericValue: 500,
+      decimals: 0,
       suffix: "+",
       description: "Contributions & telemetry",
       href: "/telemetry",
@@ -88,7 +98,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
                   {metric.label}
                 </span>
                 <span className="text-6xl sm:text-7xl font-bold font-mono text-text tracking-tighter group-hover:scale-[1.03] group-hover:text-white origin-left transition-all duration-500 ease-out">
-                  <ScrubCountUp value={metric.numericValue} suffix={metric.suffix} />
+                  <ScrubCountUp value={metric.numericValue} suffix={metric.suffix} decimals={metric.decimals} />
                 </span>
               </div>
               
