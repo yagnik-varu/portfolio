@@ -21,7 +21,7 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: profile.name,
-    jobTitle: profile.role,
+    jobTitle: profile.title,
     description: profile.summary,
     url: "https://yagnikvaru.dev",
     sameAs: [profile.githubUrl, profile.linkedinUrl].filter(Boolean),
