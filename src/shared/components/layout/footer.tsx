@@ -11,7 +11,7 @@ export function Footer() {
           <p className="text-sm text-muted">
             &copy; {currentYear} {profile.name}. All rights reserved.
           </p>
-          <div className="text-xs text-muted/60 font-mono flex flex-wrap gap-x-2 gap-y-1">
+          <div className="hidden md:flex text-xs text-muted/60 font-mono flex-wrap gap-x-2 gap-y-1">
             <span>Press <kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">C</kbd> to cycle theme</span>
             <span>&bull;</span>
             <span><kbd className="px-1 py-0.5 rounded-sm bg-border/50 border border-border/80 font-mono text-[10px] text-text">R</kbd> for Resume</span>
