@@ -15,8 +15,13 @@ import { LanguageChart } from "@/features/telemetry/components/language-chart";
 import { ActivityFeed } from "@/features/telemetry/components/activity-feed";
 
 export const metadata: Metadata = {
-  title: "Telemetry | Architecture Lab",
+  title: "Telemetry",
   description: "Live engineering metrics and activity dashboard.",
+  openGraph: {
+    title: "Telemetry | Yagnik Varu",
+    description: "Live engineering metrics and activity dashboard.",
+    images: [{ url: "/og/telemetry.png", width: 1200, height: 630 }], // TODO (Phase 13): Replace placeholder
+  },
 };
 
 export default async function TelemetryPage() {

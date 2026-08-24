@@ -7,8 +7,13 @@ import { BackgroundEffects } from "@/shared/components/layout/background-effects
 import { LayoutShiftWrapper } from "@/shared/components/motion/layout-shift-wrapper";
 
 export const metadata: Metadata = {
-  title: "Projects | Yagnik Varu",
-  description: "A complete directory of all software systems and architectures.",
+  title: "Projects",
+  description: "A complete directory of all software systems and architectures built by Yagnik Varu.",
+  openGraph: {
+    title: "Projects | Yagnik Varu",
+    description: "A complete directory of all software systems and architectures built by Yagnik Varu.",
+    images: [{ url: "/og/projects.png", width: 1200, height: 630 }], // TODO (Phase 13): Replace placeholder
+  },
 };
 
 export default function ProjectsPage() {

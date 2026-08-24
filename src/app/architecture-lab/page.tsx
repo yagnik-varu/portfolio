@@ -11,6 +11,11 @@ import { PetEventTrigger } from "@/features/portfolio-pet/components/pet-event-t
 export const metadata: Metadata = {
   title: "Architecture Lab",
   description: "Dedicated engineering workspace and architectural deep-dives.",
+  openGraph: {
+    title: "Architecture Lab | Yagnik Varu",
+    description: "Dedicated engineering workspace and architectural deep-dives.",
+    images: [{ url: "/og/architecture-lab.png", width: 1200, height: 630 }], // TODO (Phase 13): Replace placeholder
+  },
 };
 
 export default function ArchitectureLabPage() {

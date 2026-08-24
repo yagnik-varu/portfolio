@@ -11,12 +11,28 @@ import { BackgroundEffects } from "@/shared/components/layout/background-effects
 
 import { PerspectiveGater } from "@/features/perspective/components/perspective-gater";
 
+import { profile } from "../../content/profile/profile";
+
 export default function Home() {
   const projects = getProjects();
   const projectCount = projects.length;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.name,
+    jobTitle: profile.role,
+    description: profile.summary,
+    url: "https://yagnikvaru.dev",
+    sameAs: [profile.githubUrl, profile.linkedinUrl].filter(Boolean),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <BackgroundEffects />
       <div className="flex flex-col gap-12 md:gap-16 pt-8">
         <LayoutShiftWrapper>
