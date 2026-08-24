@@ -42,7 +42,7 @@ export const PetMenu = memo(function PetMenu() {
     <div className="absolute -top-2 -right-2 z-50" ref={menuRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="w-6 h-6 bg-surface border border-border rounded-full flex items-center justify-center text-muted hover:text-text shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-base"
+        className="w-6 h-6 bg-surface border border-border rounded-full flex items-center justify-center text-muted hover:text-text shadow-sm transition-colors"
         aria-label="Pet options"
         aria-expanded={isOpen}
       >

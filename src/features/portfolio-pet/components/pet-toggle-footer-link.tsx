@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { usePetStore } from "../hooks/use-pet-store";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ export function PetToggleFooterLink() {
   return (
     <button
       onClick={handleShowPet}
-      className="text-sm font-medium text-muted hover:text-primary transition-colors cursor-pointer"
+      className="text-sm font-medium text-muted hover:text-primary transition-colors cursor-pointer rounded-sm"
     >
       Show Pet
     </button>

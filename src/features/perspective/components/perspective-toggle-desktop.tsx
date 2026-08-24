@@ -66,7 +66,7 @@ export function PerspectiveToggleDesktop({
           <button
             onClick={() => handleChange("overview")}
             aria-pressed={perspective === "overview"}
-            className={`relative z-10 flex w-[110px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+            className={`relative z-10 flex w-[110px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 ${
               perspective === "overview" ? "text-text" : "text-muted hover:text-text"
             }`}
           >
@@ -76,7 +76,7 @@ export function PerspectiveToggleDesktop({
           <button
             onClick={() => handleChange("architecture")}
             aria-pressed={perspective === "architecture"}
-            className={`relative z-10 flex w-[110px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+            className={`relative z-10 flex w-[110px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 ${
               perspective === "architecture" ? "text-text" : "text-muted hover:text-text"
             }`}
           >

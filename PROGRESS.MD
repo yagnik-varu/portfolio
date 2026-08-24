@@ -31,9 +31,9 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Phase 14 (Portfolio Pet)
+Current Phase: Phase 14 (Portfolio Pet) & Accessibility Audit
 
-Current Task: Phase 14 complete
+Current Task: Phase 11 Closeout (Accessibility Audit)
 
 Blocked By: Nothing
 
@@ -170,6 +170,10 @@ Only list completed functionality. Update as work progresses.
 - **Phase 14.5 Idle, Sleep, Wake**: Implemented comprehensive interactivity tracking (`mousemove`, `keydown`, `scroll`, etc.) on the window to track user presence. After 60 seconds (configured via `petConfig.idleTimeoutMs`) of inactivity, the pet transitions to a `sleep` state. The next interaction wakes the pet briefly before reverting to `idle`. Refactored the ambient behavior loop to use a self-cleaning recursive `setTimeout` pattern, avoiding CPU waste and `setInterval` overlaps when the browser throttles inactive tabs.
 - **Phase 14.6 Hide/Disable & Accessibility**: Built `<PetMenu>` with 'Hide pet' functionality and bound it to `localStorage` ('portfolio_pet_disabled'). Added ARIA labels, `aria-hidden` to purely decorative elements, and keyboard accessibility. Implemented system-level `prefers-reduced-motion` fallbacks across Rive animations, ensuring a completely static SVG placeholder renders when motion is disabled or Rive fails to load.
 - **Phase 14.7 Polish & Performance Check**: Conducted final codebase audit. Validated `@rive-app/react-canvas` is dynamically loaded (`ssr: false`) in `<PetVisual>`. Applied `React.memo` to `<PetVisual>`, `<PetSpeech>`, and `<PetMenu>` to prevent unnecessary re-renders. Reviewed all `useEffect` hooks across the module, ensuring every event listener, timeout, and media query is properly cleaned up on unmount (including fixing custom event timeouts in `<PetController>`). Verified error boundaries and `try/catch` wrappers around all `localStorage` calls to prevent crashes in private browsing.
+- **Phase 11 Closeout - Accessibility Audit**: 
+  - **Keyboard Traversal**: Executed a comprehensive keyboard navigation audit across the entire application (Header nav, Perspective Slider, Search, Filter Dropdowns, Project Cards, Module Cards, Footer, Pet interactions). Confirmed logical tab order matching visual layout. Addressed integration-level interaction bugs where complex nested components (like `ProjectCard` and `ModuleCard`) failed to trigger their interactive "hover" visual states (elevation, gradient accents, transform shifts) when focused via keyboard. Implemented `focus-within`, `group-focus-within`, and `group-focus` tailwind modifiers to synchronize focus state with hover state for a seamless keyboard-driven experience. Confirmed `Shift + P` global shortcut properly ignores text inputs and textareas to prevent interaction traps.
+  - **Focus State Visibility**: Audited visual focus indicators across all interactive elements. Found that many components (`Button`, `FilterDropdown`, `SearchInput`, `ProjectCard`, etc.) were overriding the application's base focus styling (established in Phase 2 via `globals.css` `:focus-visible`) with their own inconsistent Tailwind `ring` utilities and `outline-none` classes. Stripped all fragmented `focus:outline-none` and `focus:ring-*` classes from the codebase to enforce absolute consistency. Now, 100% of interactive elements rely on the global native `outline: 2px solid var(--color-primary); outline-offset: 2px;`, guaranteeing a high-contrast, perfectly-following focus ring that respects Framer Motion and GSAP physical transformations without clipping.
+  - **Semantic HTML & ARIA Labeling**: Validated page structure hierarchy (`<main>`, `<header>`, `<footer>`, `<nav>`) and heading hierarchy (one `<h1>` per page, no skipped levels). Eliminated a non-semantic `<div onClick>` in the Mobile Menu by refactoring `Navigation` to accept an `onItemClick` callback. Verified icon-only buttons (Menu toggles, Pet toggles) possess proper `aria-label`s. Augmented purely visual indicators with `aria-hidden="true"` (EmptyState icons, decorative text arrows like `→` in Project/Module cards) to prevent unnecessary screen reader noise. Assessed `ErrorBoundary` fallback and added `role="alert"` to proactively announce rendering crashes. Confirmed no redundant ARIA attributes (`role="button"` on actual `<button>` elements) were present, strictly adhering to "Explicit > Magic" coding standards.
 
 ---
 

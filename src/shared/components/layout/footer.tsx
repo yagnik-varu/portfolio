@@ -25,7 +25,7 @@ export function Footer() {
             href={profile.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-muted hover:text-primary transition-colors"
+            className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
           >
             GitHub
           </a>
@@ -33,13 +33,13 @@ export function Footer() {
             href={profile.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-muted hover:text-primary transition-colors"
+            className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
           >
             LinkedIn
           </a>
           <a
             href={`mailto:${profile.email}`}
-            className="text-sm font-medium text-muted hover:text-primary transition-colors"
+            className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
           >
             Email
           </a>
@@ -48,7 +48,7 @@ export function Footer() {
               href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-muted hover:text-primary transition-colors"
+              className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
             >
               Resume
             </a>

@@ -61,7 +61,7 @@ export function MobileMenu({ isOpen, onClose, perspective }: MobileMenuProps) {
           <div className="flex h-24 items-center justify-end px-6">
             <button
               onClick={onClose}
-              className="p-2 text-muted hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full"
+              className="p-2 text-muted hover:text-primary transition-colors rounded-full"
               aria-label="Close menu"
             >
               <X size={28} />
@@ -76,12 +76,11 @@ export function MobileMenu({ isOpen, onClose, perspective }: MobileMenuProps) {
               We reuse the Navigation component but style it vertically for mobile.
               We can pass a custom class to override the horizontal flex layout. 
             */}
-            <div onClick={onClose} className="text-2xl text-center">
-              <Navigation 
-                perspective={perspective} 
-                className="flex-col gap-10 !text-2xl" 
-              />
-            </div>
+            <Navigation 
+              perspective={perspective} 
+              className="flex-col gap-10 !text-2xl text-center"
+              onItemClick={onClose}
+            />
           </motion.div>
         </motion.div>
       )}

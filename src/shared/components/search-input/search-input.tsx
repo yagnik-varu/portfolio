@@ -35,10 +35,11 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          aria-label={props['aria-label'] || placeholder}
           className={cn(
             "flex h-12 md:h-14 w-full rounded-2xl border border-white/10 bg-surface/50 backdrop-blur-md pl-10 pr-4 text-sm md:text-base text-text shadow-sm",
             "transition-all duration-300 file:border-0 file:bg-transparent file:text-sm file:font-medium",
-            "placeholder:text-muted hover:border-white/20 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-4 focus-visible:ring-primary/10",
+            "placeholder:text-muted hover:border-white/20",
             "disabled:cursor-not-allowed disabled:opacity-50"
           )}
           {...props}

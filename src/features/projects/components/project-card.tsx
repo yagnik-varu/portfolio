@@ -23,7 +23,7 @@ export interface ProjectCardProps extends HTMLMotionProps<"div"> {
 export function ProjectCardHeader({ project, className }: { project: Project; className?: string }) {
   return (
     <div className={cn("flex items-start justify-between gap-4", className)}>
-      <h3 className="text-xl font-bold tracking-tight text-text group-hover:text-primary transition-colors">
+      <h3 className="text-xl font-bold tracking-tight text-text group-hover:text-primary group-focus-within:text-primary transition-colors">
         {project.title}
       </h3>
       <Badge variant="status" className="capitalize shrink-0">
@@ -117,13 +117,13 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
   return (
     <motion.div
       className={cn(
-        "relative p-6 sm:p-8 rounded-2xl flex flex-col justify-between gap-6 h-full transition-all duration-500 group border border-white/5 bg-surface/30 hover:bg-surface/60 hover:border-white/10 hover:shadow-2xl hover:-translate-y-1 overflow-hidden",
+        "relative p-6 sm:p-8 rounded-2xl flex flex-col justify-between gap-6 h-full transition-all duration-500 group border border-white/5 bg-surface/30 hover:bg-surface/60 focus-within:bg-surface/60 hover:border-white/10 focus-within:border-white/10 hover:shadow-2xl focus-within:shadow-2xl hover:-translate-y-1 focus-within:-translate-y-1 overflow-hidden",
         className
       )}
       {...props}
     >
       {/* Subtle top gradient accent on hover */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500" />
       
       <div className="flex flex-col gap-4 relative z-10">
         <ProjectCardHeader project={project} />
@@ -159,10 +159,10 @@ export function ProjectCard({ project, perspective: propPerspective, className, 
             </motion.div>
           )}
         </AnimatePresence>
-        <Link href={targetHref} className="inline-block mt-4 w-fit">
-          <span className="font-mono text-sm text-muted flex items-center gap-2 group-hover:text-primary transition-colors duration-300">
+        <Link href={targetHref} className="inline-block mt-4 w-fit rounded-md">
+          <span className="font-mono text-sm text-muted flex items-center gap-2 group-hover:text-primary group-focus-within:text-primary transition-colors duration-300">
             {isArchitecture ? "Inspect Architecture" : "View Project"}
-            <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+            <span aria-hidden="true" className="group-hover:translate-x-1 group-focus-within:translate-x-1 transition-transform duration-300">→</span>
           </span>
         </Link>
       </div>

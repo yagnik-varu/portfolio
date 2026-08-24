@@ -35,7 +35,7 @@ export function PerspectiveToggleMobile({
       <button
         onClick={() => handleToggle("overview")}
         aria-pressed={perspective === "overview"}
-        className={`flex-1 min-h-[40px] px-3 py-1.5 text-xs font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+        className={`flex-1 min-h-[40px] px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
           perspective === "overview"
             ? "bg-primary text-text shadow"
             : "text-muted hover:text-text"
@@ -47,7 +47,7 @@ export function PerspectiveToggleMobile({
       <button
         onClick={() => handleToggle("architecture")}
         aria-pressed={perspective === "architecture"}
-        className={`flex-1 min-h-[40px] px-3 py-1.5 text-xs font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+        className={`flex-1 min-h-[40px] px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
           perspective === "architecture"
             ? "bg-primary text-text shadow"
             : "text-muted hover:text-text"

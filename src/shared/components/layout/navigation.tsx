@@ -9,9 +9,10 @@ import type { Perspective } from "@/domains/perspective/types";
 interface NavigationProps {
   perspective: Perspective;
   className?: string;
+  onItemClick?: () => void;
 }
 
-export function Navigation({ perspective, className = "" }: NavigationProps) {
+export function Navigation({ perspective, className = "", onItemClick }: NavigationProps) {
   const pathname = usePathname();
 
   // Filter items using pure domain logic based on the active perspective
@@ -36,8 +37,9 @@ export function Navigation({ perspective, className = "" }: NavigationProps) {
               if (pathname === item.href) {
                 window.dispatchEvent(new Event("trigger-scroll-top"));
               }
+              onItemClick?.();
             }}
-            className={`nav-link text-sm font-medium transition-colors hover:text-primary ${
+            className={`nav-link text-sm font-medium transition-colors hover:text-primary rounded-md px-2 py-1 -mx-2 ${
               isActive ? "text-primary font-semibold" : "text-muted"
             }`}
           >

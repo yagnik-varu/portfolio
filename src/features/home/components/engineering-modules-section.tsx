@@ -113,7 +113,7 @@ export function EngineeringModulesSection({ perspective: propPerspective }: Engi
                   <MagneticWrapper strength={5} className="block h-full w-full">
                     <Link
                       href={module.route}
-                      className="block h-full focus:outline-none focus:ring-2 focus:ring-primary rounded-[1.5rem] group"
+                      className="block h-full rounded-[1.5rem] group"
                     >
                       <div
                         className="py-6 flex flex-col justify-between gap-6 h-full border-t border-white/10 hover:border-text transition-colors duration-300 group"

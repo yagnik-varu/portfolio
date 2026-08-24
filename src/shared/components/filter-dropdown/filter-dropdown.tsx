@@ -49,7 +49,7 @@ export const FilterDropdown = React.forwardRef<HTMLSelectElement, FilterDropdown
             onChange={(e) => onChange(e.target.value)}
             className={cn(
               "appearance-none flex h-10 w-full rounded-md border border-border bg-surface pl-3 pr-9 text-sm text-text",
-              "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent",
+              "transition-colors",
               "disabled:cursor-not-allowed disabled:opacity-50"
             )}
             {...props}

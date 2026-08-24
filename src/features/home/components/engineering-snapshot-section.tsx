@@ -117,7 +117,7 @@ export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnap
           if (metric.href) {
             return (
               <StaggeredItem key={metric.id}>
-                <Link href={metric.href} className="block focus:outline-none focus:ring-2 focus:ring-primary rounded-lg h-full">
+                <Link href={metric.href} className="block rounded-lg h-full">
                   {cardContent}
                 </Link>
               </StaggeredItem>

@@ -32,7 +32,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError) {
       return (
-        <Card className="p-6 flex flex-col items-center justify-center gap-4 border-danger/50 bg-danger/10 text-center">
+        <Card role="alert" className="p-6 flex flex-col items-center justify-center gap-4 border-danger/50 bg-danger/10 text-center">
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold text-danger">Rendering Error</h3>
             <p className="text-sm text-muted">

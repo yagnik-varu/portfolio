@@ -72,7 +72,7 @@ export function Header() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 text-muted hover:text-primary transition-colors focus:outline-none rounded-full"
+              className="md:hidden p-2 text-muted hover:text-primary transition-colors rounded-full"
               aria-label="Open menu"
             >
               <Menu size={24} />
