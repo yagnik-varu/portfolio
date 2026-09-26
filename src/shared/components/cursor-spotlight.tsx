@@ -12,7 +12,6 @@ export function CursorSpotlight() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsHoverable(window.matchMedia("(hover: hover)").matches);
   }, []);
 

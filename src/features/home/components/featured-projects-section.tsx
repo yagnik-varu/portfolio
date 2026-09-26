@@ -5,8 +5,6 @@ import Link from "next/link";
 import type { Project } from "@/lib/validation/project.schema";
 import type { Perspective } from "@/domains/perspective/types";
 import { ProjectCard } from "@/features/projects/components/project-card";
-import { SectionHeader } from "@/shared/components/section-header/section-header";
-import { Button } from "@/shared/components/button/button";
 import { StaggeredSection, StaggeredItem } from "./staggered-section";
 
 interface FeaturedProjectsSectionProps {

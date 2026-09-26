@@ -1,8 +1,5 @@
 import * as React from "react";
 import { experiences } from "../../../../content/experience/experience";
-import { Card } from "@/shared/components/card/card";
-import { Badge } from "@/shared/components/badge/badge";
-import { SectionHeader } from "@/shared/components/section-header/section-header";
 import { StaggeredSection, StaggeredItem } from "./staggered-section";
 
 export function ExperienceSection() {

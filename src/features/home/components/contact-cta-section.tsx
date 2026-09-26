@@ -2,9 +2,7 @@
 
 import React, { useRef } from "react";
 import { profile } from "../../../../content/profile/profile";
-import { Card } from "@/shared/components/card/card";
 import { Button } from "@/shared/components/button/button";
-import { StaggeredSection, StaggeredItem } from "./staggered-section";
 import { MagneticWrapper } from "@/shared/components/magnetic-wrapper";
 
 export function ContactCTASection() {

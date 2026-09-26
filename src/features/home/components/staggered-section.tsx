@@ -3,8 +3,6 @@
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { motion, type Variants } from 'framer-motion';
 import type { ReactNode } from "react";
-import { useRef } from "react";
-import { useInView } from "framer-motion";
 
 interface StaggeredSectionProps {
   children: ReactNode;

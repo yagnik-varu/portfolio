@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, type LenisRef } from "lenis/react";
 import "lenis/dist/lenis.css";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
@@ -59,7 +59,7 @@ function useReducedMotionMediaQuery(): boolean {
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const prefersReducedMotion = useReducedMotionMediaQuery();
   // Hold a stable ref to the lenis instance for the GSAP ticker cleanup
-  const lenisRef = useRef<any>(null);
+  const lenisRef = useRef<LenisRef>(null);
   const pathname = usePathname();
 
   useEffect(() => {

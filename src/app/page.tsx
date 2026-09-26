@@ -17,13 +17,16 @@ export default function Home() {
   const projects = getProjects();
   const projectCount = projects.length;
 
+  const siteUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://yagnikvaru.dev";
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: profile.name,
     jobTitle: profile.title,
     description: profile.summary,
-    url: "https://yagnikvaru.dev",
+    url: siteUrl,
     sameAs: [profile.githubUrl, profile.linkedinUrl].filter(Boolean),
   };
 

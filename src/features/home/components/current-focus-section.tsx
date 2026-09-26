@@ -1,7 +1,5 @@
 import * as React from "react";
 import { profile } from "../../../../content/profile/profile";
-import { Badge } from "@/shared/components/badge/badge";
-import { SectionHeader } from "@/shared/components/section-header/section-header";
 import { MagneticWrapper } from "@/shared/components/magnetic-wrapper";
 import { TextHoverFill } from "@/shared/components/motion/text-hover-fill";
 

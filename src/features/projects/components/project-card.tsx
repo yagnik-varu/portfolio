@@ -5,14 +5,12 @@ import Link from "next/link";
 import type { Project } from "@/lib/validation/project.schema";
 import type { Perspective } from "@/domains/perspective/types";
 import { usePerspectiveStore } from "@/domains/perspective/store";
-import { Card } from "@/shared/components/card/card";
 import type { HTMLMotionProps } from "framer-motion";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/shared/components/badge/badge";
 import { Button } from "@/shared/components/button/button";
 import { cn } from "@/lib/utils/cn";
 import { PERSPECTIVE_TIMING } from "@/features/perspective/components/perspective-transition";
-import { ProjectImpactBadge } from "./project-impact-badge";
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 
 export interface ProjectCardProps extends HTMLMotionProps<"div"> {

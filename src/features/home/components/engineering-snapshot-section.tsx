@@ -1,9 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { experiences } from "../../../../content/experience/experience";
-import { profile } from "../../../../content/profile/profile";
-import { Card } from "@/shared/components/card/card";
-import { SectionHeader } from "@/shared/components/section-header/section-header";
 import { ScrubCountUp } from "@/shared/components/motion/scrub-count-up";
 import { StaggeredSection, StaggeredItem } from "./staggered-section";
 

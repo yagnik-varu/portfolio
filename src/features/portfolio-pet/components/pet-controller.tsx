@@ -22,11 +22,10 @@ export function PetController() {
       if (!seen) {
         sequenceRunning.current = true;
         
-        let initialTimer: NodeJS.Timeout;
         let speechTimer: NodeJS.Timeout;
         let endTimer: NodeJS.Timeout;
 
-        initialTimer = setTimeout(() => {
+        const initialTimer = setTimeout(() => {
           setStatus("welcome");
           setMessage(petConfig.messages.welcome[0]);
           

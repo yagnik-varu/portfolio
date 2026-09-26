@@ -130,7 +130,7 @@ export function GlobalShortcuts() {
       // 'r' or 'R' key - Resume
       if (key === 'r') {
         if (profile.resumeUrl) {
-          window.open(profile.resumeUrl, "_blank");
+          window.open(profile.resumeUrl, "_blank", "noopener,noreferrer");
           triggerToast(<span>Opening Resume...</span>);
         }
         return;

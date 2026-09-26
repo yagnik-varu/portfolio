@@ -3,6 +3,7 @@
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { gsap, SplitText } from "@/lib/motion/gsap-config";
+import type { SplitText as SplitTextInstance } from "gsap/SplitText";
 
 interface RotatingStatProps {
   summary: string;
@@ -11,7 +12,6 @@ interface RotatingStatProps {
 
 // Timing constants — keep in one place for easy tuning
 const CHAR_TYPE_INTERVAL = 42;   // ms per character typed
-const CHAR_DELETE_INTERVAL = 22; // ms per character deleted (faster = snappier)
 const PAUSE_AFTER_TYPE = 2200;   // ms to hold the full string before deleting
 const PAUSE_BEFORE_NEXT = 180;   // ms gap between deletion and next string
 
@@ -22,7 +22,7 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
   // Track the ticker ID so we can remove it on cleanup
   const tickerRef = useRef<((time: number, deltaTime: number, frame: number) => void) | null>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
-  const splitRef = useRef<any>(null); // Type any since SplitText type might not be exported directly
+  const splitRef = useRef<SplitTextInstance | null>(null);
   const [mounted, setMounted] = useState(false);
 
   // Avoid SSR mismatch — only run after mount
