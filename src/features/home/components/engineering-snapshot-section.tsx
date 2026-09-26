@@ -9,19 +9,30 @@ interface EngineeringSnapshotSectionProps {
 }
 
 export function EngineeringSnapshotSection({ projectCount = 2 }: EngineeringSnapshotSectionProps) {
-  // 1. Calculate Years Experience from earliest start date with month precision
-  const startDates = experiences.map((exp) => {
-    // startDate is in YYYY-MM format
-    const [year, month] = exp.startDate.split("-").map(Number);
-    if (!isNaN(year) && !isNaN(month)) {
-      return new Date(year, month - 1);
-    }
-    return new Date();
-  });
-  const earliestDate = startDates.length > 0 ? new Date(Math.min(...startDates.map(d => d.getTime()))) : new Date();
-  const currentDate = new Date();
-  
-  const totalMonths = (currentDate.getFullYear() - earliestDate.getFullYear()) * 12 + (currentDate.getMonth() - earliestDate.getMonth());
+  // 1. Calculate Years Experience from the real role dates (YYYY-MM), month
+  // precision. Span = earliest start → latest end, counting the end month.
+  // Only a `current` role (or one with no endDate) runs up to today — note the
+  // home page is statically built, so "today" means the build date.
+  const toMonthIndex = (ym: string) => {
+    const [year, month] = ym.split("-").map(Number);
+    return !isNaN(year) && !isNaN(month) ? year * 12 + (month - 1) : NaN;
+  };
+  const now = new Date();
+  const nowIndex = now.getFullYear() * 12 + now.getMonth();
+
+  const ranges = experiences
+    .map((exp) => ({
+      start: toMonthIndex(exp.startDate),
+      end: exp.current || !exp.endDate ? nowIndex : toMonthIndex(exp.endDate),
+    }))
+    .filter((r) => !isNaN(r.start) && !isNaN(r.end));
+
+  const totalMonths =
+    ranges.length > 0
+      ? Math.max(...ranges.map((r) => r.end)) -
+        Math.min(...ranges.map((r) => r.start)) +
+        1
+      : 12;
   const calculatedYears = Math.max(1, +(totalMonths / 12).toFixed(1));
 
   // 2. Calculate unique technologies across experiences

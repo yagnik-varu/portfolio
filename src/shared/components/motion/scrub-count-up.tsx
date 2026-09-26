@@ -23,24 +23,30 @@ export function ScrubCountUp({ value, suffix = "", decimals = 0, className }: Sc
     }
 
     const obj = { val: 0 };
-    
-    gsap.to(obj, {
+    const format = (n: number) =>
+      decimals > 0 ? n.toFixed(decimals) : Math.round(n).toString();
+
+    const tween = gsap.to(obj, {
       val: value,
+      ease: "none",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top 95%",   // Start when the top of the element hits 95% of the viewport
         end: "bottom 75%",  // End when the bottom of the element hits 75% of the viewport
         scrub: 0.5,         // Slight smoothing for the scrub
-        onUpdate: (self) => {
-          if (numRef.current) {
-            numRef.current.innerText = decimals > 0 ? obj.val.toFixed(decimals) : Math.round(obj.val).toString();
-          }
-          // "once: true" equivalent for scrubs: lock it forever once completed
-          if (self.progress === 1) {
-            self.kill(false); 
-          }
-        }
-      }
+      },
+      // Render from the tween (not the ScrollTrigger): with scrub smoothing the
+      // tween lags behind scroll progress, so the trigger reaching 1 does not
+      // mean the displayed value has reached `value`.
+      onUpdate: () => {
+        if (numRef.current) numRef.current.innerText = format(obj.val);
+      },
+      // "once: true" equivalent for scrubs: lock on the exact final value
+      // only after the smoothed tween itself has finished.
+      onComplete: () => {
+        if (numRef.current) numRef.current.innerText = format(value);
+        tween.scrollTrigger?.kill();
+      },
     });
   }, [value, decimals, shouldReduceMotion]);
 

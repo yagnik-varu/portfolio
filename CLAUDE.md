@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Operating rules specific to this repo
 
-- **`AGENT.md` is the operating contract** (singular — not the auto-generated `AGENTS.md`). Read `PROGRESS.md` at the start of every session; it is the source of truth for what is actually built vs. only planned. Update `PROGRESS.md` at the end of a work session.
+- **`AGENT.md` is the operating contract** (singular — not the auto-generated `AGENTS.md`). Read `PROGRESS.MD` (uppercase extension — that is the real filename) at the start of every session; it is the source of truth for what is actually built vs. only planned. Update it at the end of a work session.
 - Before adding a dependency, architecture pattern, state solution, build tool, or folder structure: **stop and ask**, with (1) why, (2) alternatives, (3) tradeoffs. See `AGENT.md` §2.
 - `docs/00`–`docs/18` are the design spec. Match your task to the index in `AGENT.md` and read the relevant file before changing behavior. `docs/14-content-schema.md` is the canonical content schema.
 - Teaching Mode (`AGENT.md` §7): explanations accompany implementation; this is a learning project for the owner.
@@ -34,11 +34,11 @@ Next.js 16 App Router (Turbopack) · React 19 · TypeScript (strict) · Tailwind
 
 Four layers, top to bottom — **Presentation → Feature → Domain → Content**. Content is the single source of truth; the UI consumes it and never owns it. Every layer is meant to be swappable later (`MDX → CMS → NestJS API`) without a UI redesign, so features must consume domain objects, never raw MDX.
 
-- **`src/app/`** — routes only, thin. Pages are Server Components that call loaders and compose feature sections. Routes: `/`, `/projects`, `/projects/[slug]` (SSG via `generateStaticParams`), `/architecture-lab`, `/telemetry` (1h revalidate), plus `robots.ts`, `sitemap.ts`, `opengraph-image.tsx`. `template.tsx` remounts per navigation for page-entry animation; `layout.tsx` persists (Header/Footer/providers).
+- **`src/app/`** — routes only, thin. Pages are Server Components that call loaders and compose feature sections. Routes: `/`, `/projects`, `/projects/[slug]` (SSG via `generateStaticParams`), `/architecture-lab`, `/telemetry` (GitHub fetch cached via `next: { revalidate: 3600 }` in `github-adapter.ts`, plus a manual-refresh server action calling `revalidatePath`), plus `robots.ts`, `sitemap.ts`, `opengraph-image.tsx`. `template.tsx` remounts per navigation for page-entry animation; `layout.tsx` persists (Header/Footer/providers).
 - **`src/domains/<domain>/`** — business logic, pure and UI-free: `profile`, `project` (`query.ts` = `searchProjects`/`filterProjects`), `perspective` (Zustand store + URL sync + visibility rules), `telemetry`, `experience`.
 - **`src/features/<feature>/`** — page-level composition combining multiple domains: `home`, `projects`, `project-detail`, `architecture-lab`, `telemetry`, `perspective`, `portfolio-pet`.
 - **`src/shared/`** — genuinely reusable primitives (`components/`, `hooks/`, `providers/`). Design-system components live in `components/<name>/<name>.tsx`.
-- **`src/lib/`** — infrastructure: `mdx/` (content loading + `section-splitter.ts`), `motion/` (`gsap-config.ts` registers GSAP plugins once), `telemetry/` (`github-adapter.ts` + `mock-source.ts`), `validation/` (Zod schemas, one per domain).
+- **`src/lib/`** — infrastructure: `mdx/` (content loading + `section-splitter.ts`), `motion/` (`gsap-config.ts` registers GSAP plugins once), `telemetry/` (`github-adapter.ts` + `mock-source.ts`), `validation/` (Zod schemas, one per domain), `utils/cn.ts` (`clsx` + `tailwind-merge` class helper). `lib/analytics/` and `features/shared-layout/` are currently empty placeholders.
 - **`content/`** — `.mdx` project case studies + typed `.ts` config (`profile/`, `navigation/`, `experience/`, `perspectives/`). One project = one `.mdx` file.
 
 ### The Perspective System (core feature)
