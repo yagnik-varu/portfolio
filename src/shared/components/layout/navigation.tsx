@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { navigation } from "../../../../content/navigation/navigation";
 import { isItemVisible } from "@/domains/perspective/visibility";
 import type { Perspective } from "@/domains/perspective/types";
+import { cn } from "@/lib/utils/cn";
 
 interface NavigationProps {
   perspective: Perspective;
@@ -21,7 +22,7 @@ export function Navigation({ perspective, className = "", onItemClick }: Navigat
   );
 
   return (
-    <nav className={`flex items-center gap-6 ${className}`}>
+    <nav className={cn("flex items-center gap-5 xl:gap-6", className)}>
       {visibleItems.map((item) => {
         const isActive =
           !item.href.includes("#") &&
@@ -39,7 +40,7 @@ export function Navigation({ perspective, className = "", onItemClick }: Navigat
               }
               onItemClick?.();
             }}
-            className={`nav-link text-sm font-medium transition-colors hover:text-primary rounded-md px-2 py-1 -mx-2 ${
+            className={`nav-link whitespace-nowrap text-sm font-medium transition-colors hover:text-primary rounded-md px-2 py-1 -mx-2 ${
               isActive ? "text-primary font-semibold" : "text-muted"
             }`}
           >

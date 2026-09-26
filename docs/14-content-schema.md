@@ -287,6 +287,41 @@ List of engineering lessons.
 
 ---
 
+## architecture
+
+Structured, scannable architecture facts for the Engineer perspective. The
+long-form reasoning stays in the `# Architecture` MDX section; this block is
+the short version used on project cards, the Recruiter-mode teaser and the
+"Key Decisions" grid on the project page.
+
+```yaml
+architecture:
+  summary: One or two sentences describing the system shape.
+  decisions:                      # 1–4 items
+    - title: Modular monolith over microservices
+      choice: What was chosen, in one line.
+      tradeoff: What it cost or ruled out, in one line.
+```
+
+Type:
+
+```ts
+interface ArchitectureDecision {
+  title: string;
+  choice: string;
+  tradeoff: string;
+}
+
+interface ProjectArchitecture {
+  summary: string;
+  decisions: ArchitectureDecision[]; // min 1, max 4
+}
+```
+
+Optional. When absent, the UI falls back to `architectureType` and `complexity`.
+
+---
+
 # 6. Project Content Sections
 
 Every project should contain:
@@ -353,6 +388,8 @@ interface Project {
 
   impactMetrics?: string[]; // e.g. ["↓ 60% API latency", "500+ concurrent users"]
 
+  architecture?: ProjectArchitecture; // see §5 "architecture"
+
   repositoryUrl?: string;
 
   liveUrl?: string;
@@ -397,8 +434,24 @@ interface Profile {
 
   resumeUrl: string;
   highlights: string[];
+
+  engineering?: EngineeringProfile; // Engineer-perspective identity
+}
+
+interface EngineeringPrinciple {
+  title: string;
+  description: string;
+}
+
+interface EngineeringProfile {
+  headline: string;      // Engineer-mode hero heading
+  philosophy: string;    // 1–2 sentences: how I design systems
+  principles: EngineeringPrinciple[]; // 3–6; also powers Architecture Lab
 }
 ```
+
+The Recruiter perspective reads `title`, `summary` and `highlights`. The
+Engineer perspective reads `engineering`. Same person, different lens.
 
 ---
 
@@ -513,13 +566,21 @@ type Perspective =
 
 ```ts
 interface PerspectiveConfig {
-  id: Perspective;
+  id: Perspective;       // stable: store, URL param, cookie
 
-  label: string;
+  label: string;         // visitor-facing: "Recruiter" | "Engineer"
 
-  description: string;
+  audience: string;      // who this lens is for
+
+  description: string;   // one sentence
+
+  unlocks: string[];     // what becomes visible in this lens
 }
 ```
+
+The toggle, the first-visit intro dialog and the project-page teaser read
+their copy from this file. Only `label` is shown to visitors; `id` never
+changes so shared `?perspective=` links keep working.
 
 ---
 

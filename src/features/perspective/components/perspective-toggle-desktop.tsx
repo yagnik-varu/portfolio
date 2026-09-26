@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import type { Perspective } from "@/domains/perspective/types";
+import { perspectives } from "../../../../content/perspectives/perspectives";
 import { KbdHint } from "@/shared/components/kbd-hint";
 
 export interface PerspectiveToggleProps {
@@ -11,126 +11,61 @@ export interface PerspectiveToggleProps {
   className?: string;
 }
 
+const SEGMENT_WIDTH = 92;
+
 /**
- * Desktop-specific perspective slider with spring physics.
- * Visible on md (768px) and up.
+ * Desktop perspective segmented control with a spring-animated active pill.
+ * Visible on md (768px) and up. Labels come from the perspectives content
+ * config; the first-visit explanation lives in <PerspectiveIntroDialog />.
  */
 export function PerspectiveToggleDesktop({
   perspective,
   onChange,
   className = "",
 }: PerspectiveToggleProps) {
-  const [showPulse, setShowPulse] = useState(false);
-
-  const dismissPulse = useCallback(() => {
-    setShowPulse(false);
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("hasSeenPerspectiveHint", "true");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const hasSeen = sessionStorage.getItem("hasSeenPerspectiveHint");
-      if (hasSeen) return;
-      
-      const timer = setTimeout(() => setShowPulse(true), 800);
-      
-      const autoDismiss = setTimeout(() => {
-        dismissPulse();
-      }, 800 + 6000);
-      
-      return () => {
-        clearTimeout(timer);
-        clearTimeout(autoDismiss);
-      };
-    }
-  }, [dismissPulse]);
-
-  const handleChange = (newPerspective: Perspective) => {
-    if (showPulse) dismissPulse();
-    else if (typeof window !== "undefined" && !sessionStorage.getItem("hasSeenPerspectiveHint")) {
-      sessionStorage.setItem("hasSeenPerspectiveHint", "true");
-    }
-    onChange(newPerspective);
-  };
+  const activeIndex = perspectives.findIndex((p) => p.id === perspective);
+  const labels = perspectives.map((p) => p.label).join(" or ");
 
   return (
-    <div className={`flex items-center gap-4 ${className}`}>
-      <div className="relative">
-        <div
-          role="group"
-          aria-label="Perspective View Mode"
-          className="relative flex h-9 items-center rounded-full bg-surface p-1 shadow-sm border border-border"
-        >
-          <button
-            onClick={() => handleChange("overview")}
-            aria-pressed={perspective === "overview"}
-            className={`relative z-10 flex w-[110px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 ${
-              perspective === "overview" ? "text-text" : "text-muted hover:text-text"
-            }`}
-          >
-            Overview
-          </button>
+    <div className={`flex items-center gap-3 ${className}`}>
+      {/* "View as" is conveyed by the group label + button titles; a visible
+          prefix made the header overflow at common desktop widths. */}
+      <div
+        role="group"
+        aria-label={`View as ${labels}`}
+        className="relative flex h-9 items-center rounded-full bg-surface p-1 shadow-sm border border-border"
+      >
+        {perspectives.map((config) => {
+          const isActive = config.id === perspective;
+          return (
+            <button
+              key={config.id}
+              type="button"
+              onClick={() => onChange(config.id)}
+              aria-pressed={isActive}
+              title={config.audience}
+              style={{ width: SEGMENT_WIDTH }}
+              className={`relative z-10 flex items-center justify-center rounded-full px-3 text-sm font-medium transition-colors duration-200 ${
+                isActive ? "text-text" : "text-muted hover:text-text"
+              }`}
+            >
+              {config.label}
+            </button>
+          );
+        })}
 
-          <button
-            onClick={() => handleChange("architecture")}
-            aria-pressed={perspective === "architecture"}
-            className={`relative z-10 flex w-[110px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors duration-200 ${
-              perspective === "architecture" ? "text-text" : "text-muted hover:text-text"
-            }`}
-          >
-            Architecture
-          </button>
-
-          {/* Spring Physics Active Pill */}
-          <motion.div
-            initial={false}
-            animate={{
-              x: perspective === "overview" ? 0 : 110,
-            }}
-            transition={{ type: "spring", stiffness: 250, damping: 25 }}
-            className="absolute top-1 bottom-1 left-1 w-[110px] rounded-full bg-primary shadow-md"
-          />
-        </div>
-
-        <AnimatePresence>
-          {showPulse && (
-            <>
-              {/* Emerald Ring Pulses */}
-              <motion.div
-                initial={{ opacity: 0, scale: 1 }}
-                animate={{ opacity: [0, 1, 0], scale: [1, 1.05, 1.1] }}
-                transition={{ duration: 1.2, repeat: 1, ease: "easeOut" }}
-                className="pointer-events-none absolute inset-0 rounded-full border-2 border-emerald-500/50"
-              />
-              
-              {/* Tooltip */}
-              <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                className="absolute right-0 top-full mt-4 w-64 rounded-lg border border-border bg-surface p-3 text-sm shadow-xl z-50 text-text"
-              >
-                <div className="flex items-start gap-2">
-                  <p className="flex-1 text-muted leading-relaxed">
-                    This portfolio has two perspectives. Try switching.
-                  </p>
-                  <button 
-                    onClick={dismissPulse}
-                    className="text-muted hover:text-text p-1 -mt-1 -mr-1 rounded transition-colors"
-                    aria-label="Dismiss tooltip"
-                  >
-                    ×
-                  </button>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        {/* Spring physics active pill */}
+        <motion.div
+          aria-hidden="true"
+          initial={false}
+          animate={{ x: Math.max(activeIndex, 0) * SEGMENT_WIDTH }}
+          transition={{ type: "spring", stiffness: 250, damping: 25 }}
+          style={{ width: SEGMENT_WIDTH }}
+          className="absolute top-1 bottom-1 left-1 rounded-full bg-primary shadow-md"
+        />
       </div>
 
-      <div className="hidden lg:flex">
+      <div className="hidden xl:flex">
         <KbdHint>Shift+P</KbdHint>
       </div>
     </div>

@@ -5,7 +5,8 @@ import * as React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import type { Perspective } from "@/domains/perspective/types";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
+import { isEngineeringModuleVisible } from "@/domains/perspective/visibility";
 import { engineeringModules } from "../../../../content/perspectives/engineering-modules";
 import { PERSPECTIVE_TIMING } from "@/features/perspective/components/perspective-transition";
 import { MagneticWrapper } from "@/shared/components/magnetic-wrapper";
@@ -79,7 +80,7 @@ export function EngineeringModulesSection({ perspective: propPerspective }: Engi
 
   return (
     <AnimatePresence initial={false}>
-      {activePerspective === "architecture" && (
+      {isEngineeringModuleVisible(activePerspective) && (
         <motion.section
           key="engineering-modules"
           aria-labelledby="engineering-modules-heading"

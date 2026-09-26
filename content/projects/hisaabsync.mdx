@@ -26,6 +26,18 @@ tags:
 impactMetrics:
   - "Eliminated peer-to-peer debt complexity with a unified pool model"
   - "Guaranteed ACID consistency via row-level database locking"
+architecture:
+  summary: A NestJS modular monolith where Auth, Room, Treasury, Expense and Reimbursement are isolated domain modules talking only through service interfaces and an in-process event bus, on top of a single PostgreSQL ledger.
+  decisions:
+    - title: Modular monolith over microservices
+      choice: One deployable with strict module boundaries and no cross-module database access.
+      tradeoff: Gave up independent scaling and deploys to avoid distributed transactions and sagas in V1.
+    - title: Pessimistic row locking for ledger writes
+      choice: Every balance mutation runs in a transaction with SELECT ... FOR UPDATE.
+      tradeoff: Slightly lower write throughput in exchange for zero double-spend under concurrency.
+    - title: In-process event bus for side effects
+      choice: EventEmitter2 decouples expense approval from reimbursement creation.
+      tradeoff: Async flows are eventually consistent, so clients must tolerate a short delay.
 repositoryUrl: https://github.com/yagnik-varu/hissabSync
 liveUrl: https://hissabsync.onrender.com/api/docs
 ---

@@ -1,82 +1,78 @@
 "use client";
 
-import { useEffect, useRef, Suspense } from "react";
+import { useEffect, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { usePerspectiveStore } from "./store";
+import { usePerspectiveStore, usePerspectiveStoreApi } from "./store-provider";
+import { writePerspectiveCookie } from "./persistence";
 import { perspectiveSchema } from "@/lib/validation/perspective.schema";
 import { usePerspectiveShortcut } from "@/features/perspective/hooks/use-perspective-shortcut";
 
+/**
+ * Keeps three things in agreement after hydration:
+ *   store  →  URL   (shareable links)
+ *   store  →  cookie (remembered on the next full load)
+ *   URL    →  store (client-side navigations that carry ?perspective=)
+ *
+ * The *initial* value is no longer read here: `src/proxy.ts` resolves it
+ * before render and the layout seeds the store, so the first paint is right.
+ */
 function SyncLogic() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const perspective = usePerspectiveStore((state) => state.perspective);
-  const setPerspective = usePerspectiveStore((state) => state.setPerspective);
-  const isInitialized = useRef(false);
+  // Imperative handle: lets the URL→store effect read the *current* value
+  // without depending on it. (If it did depend on `perspective`, toggling to
+  // Recruiter while the URL still said "architecture" would snap it back.)
+  const storeApi = usePerspectiveStoreApi();
 
-  // Initialize global keyboard shortcut (Shift + P)
   usePerspectiveShortcut();
 
-  // Initialize from URL on mount
+  // URL → store
   useEffect(() => {
-    if (!isInitialized.current) {
-      isInitialized.current = true;
-      const param = searchParams.get("perspective");
+    const param = searchParams.get("perspective");
+    if (!param) return;
 
-      if (param) {
-        const parsed = perspectiveSchema.safeParse(param);
-        if (parsed.success) {
-          setPerspective(parsed.data);
-        } else {
-          console.warn(
-            `[PerspectiveSync] Invalid URL param: "${param}". Falling back to 'overview'.`
-          );
-          // Fall back gracefully without crashing
-          setPerspective("overview");
-        }
-      }
+    const current = storeApi.getState().perspective;
+    const parsed = perspectiveSchema.safeParse(param);
+    if (!parsed.success) {
+      console.warn(
+        `[PerspectiveSync] Invalid URL param: "${param}". Falling back to '${current}'.`
+      );
+      return; // store→URL effect below cleans the bad param off the URL
     }
-  }, [searchParams, setPerspective]);
+    if (parsed.data !== current) {
+      storeApi.getState().setPerspective(parsed.data);
+    }
+  }, [searchParams, storeApi]);
 
-  // Sync store changes to the URL
+  // store → URL
   useEffect(() => {
-    if (!isInitialized.current) return;
-
     const currentParam = searchParams.get("perspective");
 
-    // Do not force '?perspective=overview' if it's already missing to keep URLs clean
-    if (perspective === "overview" && !currentParam) {
-      return;
-    }
-
-    // Do nothing if it's already perfectly in sync
-    if (perspective === currentParam) {
-      return;
-    }
+    // Keep Recruiter URLs clean: no param at all.
+    if (perspective === "overview" && !currentParam) return;
+    if (perspective === currentParam) return;
 
     const params = new URLSearchParams(searchParams.toString());
-
     if (perspective === "overview") {
       params.delete("perspective");
     } else {
       params.set("perspective", perspective);
     }
 
-    const newQuery = params.toString();
-    const newUrl = newQuery ? `${pathname}?${newQuery}` : pathname;
-
-    // Use replace to update URL without adding garbage to browser history
-    router.replace(newUrl, { scroll: false });
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   }, [perspective, pathname, searchParams, router]);
 
-  
-  // Sync typography class to document root
+  // store → cookie + <html> class (server sets both on full loads; this covers
+  // client-side switches).
   useEffect(() => {
-    if (perspective === "architecture") {
-      document.documentElement.classList.add("perspective-architecture");
-    } else {
-      document.documentElement.classList.remove("perspective-architecture");
-    }
+    writePerspectiveCookie(perspective);
+    document.documentElement.classList.toggle(
+      "perspective-architecture",
+      perspective === "architecture"
+    );
   }, [perspective]);
 
   return null;

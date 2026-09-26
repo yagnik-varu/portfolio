@@ -3,7 +3,7 @@
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { motion, type Variants } from 'framer-motion';
 import type { Perspective } from "@/domains/perspective/types";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import { profile } from "../../../../content/profile/profile";
 import { PerspectiveTransition } from "@/features/perspective/components/perspective-transition";
 import { Button } from "@/shared/components/button/button";
@@ -152,9 +152,30 @@ export function HeroSection({
             ) : (
               <div className="flex flex-col gap-12 items-start max-w-5xl">
                 <div className="flex flex-col gap-8">
+                  {/* Engineer lens (docs/02 §9): headline + how I design systems.
+                      Falls back to a derived title when profile.engineering is absent. */}
                   <h2 className="text-3xl md:text-5xl font-bold text-text font-mono tracking-tight">
-                    <TextHoverFill>{`System Architect & ${profile.title}`}</TextHoverFill>
+                    <TextHoverFill>
+                      {profile.engineering?.headline ?? `System Architect & ${profile.title}`}
+                    </TextHoverFill>
                   </h2>
+                  {profile.engineering && (
+                    <div className="flex flex-col gap-5 max-w-3xl">
+                      <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
+                        {profile.engineering.philosophy}
+                      </p>
+                      <ul className="flex flex-wrap gap-2" aria-label="Engineering principles">
+                        {profile.engineering.principles.map((principle) => (
+                          <li
+                            key={principle.title}
+                            className="px-3 py-1.5 rounded-md border border-border/80 bg-surface/40 text-xs font-mono text-text/80"
+                          >
+                            {principle.title}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <div className="flex flex-col gap-6">
                     <div className="flex items-center gap-4">
                       <div className="h-px w-12 bg-text" />

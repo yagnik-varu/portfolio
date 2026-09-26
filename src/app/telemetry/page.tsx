@@ -8,6 +8,7 @@ import type { Telemetry } from "@/lib/validation/telemetry.schema";
 import { TelemetryHero } from "@/features/telemetry/components/telemetry-hero";
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
 import { PetEventTrigger } from "@/features/portfolio-pet/components/pet-event-trigger";
+import { PerspectiveEnforcer } from "@/features/perspective/components/perspective-enforcer";
 
 import { MetricsGrid } from "@/features/telemetry/components/metrics-grid";
 import { MonthlyContributionChart } from "@/features/telemetry/components/monthly-contribution-chart";
@@ -48,6 +49,8 @@ export default async function TelemetryPage() {
 
   return (
     <div className="flex flex-col gap-12 pt-8 md:pt-12">
+      {/* Engineer-only workspace: switch the perspective on client-side navigation too */}
+      <PerspectiveEnforcer perspective="architecture" />
       <PetEventTrigger event="TELEMETRY_VIEWED" />
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <TelemetryHero />

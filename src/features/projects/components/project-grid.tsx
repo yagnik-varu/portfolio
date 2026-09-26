@@ -3,7 +3,7 @@
 import * as React from "react";
 import type { Project } from "@/lib/validation/project.schema";
 import { ProjectCard } from "@/features/projects/components/project-card";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import { cn } from "@/lib/utils/cn";
 
 export interface ProjectGridProps extends React.HTMLAttributes<HTMLDivElement> {

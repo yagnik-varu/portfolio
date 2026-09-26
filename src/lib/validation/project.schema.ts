@@ -8,6 +8,23 @@ export const techStackSchema = z.object({
   tools: z.array(z.string()).optional(),
 });
 
+/**
+ * A single, short architecture decision. Long-form reasoning stays in the MDX
+ * body (`# Architecture` + <ArchitectureCallout />); this is the scannable
+ * version used on project cards, the Recruiter-mode teaser and the
+ * "Key Decisions" grid.
+ */
+export const architectureDecisionSchema = z.object({
+  title: z.string().min(1),
+  choice: z.string().min(1),
+  tradeoff: z.string().min(1),
+});
+
+export const projectArchitectureSchema = z.object({
+  summary: z.string().min(1),
+  decisions: z.array(architectureDecisionSchema).min(1).max(4),
+});
+
 export const projectSchema = z.object({
   slug: z.string().min(1),
   title: z.string().min(1),
@@ -20,6 +37,9 @@ export const projectSchema = z.object({
   stack: techStackSchema.optional(),
   tags: z.array(z.string()).optional(),
   impactMetrics: z.array(z.string()).optional(),
+  // Optional so existing case studies keep building; UI falls back to
+  // architectureType + complexity when absent.
+  architecture: projectArchitectureSchema.optional(),
   repositoryUrl: z.string().url().optional(),
   liveUrl: z.string().url().optional(),
   startedAt: z.string().optional(),
@@ -27,4 +47,6 @@ export const projectSchema = z.object({
 });
 
 export type TechStack = z.infer<typeof techStackSchema>;
+export type ArchitectureDecision = z.infer<typeof architectureDecisionSchema>;
+export type ProjectArchitecture = z.infer<typeof projectArchitectureSchema>;
 export type Project = z.infer<typeof projectSchema>;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import { usePetStore } from "../hooks/use-pet-store";
 import { petConfig } from "../pet-config";
 

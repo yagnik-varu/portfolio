@@ -23,6 +23,18 @@ tags:
 impactMetrics:
   - "Targeting the automation of a 4-hour manual editing process into a 2-minute workflow"
   - "Designing a 15+ node orchestration pipeline"
+architecture:
+  summary: An event-driven n8n pipeline that turns a webhook payload into a rendered reel by chaining script generation, text-to-speech, rendering and S3 delivery as discrete, retryable steps.
+  decisions:
+    - title: n8n orchestration instead of a custom backend
+      choice: Model each pipeline stage as an n8n node with built-in retries and error triggers.
+      tradeoff: Faster to build and observe, but complex branching logic is harder to version and test than code.
+    - title: Webhook callbacks for long-running renders
+      choice: The render service calls back into a webhook node instead of the workflow long-polling.
+      tradeoff: Requires a publicly reachable callback endpoint and idempotent resume handling.
+    - title: Exponential backoff on every external AI call
+      choice: Wrap OpenAI and ElevenLabs requests with retry and backoff so one rate limit never fails the whole reel.
+      tradeoff: Longer worst-case pipeline duration in exchange for reliability.
 ---
 
 # Overview

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 
 export function BackgroundEffects() {

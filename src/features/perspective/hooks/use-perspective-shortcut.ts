@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 
 /**
  * Global keyboard shortcut (Shift + P) to toggle the perspective.
@@ -36,5 +36,5 @@ export function usePerspectiveShortcut() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [toggle]);
+  }, [toggle, incrementShortcutCount]);
 }

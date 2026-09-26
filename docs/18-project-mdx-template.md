@@ -34,6 +34,12 @@ tags:
 impactMetrics:
   - "↓ 40% latency in critical paths"
   - "Handled 1M+ daily active events"
+architecture: # Optional but recommended: powers Engineer-mode cards, the Recruiter teaser and Key Decisions
+  summary: One or two sentences describing the system shape.
+  decisions: # 1-4 short decisions; keep the long reasoning in the # Architecture body below
+    - title: Kafka over RabbitMQ
+      choice: Event log with replay instead of a routing broker.
+      tradeoff: Heavier ops footprint in exchange for replayability.
 repositoryUrl: https://github.com/your-username/repo # Optional
 liveUrl: https://your-project.com # Optional
 ---

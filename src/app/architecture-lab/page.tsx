@@ -7,6 +7,7 @@ import { engineeringModules } from "../../../content/perspectives/engineering-mo
 
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
 import { PetEventTrigger } from "@/features/portfolio-pet/components/pet-event-trigger";
+import { PerspectiveEnforcer } from "@/features/perspective/components/perspective-enforcer";
 
 export const metadata: Metadata = {
   title: "Architecture Lab",
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
 export default function ArchitectureLabPage() {
   return (
     <>
+      {/* Engineer-only workspace: switch the perspective on client-side navigation too */}
+      <PerspectiveEnforcer perspective="architecture" />
       <PetEventTrigger event="ARCHITECTURE_LAB_OPENED" />
       <div className="flex flex-col gap-24 pt-8 md:pt-12">
         {/* Page Header */}

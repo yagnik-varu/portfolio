@@ -5,7 +5,7 @@
 > Update this file LAST before ending work.
 > This file is the project's current state, not a development diary.
 
-Last Updated: 2026-08-21
+Last Updated: 2026-09-26
 Owner: Yagnik Varu
 
 ---
@@ -31,13 +31,13 @@ Project Phase:
 
 # 2. Current Focus
 
-Current Phase: Phase 14 (Portfolio Pet) & Accessibility Audit
+Current Phase: Perspective System v2 (clarity + real depth)
 
-Current Task: Phase 11 Closeout (Accessibility Audit)
+Current Task: Owner review of drafted `architecture` / `engineering` content and manual browser check of the intro dialog
 
 Blocked By: Nothing
 
-Next Task: Phase 13 — Deployment
+Next Task: Phase 13 — Deployment (note: routes are now dynamically rendered, see Perspective System v2)
 
 ---
 
@@ -124,8 +124,22 @@ Only list completed functionality. Update as work progresses.
 - Built a reusable `KbdHint` component (`src/shared/components/kbd-hint.tsx`) and affixed a `Shift+P` badge to the desktop Perspective Toggle to increase power-user discoverability on viewports >1024px.
 - Integrated the Depth Shift Layer into `PerspectiveTransition` by adding `z: -20` (translateZ) and `transformPerspective: 1000` to the Stage 2-3 variants, creating a subtle 3D recess effect while holding the background grid overlay position. Verified `prefers-reduced-motion` strictly overrides all timing. Total transition duration remains ~630ms, successfully within the 600-900ms threshold.
 - Canonicalized animation standards across documentation (`docs/11-design-system.md §13` and `docs/02-perspective-transformation-model.md §5`).
-- **TODO**: Implement Toast notification for invalid perspective URLs (`?perspective=wrong`). The app should gracefully fallback to `overview` but show a toast warning the user, and dynamically highlight the Perspective toggle button so they know where to fix it.
+- **TODO**: Implement Toast notification for invalid perspective URLs (`?perspective=wrong`). The app should gracefully fallback to `overview` but show a toast warning the user, and dynamically highlight the Perspective toggle button so they know where to fix it. (Still open after v2: the proxy now ignores the bad value and the client strips it from the URL with a `console.warn`, but there is no visible toast yet.)
 - Created `PerspectiveGater` utility (`src/features/perspective/components/perspective-gater.tsx`) to allow server-rendered components to be cleanly conditionally mounted into the DOM purely based on client-side global store state without compromising the RSC payload architecture.
+
+### Perspective System v2 (2026-09-26) — "understandable and worth switching"
+
+Problem addressed: the toggle said only "Overview / Architecture", nothing explained the modes, switching revealed very little, hidden content was invisible, and the mode was neither remembered nor correct on first paint.
+
+- **Labels**: visitors now see **Recruiter** / **Engineer** (internal ids `overview` / `architecture` unchanged). Copy lives in `content/perspectives/perspectives.ts` (validated by `perspective-config.schema.ts`, helpers in `domains/perspective/config.ts`). Header toggle is prefixed "View as".
+- **First-visit chooser**: `PerspectiveIntroDialog` (once per browser via `localStorage`) compares both lenses and offers "Continue as {current}" / "Switch to {other}". The desktop pulse + tooltip and the mobile pulse (`use-perspective-discovery.ts`) were removed.
+- **Structured Engineer content** (`docs/14 §5, §8`): `project.architecture { summary, decisions[title, choice, tradeoff] }` and `profile.engineering { headline, philosophy, principles[] }`. Both optional; UI degrades to pattern/complexity or derived title when absent. Drafted for HisaabSync, TechReel (n8n) and the profile — **owner to review wording**. The four Engineering Principles moved from a hardcoded array in `engineering-principles.tsx` into `profile.ts` (one source of truth; the Engineer hero shows the titles as chips).
+- **What Engineer mode now reveals**: hero headline + design philosophy + principle chips; project cards show the architecture summary and lead decision; project pages show a new **Key Decisions** section above the Architecture MDX. In Recruiter mode the same slot shows an **Architecture Teaser** (summary, decision count, section titles, one-click switch) via a new `fallback` prop on `PerspectiveGater`.
+- **Server-resolved perspective**: new `src/proxy.ts` resolves `valid ?perspective= > /architecture-lab|/telemetry > cookie > overview` (pure `resolvePerspective()` in `domains/perspective/resolve.ts`) into an `x-perspective` request header; `app/layout.tsx` reads it, sets the `<html>` class and seeds a **per-request Zustand store** (`store-provider.tsx`, `store.ts` is now a factory). First paint is correct for deep links and revisits. Client switches write the `perspective` cookie (1 year) and the URL. `PerspectiveEnforcer` handles client-side navigation into the two Engineer routes.
+- **Accepted tradeoff**: reading request headers in the root layout makes every route dynamically rendered (`ƒ`) instead of statically prerendered. Approved by the owner for correctness of first paint. `generateStaticParams` remains on `/projects/[slug]`.
+- **Navigation**: Architecture Lab / Telemetry now sit before Contact (docs/02 §7). Dead code removed: `ProjectCardActions`, the always-true `perspective` prop on `ArchitectureSection` / `EngineeringSections`, unused `PerspectiveConfig` fields.
+- **Verified**: `tsc` clean, ESLint clean on all touched files (fixed a pre-existing missing-dep warning in `use-perspective-shortcut.ts`), `next build` passes, and `curl` against `next start` confirms: no `<html>` class without cookie; class present with cookie, with `?perspective=architecture` (which also sets the cookie) and on `/architecture-lab`; `?perspective=wrong` → Recruiter with no cookie; Engineer HTML contains the engineering headline and no recruiter summary; project page DOM has the teaser in Recruiter mode and Key Decisions in Engineer mode; `/projects/nope` → 404.
+- **Not yet verified in a browser** (needs a manual pass): intro dialog timing/focus/Escape, toggle pill animation with the new labels, teaser → switch animation, reduced-motion behaviour.
 
 ## Core UI Development
 

@@ -4,11 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import type { Project } from "@/lib/validation/project.schema";
 import type { Perspective } from "@/domains/perspective/types";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import type { HTMLMotionProps } from "framer-motion";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/shared/components/badge/badge";
-import { Button } from "@/shared/components/button/button";
 import { cn } from "@/lib/utils/cn";
 import { PERSPECTIVE_TIMING } from "@/features/perspective/components/perspective-transition";
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
@@ -64,8 +63,26 @@ export function ProjectCardStack({ project, className }: { project: Project; cla
 }
 
 export function ProjectArchitecturePanel({ project, className }: { project: Project; className?: string }) {
+  const architecture = project.architecture;
+  const leadDecision = architecture?.decisions[0];
+
   return (
     <div className={cn("flex flex-col gap-2 p-3 bg-surface/60 border border-border/80 rounded-md font-mono text-xs", className)}>
+      {/* Structured architecture facts (docs/14 §5). Falls back to pattern +
+          complexity only when the case study has no `architecture` block. */}
+      {architecture && (
+        <p className="text-text/90 leading-relaxed font-sans text-[13px] line-clamp-3">
+          {architecture.summary}
+        </p>
+      )}
+      {leadDecision && (
+        <p className="text-muted leading-relaxed">
+          <span className="font-semibold uppercase tracking-wider text-[10px] text-primary mr-1.5">Decision</span>
+          <span className="text-text/90">{leadDecision.title}</span>
+          <span aria-hidden="true"> — </span>
+          {leadDecision.choice}
+        </p>
+      )}
       <div className="flex items-center justify-between text-muted">
         <span className="font-semibold uppercase tracking-wider text-[10px]">Pattern</span>
         <Badge variant="architecture" className="text-xs">
@@ -78,27 +95,6 @@ export function ProjectArchitecturePanel({ project, className }: { project: Proj
           {project.complexity}
         </Badge>
       </div>
-    </div>
-  );
-}
-
-export function ProjectCardActions({ project, perspective, className }: { project: Project; perspective: Perspective; className?: string }) {
-  const isArchitecture = perspective === "architecture";
-  const targetHref = isArchitecture 
-    ? `/projects/${project.slug}?perspective=architecture` 
-    : `/projects/${project.slug}`;
-
-  return (
-    <div className={cn("flex items-center gap-3 pt-2 mt-auto", className)}>
-      <Link href={targetHref} className="w-full">
-        <Button 
-          variant={isArchitecture ? "secondary" : "primary"} 
-          size="sm" 
-          className="w-full font-medium"
-        >
-          {isArchitecture ? "Inspect Architecture →" : "View Project"}
-        </Button>
-      </Link>
     </div>
   );
 }

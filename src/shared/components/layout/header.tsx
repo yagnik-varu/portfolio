@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Navigation } from "./navigation";
 import { PerspectiveToggle } from "@/features/perspective/components/perspective-toggle";
-import { usePerspectiveStore } from "@/domains/perspective/store";
+import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { MobileMenu } from "./mobile-menu";
@@ -50,9 +50,9 @@ export function Header() {
           }
           className="pointer-events-auto flex h-16 w-full max-w-5xl items-center justify-between rounded-full border border-white/[0.08] backdrop-blur-2xl px-6 transition-colors"
         >
-          <Link 
-            href="/" 
-            className="font-bold tracking-tight text-text text-lg hover:text-primary transition-colors"
+          <Link
+            href="/"
+            className="shrink-0 font-bold tracking-tight text-text text-lg hover:text-primary transition-colors"
             onClick={() => {
               if (window.location.pathname === "/") {
                 window.dispatchEvent(new Event("trigger-scroll-top"));
@@ -62,17 +62,18 @@ export function Header() {
             Yagnik Varu
           </Link>
 
-          {/* Desktop Navigation */}
-          <Navigation perspective={perspective} className="hidden md:flex flex-1 justify-center" />
+          {/* Desktop Navigation: six links in Engineer mode need lg+ to fit
+              beside the logo and toggle; tablets use the menu instead. */}
+          <Navigation perspective={perspective} className="hidden lg:flex flex-1 justify-center min-w-0" />
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 shrink-0">
             {/* Perspective Toggle (Responsive compound component) */}
             <PerspectiveToggle perspective={perspective} onChange={setPerspective} />
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 text-muted hover:text-primary transition-colors rounded-full"
+              className="lg:hidden p-2 text-muted hover:text-primary transition-colors rounded-full"
               aria-label="Open menu"
             >
               <Menu size={24} />

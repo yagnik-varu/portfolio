@@ -129,15 +129,39 @@ Most visitors are recruiters or first-time visitors.
 
 The homepage and global header must surface the Perspective System immediately:
 
-* **Header Placement**: Visible in the global navigation bar on all pages.
-* **First-Visit Affordance**: Subtle highlight/pulse animation on the perspective control during the first user session to signal interactivity.
-* **Hero Section CTA**: An explicit callout in the homepage Hero:
-  ```text
-  Viewing: Overview Mode
-  [ Explore Architecture Perspective → ]
-  ```
-* **Mobile Discovery**: On compact screens (< 768px), the slider adapts into an accessible, high-contrast segmented control or quick-toggle in the sticky mobile navigation.
+* **Header Placement**: Visible in the global navigation bar on all pages, prefixed "View as".
+* **First-Visit Chooser**: On a visitor's first load (once per browser, `localStorage`), a dialog explains both lenses side by side (audience, description, what each unlocks) and offers "Continue as {current}" / "Switch to {other}". This replaced the earlier pulse + tooltip affordance, which signalled *that* a control existed but never *what it did*.
+* **Discoverable Depth**: Where Engineer-only content is hidden (project pages), a teaser stands in its place naming what is available and offering a one-click switch. Hidden content must never be invisible.
+* **Mobile Discovery**: On compact screens (< 768px), the slider adapts into an accessible, high-contrast segmented control in the header.
 * **Keyboard Shortcut**: Power users can toggle perspectives with `Shift + P`.
+
+---
+
+## Entry Resolution (server-side)
+
+The perspective for a request is decided **before render** by `src/proxy.ts`, using the pure `resolvePerspective()` in `src/domains/perspective/resolve.ts`:
+
+```text
+valid ?perspective= param
+      > engineer-only route (/architecture-lab, /telemetry)
+      > valid `perspective` cookie
+      > overview
+```
+
+The result is passed to the root layout as a request header, which seeds a per-request store and sets the `<html>` class, so the first paint already shows the right perspective (no Recruiter-mode flash on deep links or revisits). Every client-side switch writes the cookie and the URL. Invalid values fall through silently and are logged on the client.
+
+Cost accepted: reading request headers makes all routes dynamically rendered rather than statically prerendered.
+
+---
+
+## Display Labels
+
+Internal ids never change (`overview` / `architecture`): they are the store value, the URL param and the cookie. What visitors see comes from `content/perspectives/perspectives.ts`:
+
+```text
+overview      → "Recruiter"
+architecture  → "Engineer"
+```
 
 ---
 
@@ -176,8 +200,10 @@ Theme Change
 ## Example Structure
 
 ```text
-Perspective: [ Overview | Architecture ]
+View as: [ Recruiter | Engineer ]
 ```
+
+Labels are content (`content/perspectives/perspectives.ts`), not code.
 
 ---
 
@@ -604,17 +630,29 @@ Focus:
 
 Architecture Perspective does not automatically expand project content.
 
-Instead it provides a discovery mechanism.
-
-Example:
+Instead it provides a discovery mechanism, fed by the structured
+`architecture` frontmatter block (`docs/14 §5`):
 
 ```text
 SpendSync
 
-Architecture Available
+<architecture.summary>
+Decision: <first decision title> — <choice>
+Pattern: modular-monolith   Complexity: production
 
-[ Inspect Architecture ]
+[ Inspect Architecture → ]
 ```
+
+---
+
+## Project Page Behavior
+
+Engineer perspective, in order: Key Decisions (frontmatter) → Architecture
+(MDX) → Engineering Deep Dive (MDX sections).
+
+Recruiter perspective: the same slot shows an **Architecture Teaser** listing
+the summary, decision count and section titles, with a switch button. The
+deeper layer is discoverable, never invisible.
 
 ---
 

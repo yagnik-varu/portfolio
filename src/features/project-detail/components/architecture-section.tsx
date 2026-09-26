@@ -4,14 +4,13 @@ import { mdxComponents } from "@/lib/mdx/mdx-components";
 
 interface ArchitectureSectionProps {
   content: string;
-  perspective: "overview" | "architecture";
 }
 
-export function ArchitectureSection({ content, perspective }: ArchitectureSectionProps) {
-  // We handle visibility by completely skipping rendering when the perspective is 'overview'.
-  // This saves MDX compilation costs and prevents DOM/HTML bloat, adhering to the 
-  // progressive information expansion model.
-  if (perspective !== "architecture") return null;
+/**
+ * Long-form `# Architecture` MDX. Visibility is decided by the
+ * <PerspectiveGater /> in the page, not here.
+ */
+export function ArchitectureSection({ content }: ArchitectureSectionProps) {
   if (!content) return null;
 
   return (

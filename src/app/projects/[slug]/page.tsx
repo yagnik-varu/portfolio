@@ -7,6 +7,8 @@ import { OverviewSection } from "@/features/project-detail/components/overview-s
 import { ArchitectureSection } from "@/features/project-detail/components/architecture-section";
 import { EngineeringSections } from "@/features/project-detail/components/engineering-sections";
 import { FutureImprovementsSection } from "@/features/project-detail/components/future-improvements-section";
+import { KeyDecisionsSection } from "@/features/project-detail/components/key-decisions-section";
+import { ArchitectureTeaser } from "@/features/project-detail/components/architecture-teaser";
 import { PerspectiveGater } from "@/features/perspective/components/perspective-gater";
 
 import { ErrorBoundary } from "@/shared/components/error-boundary/error-boundary";
@@ -73,10 +75,21 @@ export default async function ProjectPage({
             {/* 2. Overview (Always Visible) */}
             <OverviewSection content={sections.overview} />
 
-            {/* 3. Engineering Deep Dives (Perspective Gated) */}
-            <PerspectiveGater requiredPerspective="architecture">
-              <ArchitectureSection content={sections.architecture} perspective="architecture" />
-              <EngineeringSections sections={sections.engineeringSections} perspective="architecture" />
+            {/* 3. Engineering Deep Dives (Perspective Gated).
+                In Recruiter view a teaser stands in their place so the deeper
+                layer is discoverable, not invisible (docs/02 §11). */}
+            <PerspectiveGater
+              requiredPerspective="architecture"
+              fallback={
+                <ArchitectureTeaser
+                  project={project}
+                  engineeringSections={sections.engineeringSections}
+                />
+              }
+            >
+              <KeyDecisionsSection architecture={project.architecture} />
+              <ArchitectureSection content={sections.architecture} />
+              <EngineeringSections sections={sections.engineeringSections} />
             </PerspectiveGater>
 
             {/* 4. Future Improvements (Always Visible) */}

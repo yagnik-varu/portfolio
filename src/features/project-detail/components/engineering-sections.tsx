@@ -4,15 +4,14 @@ import type { EngineeringSection as DomainEngineeringSection } from "@/lib/mdx/s
 
 interface EngineeringSectionsProps {
   sections: DomainEngineeringSection[];
-  perspective: "overview" | "architecture";
 }
 
-export function EngineeringSections({ sections, perspective }: EngineeringSectionsProps) {
-  // Respect the progressive information expansion rule
-  if (perspective !== "architecture") return null;
-
+/**
+ * Optional deep-dive sections parsed from the MDX body. Visibility is decided
+ * by the <PerspectiveGater /> in the page, not here.
+ */
+export function EngineeringSections({ sections }: EngineeringSectionsProps) {
   // Graceful degradation: not every project has engineering sections.
-  // We simply render nothing instead of failing or showing empty states.
   if (!sections || sections.length === 0) return null;
 
   return (
