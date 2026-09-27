@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { usePerspectiveStore, usePerspectiveStoreApi } from "./store-provider";
 import { writePerspectiveCookie } from "./persistence";
 import { perspectiveSchema } from "@/lib/validation/perspective.schema";
 import { usePerspectiveShortcut } from "@/features/perspective/hooks/use-perspective-shortcut";
+import { setAnalyticsContext, track } from "@/lib/analytics/client";
 
 /**
  * Keeps three things in agreement after hydration:
@@ -42,7 +43,7 @@ function SyncLogic() {
       return; // store→URL effect below cleans the bad param off the URL
     }
     if (parsed.data !== current) {
-      storeApi.getState().setPerspective(parsed.data);
+      storeApi.getState().setPerspective(parsed.data, "url");
     }
   }, [searchParams, storeApi]);
 
@@ -74,6 +75,24 @@ function SyncLogic() {
       perspective === "architecture"
     );
   }, [perspective]);
+
+  // store → analytics. The single place switches are reported: call sites only
+  // declare a `source`. Every later event also carries the current perspective,
+  // so any PostHog chart can be split by Recruiter vs Engineer.
+  const previousPerspective = useRef(perspective);
+  useEffect(() => {
+    setAnalyticsContext({ perspective });
+
+    const from = previousPerspective.current;
+    previousPerspective.current = perspective;
+    if (from === perspective) return; // initial mount, not a switch
+
+    track("perspective_switched", {
+      from,
+      to: perspective,
+      source: storeApi.getState().lastSwitchSource ?? "toggle",
+    });
+  }, [perspective, storeApi]);
 
   return null;
 }

@@ -16,7 +16,7 @@ export function PerspectiveEnforcer({ perspective }: { perspective: Perspective 
   const setPerspective = usePerspectiveStore((state) => state.setPerspective);
 
   useEffect(() => {
-    setPerspective(perspective);
+    setPerspective(perspective, "route");
   }, [perspective, setPerspective]);
 
   return null;

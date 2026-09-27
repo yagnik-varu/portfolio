@@ -6,13 +6,25 @@ import type { Perspective } from "@/domains/perspective/types";
 import { usePerspectiveStore } from "@/domains/perspective/store-provider";
 import { profile } from "../../../../content/profile/profile";
 import { PerspectiveTransition } from "@/features/perspective/components/perspective-transition";
-import { Button } from "@/shared/components/button/button";
+import { Button, buttonVariants } from "@/shared/components/button/button";
+import { cn } from "@/lib/utils/cn";
 import Link from "next/link";
 import { RotatingStat } from "./rotating-stat";
 import { StaggeredSection, StaggeredItem } from "./staggered-section";
 import { useRef } from "react";
 import { MagneticWrapper } from "@/shared/components/magnetic-wrapper";
 import { TextHoverFill } from "@/shared/components/motion/text-hover-fill";
+
+// Navigation CTAs are real links (<a>), styled with the shared button classes.
+// Wrapping a <button> in <Link legacyBehavior> produced invalid <a><button>
+// nesting and is deprecated in Next 16. MagneticWrapper still supplies the
+// pull; the lift mirrors Button's hover spring and is skipped for users who
+// prefer reduced motion.
+const heroPrimaryLinkClass = cn(
+  buttonVariants({ variant: "primary", size: "lg" }),
+  "h-16 px-10 text-lg rounded-none bg-text text-background hover:bg-text/90",
+  "motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:-translate-y-1 motion-safe:active:scale-[0.98]"
+);
 
 interface HeroSectionProps {
   perspective?: Perspective;
@@ -56,7 +68,9 @@ export function HeroSection({
   const storeSetPerspective = usePerspectiveStore((state) => state.setPerspective);
 
   const perspective = propPerspective ?? storePerspective;
-  const onPerspectiveChange = propOnPerspectiveChange ?? storeSetPerspective;
+  const onPerspectiveChange =
+    propOnPerspectiveChange ??
+    ((p: Perspective) => storeSetPerspective(p, "hero_cta"));
 
   const shouldReduceMotion = useMotionPreference();
   const h1Ref = useRef<HTMLHeadingElement>(null);
@@ -130,10 +144,8 @@ export function HeroSection({
 
                 <div className="flex flex-wrap items-center gap-4 pt-4">
                   <MagneticWrapper strength={15}>
-                    <Link href="/projects" passHref legacyBehavior>
-                      <Button variant="primary" size="lg" className="h-16 px-10 text-lg rounded-none bg-text text-background hover:bg-text/90">
-                        View Projects
-                      </Button>
+                    <Link href="/projects" className={heroPrimaryLinkClass}>
+                      View Projects
                     </Link>
                   </MagneticWrapper>
                   
@@ -205,10 +217,8 @@ export function HeroSection({
 
                 <div className="flex flex-wrap items-center gap-4 pt-4">
                   <MagneticWrapper strength={15}>
-                    <Link href="/architecture-lab" passHref legacyBehavior>
-                      <Button variant="primary" size="lg" className="h-16 px-10 text-lg rounded-none bg-text text-background hover:bg-text/90">
-                        Enter Architecture Lab
-                      </Button>
+                    <Link href="/architecture-lab" className={heroPrimaryLinkClass}>
+                      Enter Architecture Lab
                     </Link>
                   </MagneticWrapper>
 

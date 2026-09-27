@@ -24,7 +24,11 @@ npm run format   # prettier --write .
 
 - No test runner is wired up yet. `tests/unit/` and `tests/integration/` exist as empty placeholders; `AGENT.md` describes the intended split (unit = domain logic / utils / validation, integration = content loading / perspective flow).
 - `next build` does **not** run ESLint (Next 16). Run `npm run lint` explicitly — the repo currently has lint errors (`no-explicit-any`, `react-hooks/set-state-in-effect`) that do not block the build but violate the project's own standards.
-- Node env vars (all optional, read at runtime): `NEXT_PUBLIC_APP_URL` (metadataBase + canonical URLs), `GITHUB_TOKEN` + `GITHUB_USERNAME` (telemetry; absent → mock data fallback).
+- Node env vars (all optional, read at runtime): `NEXT_PUBLIC_APP_URL` (metadataBase + canonical URLs), `GITHUB_TOKEN` + `GITHUB_USERNAME` (telemetry; absent → mock data fallback), `NEXT_PUBLIC_POSTHOG_KEY` + `NEXT_PUBLIC_POSTHOG_REGION` (`us`|`eu`; analytics, absent → disabled; inlined at build time).
+
+## Analytics
+
+PostHog, cookieless, loaded lazily from `src/instrumentation-client.ts`; see `docs/19-analytics.md`. Only send events through `track()` / `analyticsAttrs()` from `src/lib/analytics/`, and add every new event to the typed catalogue in `events.ts` first. Server Components tag links with `analyticsAttrs(...)` instead of becoming client components. Perspective switches are reported only in `PerspectiveSync`; callers pass a `source` to `setPerspective` / `toggle`. Requests go through the `/ingest` rewrite in `next.config.ts`, which `src/proxy.ts` must keep excluding. Analytics never runs in `next dev`.
 
 ## Stack
 

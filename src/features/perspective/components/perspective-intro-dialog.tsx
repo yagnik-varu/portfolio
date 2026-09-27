@@ -9,6 +9,7 @@ import { perspectives } from "../../../../content/perspectives/perspectives";
 import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
 import { Button } from "@/shared/components/button/button";
 import { KbdHint } from "@/shared/components/kbd-hint";
+import { track } from "@/lib/analytics/client";
 
 const STORAGE_KEY = "perspective-intro-seen";
 const OPEN_DELAY_MS = 1000;
@@ -50,14 +51,20 @@ export function PerspectiveIntroDialog() {
     return () => clearTimeout(timer);
   }, []);
 
-  const close = useCallback(() => {
-    markIntroSeen();
-    setIsOpen(false);
-  }, []);
+  // `choice` tells us whether the dialog actually helps visitors pick a lens
+  // (continue / switch) or just gets closed (dismiss).
+  const close = useCallback(
+    (choice: "continue" | "switch" | "dismiss") => {
+      track("intro_dialog_closed", { choice, shown_as: perspective });
+      markIntroSeen();
+      setIsOpen(false);
+    },
+    [perspective]
+  );
 
   const switchAndClose = useCallback(() => {
-    setPerspective(getOtherPerspective(perspective));
-    close();
+    close("switch");
+    setPerspective(getOtherPerspective(perspective), "intro_dialog");
   }, [perspective, setPerspective, close]);
 
   // Escape closes; lock body scroll; move focus into the dialog.
@@ -65,7 +72,7 @@ export function PerspectiveIntroDialog() {
     if (!isOpen) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape") close("dismiss");
     };
     window.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -89,7 +96,7 @@ export function PerspectiveIntroDialog() {
           initial={shouldReduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={shouldReduceMotion ? undefined : { opacity: 0, transition: { duration: 0.2 } }}
-          onClick={close}
+          onClick={() => close("dismiss")}
         >
           <motion.div
             role="dialog"
@@ -105,7 +112,7 @@ export function PerspectiveIntroDialog() {
           >
             <button
               type="button"
-              onClick={close}
+              onClick={() => close("dismiss")}
               aria-label="Dismiss"
               className="absolute right-4 top-4 p-2 rounded-full text-muted hover:text-text transition-colors"
             >
@@ -164,7 +171,7 @@ export function PerspectiveIntroDialog() {
               <Button variant="outline" size="lg" onClick={switchAndClose}>
                 Switch to {otherLabel}
               </Button>
-              <Button ref={primaryButtonRef} variant="primary" size="lg" onClick={close}>
+              <Button ref={primaryButtonRef} variant="primary" size="lg" onClick={() => close("continue")}>
                 Continue as {currentLabel}
               </Button>
             </div>

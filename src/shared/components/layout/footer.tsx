@@ -1,5 +1,6 @@
 import { profile } from "../../../../content/profile/profile";
 import { PetToggleFooterLink } from "@/features/portfolio-pet/components/pet-toggle-footer-link";
+import { analyticsAttrs } from "@/lib/analytics/events";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -25,6 +26,7 @@ export function Footer() {
             href={profile.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
+            {...analyticsAttrs("contact_clicked", { channel: "github", location: "footer" })}
             className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
           >
             GitHub
@@ -33,12 +35,14 @@ export function Footer() {
             href={profile.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
+            {...analyticsAttrs("contact_clicked", { channel: "linkedin", location: "footer" })}
             className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
           >
             LinkedIn
           </a>
           <a
             href={`mailto:${profile.email}`}
+            {...analyticsAttrs("contact_clicked", { channel: "email", location: "footer" })}
             className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
           >
             Email
@@ -48,6 +52,7 @@ export function Footer() {
               href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
+              {...analyticsAttrs("resume_downloaded", { location: "footer" })}
               className="text-sm font-medium text-muted hover:text-primary transition-colors rounded-sm"
             >
               Resume

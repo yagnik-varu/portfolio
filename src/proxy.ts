@@ -50,7 +50,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Page routes only: skip Next internals and any file with an extension
-  // (favicon.ico, sitemap.xml, robots.txt, resume.pdf, images, fonts).
-  matcher: ["/((?!_next/static|_next/image|.*\\..*).*)"],
+  // Page routes only: skip Next internals, the analytics proxy (/ingest) and
+  // any file with an extension (favicon.ico, sitemap.xml, resume.pdf, ...).
+  matcher: ["/((?!_next/static|_next/image|ingest|.*\\..*).*)"],
 };

@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { profile } from "../../../../content/profile/profile";
 import { Button } from "@/shared/components/button/button";
 import { MagneticWrapper } from "@/shared/components/magnetic-wrapper";
+import { analyticsAttrs } from "@/lib/analytics/events";
 
 export function ContactCTASection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +54,11 @@ export function ContactCTASection() {
 
         <div className="flex flex-wrap items-center gap-6">
           <MagneticWrapper strength={15}>
-            <a href={`mailto:${profile.email}`} className="block">
+            <a
+              href={`mailto:${profile.email}`}
+              className="block"
+              {...analyticsAttrs("contact_clicked", { channel: "email", location: "contact_section" })}
+            >
               <Button variant="primary" size="lg" className="h-16 px-10 text-lg rounded-none bg-text text-background hover:bg-[#EA4335] hover:text-white transition-colors duration-300">
                 Contact via Email
               </Button>
@@ -67,6 +72,7 @@ export function ContactCTASection() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="block"
+                {...analyticsAttrs("resume_downloaded", { location: "contact_section" })}
               >
                 <Button variant="outline" size="lg" className="h-16 px-10 text-lg rounded-none border-text text-text hover:bg-surface transition-colors duration-300">
                   Download Resume
@@ -82,6 +88,7 @@ export function ContactCTASection() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="block"
+                {...analyticsAttrs("contact_clicked", { channel: "github", location: "contact_section" })}
               >
                 <Button variant="ghost" size="lg" className="h-16 px-10 text-lg rounded-none text-text hover:bg-[#24292e] hover:text-white transition-colors duration-300">
                   GitHub Profile
@@ -96,6 +103,7 @@ export function ContactCTASection() {
               target="_blank" 
               rel="noopener noreferrer"
               className="block"
+              {...analyticsAttrs("contact_clicked", { channel: "linkedin", location: "contact_section" })}
             >
               <Button variant="ghost" size="lg" className="h-16 px-10 text-lg rounded-none text-text hover:bg-[#0A66C2] hover:text-white transition-colors duration-300">
                 Connect on LinkedIn →

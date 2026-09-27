@@ -28,6 +28,7 @@ Find your current task category and read the corresponding file(s) before touchi
 | **Styling, Tailwind, Colors & UI Tokens** | `docs/11-design-system.md` |
 | **Building or Modifying UI Components** | `docs/12-ui-inventory.md`, `docs/13-component-architecture.md` |
 | **Checking what to build next (Roadmap)** | `docs/15-development-roadmap.md` |
+| **Analytics, events & UTM links** | `docs/19-analytics.md` |
 
 ---
 

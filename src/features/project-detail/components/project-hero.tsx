@@ -23,6 +23,7 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
 import { Badge } from "@/shared/components/badge/badge";
 import { ComplexityIndicator } from "@/shared/components/complexity-indicator/complexity-indicator";
 import type { Project } from "@/lib/validation/project.schema";
+import { analyticsAttrs } from "@/lib/analytics/events";
 
 interface ProjectHeroProps {
   project: Project;
@@ -88,6 +89,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
               href={project.repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
+              {...analyticsAttrs("project_link_clicked", { slug: project.slug, link: "repository" })}
               className="inline-flex items-center gap-2 rounded-md bg-surface px-4 py-2 text-sm font-medium text-text transition-colors hover:bg-surface/80 hover:text-foreground"
             >
               <GithubIcon className="h-4 w-4" />
@@ -99,6 +101,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
+              {...analyticsAttrs("project_link_clicked", { slug: project.slug, link: "live" })}
               className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-primary/90"
             >
               <ExternalLink className="h-4 w-4" />

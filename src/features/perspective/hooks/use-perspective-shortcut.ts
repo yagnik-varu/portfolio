@@ -29,7 +29,7 @@ export function usePerspectiveShortcut() {
         }
 
         e.preventDefault();
-        toggle();
+        toggle("shortcut");
         incrementShortcutCount();
       }
     };

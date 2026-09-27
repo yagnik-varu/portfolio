@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/analytics/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { profile } from "../../../content/profile/profile";
@@ -130,6 +131,7 @@ export function GlobalShortcuts() {
       // 'r' or 'R' key - Resume
       if (key === 'r') {
         if (profile.resumeUrl) {
+          track("resume_downloaded", { location: "shortcut" });
           window.open(profile.resumeUrl, "_blank", "noopener,noreferrer");
           triggerToast(<span>Opening Resume...</span>);
         }

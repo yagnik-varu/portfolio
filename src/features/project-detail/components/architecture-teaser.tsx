@@ -70,7 +70,12 @@ export function ArchitectureTeaser({ project, engineeringSections }: Architectur
       </ul>
 
       <div>
-        <SwitchPerspectiveButton to="architecture" variant="primary" size="lg" />
+        <SwitchPerspectiveButton
+          to="architecture"
+          source="project_teaser"
+          variant="primary"
+          size="lg"
+        />
       </div>
     </aside>
   );
