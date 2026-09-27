@@ -114,6 +114,7 @@ Only list completed functionality. Update as work progresses.
 - Validated that build gracefully fails on missing schema fields per `docs/08-error-handling.md §4`.
 - **Phase 7 Content Loaders**: Built `splitMdxSections` utility in `src/lib/mdx/section-splitter.ts` to parse raw MDX bodies into structured domain models (`Overview`, `Architecture`, `EngineeringSections`, `FutureImprovements`), enforcing mandatory sections and normalizing engineering types.
 - **Phase 7 Content Rendering**: Created `mdxComponents` mapping for `next-mdx-remote` (`src/lib/mdx/mdx-components.tsx`) to map raw markdown tags to semantic Design System classes, and implemented a custom `<ArchitectureCallout />` MDX element.
+- **NotifyMe case study (2026-09-27)**: Added `content/projects/notify-me.mdx` (React Native UI + native Android call-detection engine posting to Slack/Discord/Teams webhooks), written from the public repo's README, INSTALL and engine sources. Includes the `architecture` block (4 decisions). `featured: false`. Note: frontmatter dates must be quoted (`"2026-08-26"`); bare YAML dates parse as `Date` and fail `projectSchema`.
 - **Phase 8 Content**: Added `EngineeringModule` and `LearningMilestone` Zod schemas and their respective content files (`content/perspectives/engineering-modules.ts`, `content/profile/learning-timeline.ts`). Refactored Phase 5's homepage `EngineeringModulesSection` to pull from this real content file instead of a hardcoded array, establishing a single source of truth.
 
 ## Perspective System

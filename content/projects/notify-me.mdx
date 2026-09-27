@@ -1,0 +1,111 @@
+---
+slug: notify-me
+title: NotifyMe
+summary: An Android app that watches for incoming and missed calls on a phone you can't reach, and posts the caller's name to Slack, Discord or Teams in real time.
+status: completed
+featured: false
+architectureType: event-driven
+complexity: intermediate
+visibility: public
+stack:
+  frontend:
+    - React Native
+    - TypeScript
+  backend:
+    - Java
+    - Kotlin
+    - Android WorkManager
+    - Android Telephony API
+  database:
+    - SharedPreferences
+  infrastructure:
+    - Slack / Discord / Teams Webhooks
+tags:
+  - mobile
+  - android
+  - react-native
+  - automation
+  - ai-assisted
+impactMetrics:
+  - "Never missed an important call while my phone sat in the HR cabin"
+  - "Alerts still fire with the app swiped away and after a reboot"
+architecture:
+  summary: A native Android event pipeline (PhoneStateReceiver → CallEventWorker → webhook) that runs without the app open, with a thin React Native UI talking to it through a single Kotlin bridge module.
+  decisions:
+    - title: Webhooks instead of a companion app
+      choice: Post alerts to a Slack, Discord or Teams channel I already watch on my work PC.
+      tradeoff: Needs a webhook URL and a network connection, but no second app, account or server to run.
+    - title: Native engine, React Native only for UI
+      choice: Call detection and delivery live in Java/Kotlin; JS only reads and writes config through NotifyMeModule.
+      tradeoff: Two languages to maintain, but detection keeps working when the JS runtime is dead.
+    - title: WorkManager with a network constraint
+      choice: Every alert is a OneTimeWorkRequest that waits for connectivity and retries with exponential backoff.
+      tradeoff: An alert can arrive late on a bad network, but it is never silently dropped.
+    - title: One gate for every "should this fire?" decision
+      choice: EventGate combines webhook presence, Force-on / Pause overrides and a weekly office-hours window.
+      tradeoff: One more indirection, but schedule rules live in exactly one place and are testable with an injected clock.
+repositoryUrl: https://github.com/yagnik-varu/notifyMe
+startedAt: "2026-08-26"
+updatedAt: "2026-08-26"
+---
+
+# Overview
+
+At my previous office we had to leave our phones in the HR cabin during working hours. If HR forgot to pass on a call, it was simply missed, including calls that mattered.
+
+NotifyMe solves that for me. The phone stays in the cabin, and whenever it rings, a message lands in a Slack, Discord or Teams channel I already have open on my work computer: **"📞 Incoming call from Mom (+91 98…) at 11:42"**. If nobody picks up, a second message follows: **"📵 Missed call from …"**. I can then step out and call back.
+
+It is a personal tool, built for one real problem. I built it with AI-assisted ("vibe") coding, which let me ship native Android code I had never written before in a single day. My job was to define the behaviour, test it on a real device, and push back when the generated code was wrong.
+
+**What it does**
+
+- Detects incoming and missed calls in the background, even when the app is closed.
+- Resolves the caller's name from contacts or the call log, not just the number.
+- Sends to Slack, Discord (colour-coded embeds), Microsoft Teams or any generic JSON webhook.
+- Only fires during configured office hours, with "Force on" and "Pause now" overrides.
+- Keeps a local history of the last 50 alerts and whether each one was delivered.
+
+# Architecture
+
+The app has two halves with a hard boundary between them.
+
+- **React Native UI** (`App.tsx`, TypeScript). Webhook setup, schedule, overrides, history and a "Send test message" button.
+- **Native Android engine** (Java/Kotlin). Everything that has to keep working when the UI is gone.
+
+The only thing connecting them is `NotifyMeModule.kt`, a custom native bridge that exposes config, status, history and the test send to JavaScript. It also requests the Android call-screening role, which React Native cannot do from JS.
+
+<ArchitectureCallout title="Decision: Why keep the engine native?">
+A phone call can arrive at any moment, usually when the app is not running. A manifest-registered `BroadcastReceiver` is woken by the OS even when the app process is dead, while React Native's JS runtime is not. So detection and delivery stay 100% native, and React Native is only responsible for the screens. If the UI crashes or is swiped away, alerts keep flowing.
+</ArchitectureCallout>
+
+**The event pipeline**
+
+1. **`PhoneStateReceiver`** listens to `PHONE_STATE` broadcasts and tracks the call lifecycle. `IDLE → RINGING` is an incoming call. `RINGING → IDLE` without passing through `OFFHOOK` is a missed call.
+2. **`EventGate`** decides whether anything should fire right now: is a webhook configured, is a Force-on or Pause override active, and are we inside the weekly office-hours window (including overnight windows like 22:00–06:00).
+3. **`CallEventWorker`** runs as a WorkManager job. It resolves the caller's number and name, then builds the platform-specific payload through `PlatformFormatter`.
+4. The worker POSTs the payload to the webhook and records success or failure in the history, stored in private `SharedPreferences`.
+
+# Implementation Challenges
+
+**Android 10+ hides the caller's number.** The `PHONE_STATE` broadcast no longer includes the incoming number on modern Android. The worker therefore resolves it from whichever source answers first: the legacy broadcast value on older devices, a real-time cache filled by `CallScreenService` (when the app holds the call-screening role), or the system call log. Some manufacturers only write the call-log row when the call ends, so the worker polls for about 18 seconds before giving up on a name.
+
+**Duplicate alerts.** Early versions fired both from the screening service and the phone-state receiver. The fix was to make `PhoneStateReceiver` the single trigger and demote `CallScreenService` to a passive number cache that never enqueues anything and always lets the call through unchanged.
+
+**Answered vs missed.** Android does not announce "missed call". It is inferred from the state sequence, and the state has to survive across short-lived receiver instances. The receiver keeps the last state in static volatile fields, and the "ended" job only sends a message if the call was never answered, because answered calls were already alerted at ring time.
+
+**Aggressive battery management.** Samsung, Xiaomi, Oppo and OnePlus kill background receivers unless the app is set to "Unrestricted" battery and "Autostart" is enabled. A fresh install also stays "stopped" and receives no broadcasts until it is opened once. None of this is fixable in code, so the setup screen walks the user through it.
+
+**Unreliable networks.** Every alert waits for a `CONNECTED` network constraint and retries with exponential backoff, up to five real attempts. A late alert is better than a lost one.
+
+# Lessons Learned
+
+Building this with AI assistance changed where my effort went. Writing the code was fast. Knowing whether it was *right* was the real work, and that required testing on a real phone with real calls, because emulators cannot receive them.
+
+The most valuable prompts were not "write a call listener" but "what does Android 10 remove from this broadcast?" and "why am I getting two alerts?". The generated code was only as good as my understanding of the platform constraints I asked it to respect.
+
+# Future Improvements
+
+- **Unit tests for `EventGate`.** It already accepts an injected clock, so overnight windows, day masks and expiring overrides can be tested without a device.
+- **Encrypted webhook storage.** `SharedPreferences` is fine for a personal sideloaded app, but a public release should use `EncryptedSharedPreferences`.
+- **Richer Teams cards.** Teams currently receives plain text through the legacy connector; switching to Adaptive Cards would match the Discord embeds.
+- **Play Store readiness.** Call-log and call-screening permissions require a policy declaration, so distribution beyond sideloading needs a narrower permission story.
