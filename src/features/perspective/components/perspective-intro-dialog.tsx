@@ -13,6 +13,8 @@ import { track } from "@/lib/analytics/client";
 
 const STORAGE_KEY = "perspective-intro-seen";
 const OPEN_DELAY_MS = 1000;
+/** Matches Tailwind's `md` breakpoint, where the full desktop toggle appears. */
+const MOBILE_MAX_WIDTH_PX = 767;
 
 function hasSeenIntro(): boolean {
   try {
@@ -44,8 +46,13 @@ export function PerspectiveIntroDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Open once, after a short delay, if never seen.
+  // Open once, after a short delay, if never seen. Desktop/tablet only: on a
+  // phone the side-by-side comparison becomes a full-screen scrolling wall
+  // that blocks the first impression, and the header toggle already explains
+  // itself with icons. Not marked as seen, so the same visitor still gets it
+  // later on a larger screen.
   useEffect(() => {
+    if (window.matchMedia(`(max-width: ${MOBILE_MAX_WIDTH_PX}px)`).matches) return;
     if (hasSeenIntro()) return;
     const timer = setTimeout(() => setIsOpen(true), OPEN_DELAY_MS);
     return () => clearTimeout(timer);

@@ -22,9 +22,17 @@ import { TextHoverFill } from "@/shared/components/motion/text-hover-fill";
 // prefer reduced motion.
 const heroPrimaryLinkClass = cn(
   buttonVariants({ variant: "primary", size: "lg" }),
-  "h-16 px-10 text-lg rounded-none bg-text text-background hover:bg-text/90",
+  "w-full sm:w-auto h-12 sm:h-16 px-6 sm:px-10 text-base sm:text-lg rounded-none bg-text text-background hover:bg-text/90",
   "motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:-translate-y-1 motion-safe:active:scale-[0.98]"
 );
+
+// Secondary (perspective) CTA: same responsive sizing as the primary link.
+const heroSecondaryButtonClass =
+  "w-full sm:w-auto h-12 sm:h-16 px-6 sm:px-10 text-base sm:text-lg rounded-none border-text text-text hover:bg-surface";
+
+// Phones: buttons stack full-width. sm+: side by side, as before.
+const heroCtaRowClass =
+  "flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:pt-4";
 
 interface HeroSectionProps {
   perspective?: Perspective;
@@ -97,7 +105,7 @@ export function HeroSection({
   };
 
   return (
-    <StaggeredSection className="relative w-full pt-4 pb-12 md:pt-8 md:pb-16 flex flex-col gap-8" delay={0.1} animateInView={false}>
+    <StaggeredSection className="relative w-full pt-2 pb-8 md:pt-8 md:pb-16 flex flex-col gap-4 md:gap-8" delay={0.1} animateInView={false}>
       
       {/* No Background Orbs or Spotlights in Precise Aesthetic */}
 
@@ -110,14 +118,14 @@ export function HeroSection({
       >
         <h1
           ref={h1Ref}
-          className="text-5xl md:text-7xl lg:text-[7.5rem] font-black tracking-tighter leading-[0.9] text-text pb-4 transition-opacity duration-300 group-hover:opacity-20"
+          className="text-5xl md:text-7xl lg:text-[7.5rem] font-black tracking-tighter leading-[0.9] text-text pb-2 md:pb-4 transition-opacity duration-300 group-hover:opacity-20"
         >
           {profile.name}
         </h1>
         
         <h1
           ref={overlayH1Ref}
-          className="absolute inset-0 px-2 text-5xl md:text-7xl lg:text-[7.5rem] font-black tracking-tighter leading-[0.9] text-primary pb-4 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          className="absolute inset-0 px-2 text-5xl md:text-7xl lg:text-[7.5rem] font-black tracking-tighter leading-[0.9] text-primary pb-2 md:pb-4 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
           style={{ 
             maskImage: `radial-gradient(150px circle at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%)`,
             WebkitMaskImage: `radial-gradient(150px circle at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%)`
@@ -128,32 +136,32 @@ export function HeroSection({
         </h1>
       </motion.div>
 
-      <StaggeredItem className="relative z-10 w-full mt-8 md:mt-12 px-2">
+      <StaggeredItem className="relative z-10 w-full mt-2 md:mt-12 px-2">
         <div className="relative">
           <PerspectiveTransition perspective={perspective}>
             {perspective === "overview" ? (
-              <div className="flex flex-col gap-12 items-start max-w-4xl">
-                <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-8 md:gap-12 items-start max-w-4xl">
+                <div className="flex flex-col gap-3 md:gap-6">
                   <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-text">
                     <TextHoverFill>{profile.title}</TextHoverFill>
                   </h2>
-                  <div className="text-xl md:text-2xl text-muted leading-relaxed font-light max-w-3xl">
+                  <div className="text-muted leading-relaxed font-light max-w-3xl">
                     <RotatingStat summary={profile.summary} highlights={profile.highlights} />
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4 pt-4">
-                  <MagneticWrapper strength={15}>
+                <div className={heroCtaRowClass}>
+                  <MagneticWrapper strength={15} className="w-full sm:w-auto">
                     <Link href="/projects" className={heroPrimaryLinkClass}>
                       View Projects
                     </Link>
                   </MagneticWrapper>
                   
-                  <MagneticWrapper strength={10}>
+                  <MagneticWrapper strength={10} className="w-full sm:w-auto">
                     <Button
                       variant="outline"
                       size="lg"
-                      className="h-16 px-10 text-lg rounded-none border-text text-text hover:bg-surface"
+                      className={heroSecondaryButtonClass}
                       onClick={() => onPerspectiveChange("architecture")}
                     >
                       Explore Architecture
@@ -162,18 +170,18 @@ export function HeroSection({
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-12 items-start max-w-5xl">
-                <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-8 md:gap-12 items-start max-w-5xl">
+                <div className="flex flex-col gap-6 md:gap-8">
                   {/* Engineer lens (docs/02 §9): headline + how I design systems.
                       Falls back to a derived title when profile.engineering is absent. */}
-                  <h2 className="text-3xl md:text-5xl font-bold text-text font-mono tracking-tight">
+                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-text font-mono tracking-tight">
                     <TextHoverFill>
                       {profile.engineering?.headline ?? `System Architect & ${profile.title}`}
                     </TextHoverFill>
                   </h2>
                   {profile.engineering && (
-                    <div className="flex flex-col gap-5 max-w-3xl">
-                      <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
+                    <div className="flex flex-col gap-4 md:gap-5 max-w-3xl">
+                      <p className="text-lg md:text-2xl text-muted leading-relaxed font-light">
                         {profile.engineering.philosophy}
                       </p>
                       <ul className="flex flex-wrap gap-2" aria-label="Engineering principles">
@@ -188,7 +196,7 @@ export function HeroSection({
                       </ul>
                     </div>
                   )}
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-4 md:gap-6">
                     <div className="flex items-center gap-4">
                       <div className="h-px w-12 bg-text" />
                       <p className="text-sm font-bold text-text uppercase tracking-widest">
@@ -199,13 +207,13 @@ export function HeroSection({
                       variants={shouldReduceMotion ? undefined : badgeContainerVariants}
                       initial="hidden"
                       animate="show"
-                      className="flex flex-wrap gap-3"
+                      className="flex flex-wrap gap-2 md:gap-3"
                     >
                       {profile.currentFocus.map((tech) => (
                          <MagneticWrapper key={tech} strength={8}>
                            <motion.li
                             variants={shouldReduceMotion ? undefined : badgeVariants}
-                            className="px-5 py-3 border border-border text-base font-mono text-text hover:border-text transition-colors cursor-default"
+                            className="px-3 py-2 md:px-5 md:py-3 border border-border text-sm md:text-base font-mono text-text hover:border-text transition-colors cursor-default"
                           >
                             <TextHoverFill>{tech}</TextHoverFill>
                           </motion.li>
@@ -215,18 +223,18 @@ export function HeroSection({
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4 pt-4">
-                  <MagneticWrapper strength={15}>
+                <div className={heroCtaRowClass}>
+                  <MagneticWrapper strength={15} className="w-full sm:w-auto">
                     <Link href="/architecture-lab" className={heroPrimaryLinkClass}>
                       Enter Architecture Lab
                     </Link>
                   </MagneticWrapper>
 
-                  <MagneticWrapper strength={10}>
+                  <MagneticWrapper strength={10} className="w-full sm:w-auto">
                     <Button
                       variant="outline"
                       size="lg"
-                      className="h-16 px-10 text-lg rounded-none border-text text-text hover:bg-surface"
+                      className={heroSecondaryButtonClass}
                       onClick={() => onPerspectiveChange("overview")}
                     >
                       Return to Overview

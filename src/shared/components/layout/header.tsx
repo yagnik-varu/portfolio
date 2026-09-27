@@ -48,35 +48,36 @@ export function Header() {
                   backgroundColor: headerBg,
                 }
           }
-          className="pointer-events-auto flex h-16 w-full max-w-5xl items-center justify-between rounded-full border border-white/[0.08] backdrop-blur-2xl px-6 transition-colors"
+          className="pointer-events-auto flex h-14 sm:h-16 w-full max-w-5xl items-center justify-between gap-2 rounded-full border border-white/[0.08] backdrop-blur-2xl pl-5 pr-2 sm:px-6 transition-colors"
         >
           <Link
             href="/"
-            className="shrink-0 font-bold tracking-tight text-text text-lg hover:text-primary transition-colors"
+            className="shrink-0 font-bold tracking-tight text-text text-base sm:text-lg hover:text-primary transition-colors"
             onClick={() => {
               if (window.location.pathname === "/") {
                 window.dispatchEvent(new Event("trigger-scroll-top"));
               }
             }}
           >
-            Yagnik Varu
+            {/* Surname drops on the narrowest phones so the switch always fits. */}
+            Yagnik<span className="hidden min-[380px]:inline"> Varu</span>
           </Link>
 
           {/* Desktop Navigation: six links in Engineer mode need lg+ to fit
               beside the logo and toggle; tablets use the menu instead. */}
           <Navigation perspective={perspective} className="hidden lg:flex flex-1 justify-center min-w-0" />
 
-          <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-4 shrink-0">
             {/* Perspective Toggle (Responsive compound component) */}
             <PerspectiveToggle perspective={perspective} onChange={setPerspective} />
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden p-2 text-muted hover:text-primary transition-colors rounded-full"
+              className="lg:hidden flex h-10 w-10 items-center justify-center text-muted hover:text-primary transition-colors rounded-full"
               aria-label="Open menu"
             >
-              <Menu size={24} />
+              <Menu size={22} />
             </button>
           </div>
         </motion.header>

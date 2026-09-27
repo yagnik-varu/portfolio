@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import type { Perspective } from "@/domains/perspective/types";
 import { perspectives } from "../../../../content/perspectives/perspectives";
 import { KbdHint } from "@/shared/components/kbd-hint";
+import { useMotionPreference } from "@/shared/hooks/use-motion-preference";
+import { cn } from "@/lib/utils/cn";
+import { PERSPECTIVE_ICONS } from "./perspective-icons";
 
 export interface PerspectiveToggleProps {
   perspective: Perspective;
@@ -11,32 +14,30 @@ export interface PerspectiveToggleProps {
   className?: string;
 }
 
-const SEGMENT_WIDTH = 92;
-
 /**
- * Desktop perspective segmented control with a spring-animated active pill.
- * Visible on md (768px) and up. Labels come from the perspectives content
- * config; the first-visit explanation lives in <PerspectiveIntroDialog />.
+ * Desktop perspective switch (768px and up): icon + label for both lenses,
+ * with a spring pill that slides to the active one. Hovering a lens shows who
+ * it is for; the first-visit explanation lives in <PerspectiveIntroDialog />.
  */
 export function PerspectiveToggleDesktop({
   perspective,
   onChange,
   className = "",
 }: PerspectiveToggleProps) {
-  const activeIndex = perspectives.findIndex((p) => p.id === perspective);
+  const shouldReduceMotion = useMotionPreference();
   const labels = perspectives.map((p) => p.label).join(" or ");
 
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      {/* "View as" is conveyed by the group label + button titles; a visible
-          prefix made the header overflow at common desktop widths. */}
+    <div className={cn("flex items-center gap-3", className)}>
       <div
         role="group"
         aria-label={`View as ${labels}`}
-        className="relative flex h-9 items-center rounded-full bg-surface p-1 shadow-sm border border-border"
+        className="relative flex h-9 items-center rounded-full border border-border bg-surface/80 p-0.5 shadow-sm"
       >
         {perspectives.map((config) => {
           const isActive = config.id === perspective;
+          const Icon = PERSPECTIVE_ICONS[config.id];
+
           return (
             <button
               key={config.id}
@@ -44,25 +45,28 @@ export function PerspectiveToggleDesktop({
               onClick={() => onChange(config.id)}
               aria-pressed={isActive}
               title={config.audience}
-              style={{ width: SEGMENT_WIDTH }}
-              className={`relative z-10 flex items-center justify-center rounded-full px-3 text-sm font-medium transition-colors duration-200 ${
-                isActive ? "text-text" : "text-muted hover:text-text"
-              }`}
+              className={cn(
+                "relative z-10 flex h-8 items-center gap-1.5 rounded-full px-3 text-sm font-medium transition-colors duration-200",
+                isActive ? "text-background" : "text-muted hover:text-text"
+              )}
             >
+              {isActive && (
+                <motion.span
+                  layoutId="perspective-toggle-desktop-pill"
+                  aria-hidden="true"
+                  className="absolute inset-0 -z-10 rounded-full bg-primary shadow-md"
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 350, damping: 30 }
+                  }
+                />
+              )}
+              <Icon aria-hidden="true" size={15} strokeWidth={2.25} />
               {config.label}
             </button>
           );
         })}
-
-        {/* Spring physics active pill */}
-        <motion.div
-          aria-hidden="true"
-          initial={false}
-          animate={{ x: Math.max(activeIndex, 0) * SEGMENT_WIDTH }}
-          transition={{ type: "spring", stiffness: 250, damping: 25 }}
-          style={{ width: SEGMENT_WIDTH }}
-          className="absolute top-1 bottom-1 left-1 rounded-full bg-primary shadow-md"
-        />
       </div>
 
       <div className="hidden xl:flex">

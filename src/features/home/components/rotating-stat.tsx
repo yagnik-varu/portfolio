@@ -133,7 +133,7 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
 
   // Reduced motion or no highlights → plain summary text
   if (shouldReduceMotion || highlights.length === 0) {
-    return <p className="text-lg text-muted max-w-2xl leading-relaxed">{summary}</p>;
+    return <p className="text-base md:text-lg text-muted max-w-2xl leading-relaxed">{summary}</p>;
   }
 
   return (
@@ -142,11 +142,13 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
         Invisible placeholders for all highlights reserve exact max width/height needed.
         Since all items are in the same grid cell, the container sizes to the largest one,
         allowing text to wrap on mobile without causing layout shift while typing.
+        The font steps down on phones so the longest highlight wraps to fewer lines;
+        otherwise the reserved box leaves a large empty gap above the hero buttons.
       */}
       {highlights.map((h, i) => (
         <p
           key={i}
-          className="col-start-1 row-start-1 text-lg text-muted max-w-2xl leading-relaxed font-mono invisible pointer-events-none"
+          className="col-start-1 row-start-1 text-sm sm:text-base md:text-lg text-muted max-w-2xl leading-relaxed font-mono invisible pointer-events-none"
           aria-hidden="true"
         >
           {h}
@@ -156,7 +158,7 @@ export function RotatingStat({ summary, highlights = [] }: RotatingStatProps) {
 
       {/* Visible typewriter */}
       <p
-        className="col-start-1 row-start-1 text-lg text-muted max-w-2xl leading-relaxed font-mono"
+        className="col-start-1 row-start-1 text-sm sm:text-base md:text-lg text-muted max-w-2xl leading-relaxed font-mono"
         aria-label={`Rotating highlights: ${highlights.join(", ")}`}
         aria-live="polite"
       >

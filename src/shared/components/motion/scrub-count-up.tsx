@@ -26,7 +26,15 @@ export function ScrubCountUp({ value, suffix = "", decimals = 0, className }: Sc
     const format = (n: number) =>
       decimals > 0 ? n.toFixed(decimals) : Math.round(n).toString();
 
-    const tween = gsap.to(obj, {
+    // Declared before the tween so onComplete can reference it safely. When the
+    // element is already past its trigger end on load (tall screens, restored
+    // scroll), GSAP completes the tween *during* gsap.to(), before a `const`
+    // would be initialised, which threw "Cannot access 'tween' before
+    // initialization".
+    let tween: gsap.core.Tween | null = null;
+    let completedEarly = false;
+
+    tween = gsap.to(obj, {
       val: value,
       ease: "none",
       scrollTrigger: {
@@ -45,9 +53,12 @@ export function ScrubCountUp({ value, suffix = "", decimals = 0, className }: Sc
       // only after the smoothed tween itself has finished.
       onComplete: () => {
         if (numRef.current) numRef.current.innerText = format(value);
-        tween.scrollTrigger?.kill();
+        if (tween) tween.scrollTrigger?.kill();
+        else completedEarly = true;
       },
     });
+
+    if (completedEarly) tween.scrollTrigger?.kill();
   }, [value, decimals, shouldReduceMotion]);
 
   return (
