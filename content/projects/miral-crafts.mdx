@@ -1,0 +1,102 @@
+---
+slug: miral-crafts
+title: Miral Crafts
+summary: A showcase website for a client's handmade crochet and embroidery business, with a gallery, a detail page for every piece, and one-tap WhatsApp contact for commissions.
+status: completed
+featured: false
+architectureType: static-site
+complexity: intermediate
+visibility: public
+stack:
+  frontend:
+    - Next.js 16
+    - React 19
+    - TypeScript
+    - Tailwind CSS v4
+    - Framer Motion
+  backend:
+    - Next.js App Router (static generation)
+  database:
+    - Typed TypeScript data module
+  infrastructure:
+    - WhatsApp click-to-chat
+    - Environment-based contact config
+tags:
+  - client-work
+  - frontend
+  - nextjs
+  - web-design
+impactMetrics:
+  - "Shipped in 4 days, from first commit to per-product detail pages"
+  - "Replaced an inquiry form with one-tap WhatsApp chat"
+  - "Every product page pre-rendered at build time with its own SEO title and description"
+architecture:
+  summary: A static Next.js site where one typed products file drives the homepage highlights, the full gallery and a pre-rendered detail page for every piece. Contact details are injected from environment variables.
+  decisions:
+    - title: Typed data file instead of a CMS
+      choice: All products live in one TypeScript file with a strict Product interface.
+      tradeoff: Content changes need a developer and a redeploy, but there is no CMS to host, pay for or secure.
+    - title: WhatsApp instead of an inquiry form
+      choice: The inquiry page was removed and replaced with a direct wa.me chat link.
+      tradeoff: No form submissions to collect or track, but the client already works from WhatsApp, so commissions arrive instantly.
+    - title: Pre-rendered product pages
+      choice: generateStaticParams builds every /products/[slug] page at build time, with generateMetadata for per-piece SEO.
+      tradeoff: Adding a product means a rebuild, in exchange for instant pages and no server work per visit.
+    - title: Contact details in environment variables
+      choice: WhatsApp number, email and Instagram handle come from NEXT_PUBLIC_* variables, with the handle normalised from any format.
+      tradeoff: One more thing to set at deploy time, but the client's personal number never sits in the repository.
+liveUrl: https://miral-crafts.vercel.app/
+startedAt: "2026-09-20"
+updatedAt: "2026-09-23"
+---
+
+# Overview
+
+Miral Crafts is a client project for a maker who creates handmade crochet, embroidery, knitting, macramé, cross-stitch and amigurumi pieces, mostly as custom commissions.
+
+The work was being shared on Instagram, but there was no single place to show the full collection, explain how a commission works, and make it easy for someone to get in touch. The goal was a website that feels as warm and handmade as the work itself, and turns a visitor into a WhatsApp conversation with as few steps as possible.
+
+**What the site does**
+
+- **Homepage:** an animated "thread" hero, four featured pieces, and a three-step "How It Works" section (Vision → Creation → Delivery).
+- **Gallery:** the full collection, laid out as a bento grid on desktop and a masonry layout on mobile.
+- **Product pages:** every piece has its own page with its description, materials, technique, timeline, dimensions, care instructions and highlights.
+- **Contact:** one-tap WhatsApp chat, email and Instagram, available from every page.
+
+The repository is private because it is client work, so this case study links to the live site instead of the code.
+
+# Architecture
+
+It's a deliberately simple static site. The client needs something fast and reliable that doesn't have to be maintained, not a platform.
+
+<ArchitectureCallout title="Decision: Why one typed data file instead of a CMS?">
+The collection is small and changes rarely. A headless CMS would add hosting, a login for the client and another service to keep secure, all to edit a handful of entries. Instead every product lives in `src/data/products.ts`, typed by a `Product` interface (title, category, image, materials, technique, timeline, dimensions, care instructions, highlights and gallery layout hints). TypeScript catches a missing field at build time, and the same file feeds the homepage, the gallery and the detail pages, so they can never disagree.
+</ArchitectureCallout>
+
+**How the pieces fit together**
+
+1. **`products.ts`** is the single source of truth, with two helpers: `getProductBySlug` and `getAllProductSlugs`.
+2. **`/products/[slug]`** is a Server Component. `generateStaticParams` pre-renders a page for every product at build time, and `generateMetadata` gives each one its own title and description for search and link previews. An unknown slug returns a real 404 through `notFound()`.
+3. The animated product layout is a separate **`ProductDetailClient`** component, so only the part that animates runs in the browser.
+4. **Contact details** (WhatsApp number, email, Instagram) come from `NEXT_PUBLIC_*` environment variables. The footer strips the WhatsApp number down to digits for a `wa.me` link and accepts the Instagram handle as `@handle`, `handle` or a full URL.
+
+**Design system**
+
+The palette is defined once as Tailwind v4 `@theme` tokens (warm cream, beige, terracotta, earthy text), paired with Cormorant for headings and Public Sans for body text through `next/font`. Together they give it the soft, handcrafted look the brand needed.
+
+# Implementation Challenges
+
+**Making the hero feel handmade.** The hero has an SVG "thread" that draws itself across the screen using Framer Motion's `pathLength`, with dashed stitches and little knots that pop in, then keeps gently floating and fades out with a scroll-linked parallax. A single wide path looked wrong on phones, so the thread has two SVGs: a horizontal one for desktop and a vertical one for mobile.
+
+**One gallery, two layouts.** On desktop the gallery is a 12-column bento grid, where each product carries its own `span` hint so the most striking pieces get the most space. The same grid on a phone left awkward gaps, so mobile switches to CSS columns (masonry) with a per-product `mobileHeight`. The layout hints live in the data, not in the component, so rearranging the gallery is a data change.
+
+**Choosing the simplest contact flow.** The first version had a separate inquiry page. In practice the client handles commissions on WhatsApp, so a form would only add a step and an inbox to check. I removed it and made "Chat on WhatsApp" the main call to action, with email and Instagram next to it.
+
+**Keeping personal details out of the code.** Hard-coding the client's phone number would have put it in the Git history for good. Reading it from environment variables means the repository only ever holds placeholders (see `.env.example`), and the real values live in the hosting settings.
+
+# Future Improvements
+
+- **Let the client edit the collection directly.** Moving `products.ts` to a lightweight CMS or a Google Sheet would let the client add new pieces without a developer, which becomes worth it once the catalogue grows.
+- **Respect reduced motion.** The thread animation loops forever. It should pause for visitors who have "reduce motion" turned on.
+- **Ship less JavaScript on the homepage.** The whole homepage is a client component because of its animations. Splitting the static sections into Server Components would make the first load lighter.
+- **Pre-filled WhatsApp messages.** Opening chat with "Hi, I'm interested in *Cozy Textures*" from a product page would save the client a round of questions.

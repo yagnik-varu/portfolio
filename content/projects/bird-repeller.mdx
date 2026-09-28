@@ -1,0 +1,146 @@
+---
+slug: bird-repeller
+title: Bird Repeller
+summary: A fun side project that turns an unused smartphone into a solar-powered bird guard. It photographs my rooftop solar panels on a timer, spots birds with on-device AI, and plays a deterrent sound to scare them away.
+status: active
+featured: false
+architectureType: edge-ai
+complexity: advanced
+visibility: public
+stack:
+  frontend:
+    - Kotlin
+    - Jetpack Compose
+    - Material 3
+  backend:
+    - TensorFlow Lite
+    - CameraX
+    - AlarmManager
+    - Foreground Service
+  database:
+    - Room
+    - DataStore
+  infrastructure:
+    - Solar panel + 5 V buck converter
+    - Amplifier + horn speaker
+  tools:
+    - JUnit
+    - Gradle (Kotlin DSL)
+tags:
+  - mobile
+  - android
+  - edge-ai
+  - iot
+  - side-project
+impactMetrics:
+  - "Camera opens for about 1 second per check instead of streaming 24/7"
+  - "100% offline: no internet permission, photos never leave the phone"
+  - "31 JVM unit tests on the logic that decides when the sound plays"
+architecture:
+  summary: A duty-cycled edge pipeline (exact alarm → wake lock → single photo → on-device detection → capture-area check → sound) that sleeps between checks, so an old phone can run all day on a small solar panel.
+  decisions:
+    - title: Snapshots, not video
+      choice: CameraX ImageCapture binds the camera for one photo per check and unbinds it right after.
+      tradeoff: A bird that lands and leaves between checks is missed, but the phone stays cool and the battery lasts.
+    - title: Adaptive duty cycle
+      choice: Check every 5 minutes normally and every minute on "high alert" after a bird is chased away.
+      tradeoff: More wake-ups when birds are active, in exchange for a much lower average power draw when they are not.
+    - title: Exact alarms + one long-lived camera service
+      choice: setExactAndAllowWhileIdle wakes the app through Doze, and a camera foreground service started while the app is visible takes each photo.
+      tradeoff: Android 14 cannot restart it on its own after a reboot, so the app asks the user to resume instead.
+    - title: Heat protection before every check
+      choice: Skip the cycle if the battery is at or above the limit (45 °C by default) or Android reports severe thermal throttling.
+      tradeoff: A hot afternoon can mean skipped checks, but the phone is never pushed while it overheats on the roof.
+repositoryUrl: https://github.com/yagnik-varu/birdRepellel
+startedAt: "2026-08-25"
+updatedAt: "2026-09-28"
+---
+
+# Overview
+
+I built this one for fun. I had two things lying around: **an old smartphone I no longer used**, and **solar panels on my roof that birds kept making dirty**. Bird droppings aren't just ugly. They block sunlight and quietly cut how much power the panels produce.
+
+Commercial deterrents either play a sound every few minutes whether or not a bird is there (until the birds stop caring) or cost a lot. An old phone already has everything a smart deterrent needs:
+
+- **Camera** → the eyes
+- **Processor** → the brain, running an AI model locally
+- **Battery** → its own UPS through the night
+- **Headphone jack** → the voice, driving an amplifier and horn speaker
+- **Charging port** → a way to run on solar power
+
+So Bird Repeller wakes up on a timer, takes **one** photo of the roof, looks for birds right on the phone, and if a bird is sitting on the panels, it plays a deterrent sound at full volume so the bird flies away. No cloud, no subscription, no new hardware to buy.
+
+It was also my way to learn modern Android: Kotlin, Jetpack Compose, CameraX, TensorFlow Lite and background execution.
+
+**What it does**
+
+- Detects birds on the phone with TensorFlow Lite, even in airplane mode.
+- Only reacts to birds inside a **capture area** I drag over the panels, so birds on the chimney or in the sky are ignored.
+- Plays a random sound from my own playlist (hawk calls, alarms), never the same one twice in a row, so birds don't get used to it.
+- Runs in the background with the screen off and survives Doze.
+- Shows a dashboard with birds chased today, saved bird photos with detection boxes, and a 24-hour health check.
+
+# Architecture
+
+The design is built around one constraint: **the phone has to run for days on a small solar panel, on a hot roof.** Every decision is about spending as little power and heat as possible per check.
+
+<ArchitectureCallout title="Decision: Why a duty cycle instead of live video?">
+Streaming the camera into the model all day would keep the CPU, camera and GPU busy nonstop. That drains the battery faster than a small panel can recharge it and cooks a phone that already sits in the sun. Instead the app sleeps almost all the time and wakes only for a few seconds per check. The camera is bound for a single photo and unbound right after, so it is closed between checks.
+</ArchitectureCallout>
+
+**One check, step by step**
+
+1. **`AlarmReceiver`** fires from an exact alarm (`setExactAndAllowWhileIdle`), which still wakes the phone in Doze. WorkManager can't guarantee minute-level timing.
+2. **`BirdRepellerService`**, a camera foreground service, grabs a **partial wake lock** just for this check, with a 5-minute safety timeout.
+3. **`DeviceHealth`** reads battery %, charging state, battery temperature and Android's thermal status. If the phone is too hot, the check is skipped and logged as "too hot".
+4. CameraX takes **one photo** (with a 15-second timeout) and `CapturedImageDecoder` fixes its rotation and shrinks it to about 1024 px.
+5. **`BirdDetector`** runs a quantized SSD MobileNet model (4 MB) on the GPU, falling back to the CPU if the GPU fails.
+6. **`RoiIntersection`** keeps only detections whose box overlaps the capture area. If a bird is there, **`AudioPlayer`** plays a sound at max volume.
+7. The check is saved to **Room** (outcome, confidence, battery, temperature, photo). Photos without birds are deleted immediately.
+8. The next alarm is set: **1 minute** if a bird was found ("high alert", because birds tend to come back), otherwise **5 minutes**. Then the wake lock is released and the CPU goes back to sleep.
+
+**Code layout**
+
+The app is split into small packages so each part can be tested and tuned on its own: `scheduling/` (alarms, service, duty cycle, device health), `capture/`, `detection/`, `actuation/`, `data/` (Room + DataStore) and `ui/` (Compose screens). Dependencies are wired by hand, without Hilt, because the graph is small.
+
+# Power and Heat Budget
+
+This is the part I'm most proud of, because it is what makes a phone on a roof actually last.
+
+**Battery optimization**
+
+- **Snapshot, not streaming.** The camera is open for about a second per check, then released.
+- **Wake lock only during a check.** The CPU is held awake for a few seconds and sleeps for the rest of the interval. No wake lock is ever held across the sleep period.
+- **Adaptive interval.** 5 minutes by default, 1 minute only while birds are active. Both are configurable (1–30 minutes).
+- **Small, quantized model with GPU acceleration**, so inference finishes quickly and the processor can idle again.
+- **Screen stays off** during normal operation. The background loop never touches the UI.
+- **Solar + battery as a UPS.** A buck converter feeds the phone 5 V from a small panel during the day, and its own battery covers nights and cloudy days.
+
+**Heat protection**
+
+The phone lives in an enclosure on a sunny roof, so heat is the number one enemy. Before every check, the app compares the battery temperature to a limit (**45 °C by default**, configurable in Settings) and also checks Android's thermal status. If the battery is too hot or the system reports severe throttling, it skips the camera and the model entirely and logs the reason. The Activity tab then shows peak battery temperature, missed checks and late checks for the last 24 hours, so I can see how the phone is coping.
+
+# Implementation Challenges
+
+**Android 14 won't let a background app open the camera.** Starting a camera foreground service from an alarm crashed with `ForegroundServiceStartNotAllowedException`. Background camera use is only allowed if the service was started while the app was on screen. The fix: tapping **Allow & Start** launches one long-lived camera service while the app is visible, and alarms just ask that running service to take the next photo. If Android kills it or the phone reboots, the app posts a **"Bird detection paused, tap to resume"** notification instead of crashing.
+
+**The capture area was checked against a sideways photo.** Camera JPEGs are stored in sensor orientation with an EXIF rotation tag. The preview where I drew the capture area was upright, but the background decoder ignored EXIF. Both paths now share one decoder that applies the rotation and downsamples the image to avoid out-of-memory errors.
+
+**The deterrent was quiet and got cut off.** The app maxed out the music volume but played the sound through a different audio stream. Playback also returned immediately, so the service released its wake lock and stopped while the sound was still playing. It now plays as media and **waits until the clip finishes** (capped at 60 seconds).
+
+**The model isn't a bird specialist.** It's a general COCO detector, and on a rooftop it sometimes labels a bird as "person", "kite" or "teddy bear". Those labels are treated as birds too, and a certainty threshold in Settings filters out shadows, leaves and clouds.
+
+**Consent for a camera that runs while the app is closed.** Background detection is off until I agree on a clear consent screen, a notification with a **Turn off** button is always visible while it runs, and the app has no internet permission at all.
+
+# Lessons Learned
+
+On a phone like this, the power budget shapes everything. The "obvious" upgrade, live video analysis, would have been the wrong design. The best decisions were about what the app **doesn't** do: no streaming, no wake lock between checks, no screen, no network.
+
+Real hardware also matters far more than the emulator. Doze, OEM battery savers (my test phone is a vivo on Android 14), EXIF rotation and audio routing all behaved differently on a real device. Keeping the core logic (capture-area math, classification, health stats, heat rules, duty-cycle state machine, consent gate) in pure Kotlin meant I could cover it with fast JVM unit tests and save device time for what only a device can show.
+
+# Future Improvements
+
+- **Rooftop soak test.** Run it unattended for 48 hours on solar power to confirm the heat and battery budget in real conditions.
+- **Bench test the audio chain** through a real amplifier and horn speaker.
+- **A bird-specific model** fine-tuned on photos from my own roof, the biggest possible accuracy upgrade.
+- **CSV export of the event log** to measure how well it works over a whole season.

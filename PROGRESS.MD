@@ -5,7 +5,7 @@
 > Update this file LAST before ending work.
 > This file is the project's current state, not a development diary.
 
-Last Updated: 2026-09-26
+Last Updated: 2026-09-28
 Owner: Yagnik Varu
 
 ---
@@ -115,6 +115,8 @@ Only list completed functionality. Update as work progresses.
 - **Phase 7 Content Loaders**: Built `splitMdxSections` utility in `src/lib/mdx/section-splitter.ts` to parse raw MDX bodies into structured domain models (`Overview`, `Architecture`, `EngineeringSections`, `FutureImprovements`), enforcing mandatory sections and normalizing engineering types.
 - **Phase 7 Content Rendering**: Created `mdxComponents` mapping for `next-mdx-remote` (`src/lib/mdx/mdx-components.tsx`) to map raw markdown tags to semantic Design System classes, and implemented a custom `<ArchitectureCallout />` MDX element.
 - **NotifyMe case study (2026-09-27)**: Added `content/projects/notify-me.mdx` (React Native UI + native Android call-detection engine posting to Slack/Discord/Teams webhooks), written from the public repo's README, INSTALL and engine sources. Includes the `architecture` block (4 decisions). `featured: false`. Note: frontmatter dates must be quoted (`"2026-08-26"`); bare YAML dates parse as `Date` and fail `projectSchema`.
+- **Bird Repeller case study (2026-09-28)**: Added `content/projects/bird-repeller.mdx` (fun side project: an unused phone + on-device TFLite detection guarding rooftop solar panels, playing a deterrent sound). Written from the public repo's README, Agent.md and sources (`DeviceHealth`, `BirdRepellerService`, `BirdDetector`, `AlarmReceiver`). Includes the `architecture` block (4 decisions) and a dedicated `# Power and Heat Budget` engineering section (duty cycle, scoped wake lock, 45 °C default heat limit). `status: active` (rooftop soak test still pending upstream), `featured: false`. Verified: `next build` passes, `/projects/bird-repeller` returns 200 with all sections, Key Decisions render in Engineer mode, and the slug appears in the sitemap.
+- **Miral Crafts case study (2026-09-28)**: Added `content/projects/miral-crafts.mdx` (client project: static Next.js showcase for a handmade crochet/embroidery business, WhatsApp contact). The repo is **private**, so `repositoryUrl` is deliberately omitted (it would 404 for visitors). `liveUrl` is `https://miral-crafts.vercel.app/` (verified 200; the Live button renders with analytics attributes). Written from the private repo's source and commit history. Includes the `architecture` block (4 decisions). `featured: false`. Build passes; page renders with Key Decisions in Engineer mode.
 - **Phase 8 Content**: Added `EngineeringModule` and `LearningMilestone` Zod schemas and their respective content files (`content/perspectives/engineering-modules.ts`, `content/profile/learning-timeline.ts`). Refactored Phase 5's homepage `EngineeringModulesSection` to pull from this real content file instead of a hardcoded array, establishing a single source of truth.
 
 ## Perspective System
